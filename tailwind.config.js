@@ -13,7 +13,7 @@ export default {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
-      color: {
+      colors: {
         primary: {
           50: "#f2f9f9",
           100: "#deedef",
