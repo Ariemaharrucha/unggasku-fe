@@ -1,7 +1,7 @@
 import { Layout } from "../../layouts/Layout.jsx";
 import { CardArtikel } from "../../components/shared/CardArtikel.jsx";
 
-export const Artikel = () => {
+export const DetailsArtikel = () => {
   return (
     <Layout>
       <section>
