@@ -5,7 +5,7 @@ export const Cardkateori = ({ to, image, title }) => {
   return (
     <div className="col-span-1 flex flex-col justify-between p-4 border rounded-md min-h-96 relative overflow-hidden">
       <div
-        className={`absolute inset-0 bg-[url('${image}')] bg-no-repeat bg-cover brightness-75`}
+        className={`absolute inset-0 bg-no-repeat bg-cover brightness-75`} style={{backgroundImage: `url(${image})`}} 
       ></div>
       <div className="relative z-[1]">
         <div className="flex justify-between items-center text-balance">

@@ -6,18 +6,22 @@ import { IoSearch } from "react-icons/io5";
 import { Cardkateori } from "../../components/shared/Cardkateori.jsx";
 import { Link } from "react-router-dom";
 import { MdFavoriteBorder } from "react-icons/md";
+import kategoriArtikel1 from '../../assets/kategoriArtikel1.jpg'
+import kategoriArtikel2 from '../../assets/kategoriArtikel2.jpeg'
+import kategoriArtikel3 from '../../assets/kategoriArtikel3.jpeg'
+
 
 
 const categoriesData = {
   kesehatan: [
-    { title: "Penyakit Umum", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
-    { title: "Pencegahan dan Vaksinasi", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
+    { title: "Penyakit Umum", image: kategoriArtikel1 },
+    { title: "Pencegahan dan Vaksinasi", image: kategoriArtikel1 },
   ],
   pakan: [
-    { title: "Pakan", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
+    { title: "Pakan", image: kategoriArtikel2 },
   ],
   nutrisi: [
-    { title: "Nutrisi Unggas", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
+    { title: "Nutrisi Unggas", image: kategoriArtikel3 },
   ],
   lingkungan: [
     { title: "Lingkungan", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
@@ -101,16 +105,7 @@ export const ArtikelPage = () => {
 
         <div className="grid grid-cols-4 gap-4 pt-4">
           {filteredArticles.map((item, index) => (
-            <div key={index} className="col-span-1 flex flex-col justify-between p-4 border rounded-md min-h-96 relative overflow-hidden">
-            <div className={`absolute inset-0 bg-[url('https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg')] bg-no-repeat bg-cover brightness-75`}></div>
-            <div className="relative z-[1]">
-              <div className="flex justify-between items-center text-balance">
-                <h5 className="text-white">{item.title}</h5>
-                <MdFavoriteBorder size={24} className="text-white cursor-pointer" />
-              </div>
-            </div>
-            <Link className="block relative px-4 py-2 text-black border w-fit ml-auto bg-white rounded-md">Lihat detail</Link>
-          </div>
+            <Cardkateori key={index} image={item.image} title={item.title} to={'/artikel/detailsArtikel'}/>
           ))}
         </div>
       </section>
