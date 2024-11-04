@@ -3,7 +3,7 @@ import logo from '../../assets/logo.png';
 import ttg1 from '../../assets/tentangkami-1.jpg';
 import kelvinImage from '../../assets/card profil-tentang-kami1.jpg';
 import hasanImage from '../../assets/card profil-tentang-kami2.jpg';
-import Layout from  '../../layouts/Layout';
+import { Layout } from '../../layouts/Layout';
 
 
 const testimonials = [
