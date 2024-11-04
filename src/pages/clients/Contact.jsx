@@ -6,7 +6,7 @@ const Contact= () => {
     <Layout>
     <div className="font-poppins flex flex-col items-center p-6 bg-gray-100 min-h-screen">
       <div className="w-full max-w-6xl mb-10">
-        <div className="bg-yellow-400 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
+        <div className="bg-secondary-300 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
           
           <div className="bg-gray-800 text-white p-8 md:w-1/2">
             <h2 className="text-xl font-semibold">Informasi Kontak</h2>
@@ -19,7 +19,7 @@ const Contact= () => {
             </ul>
           </div>
           
-          <div className="p-8 bg-yellow-400 md:w-1/2">
+          <div className="p-8 bg-secondary-300 md:w-1/2">
             <form>
               <form>
                 <div className="grid grid-cols-2 gap-6">
@@ -112,7 +112,7 @@ const FAQSection = () => {
 const FAQItem = ({ question, answer }) => {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className={`border-b py-3 ${open ? 'border-b-2 border-yellow-400' : 'border-gray-300'}`}>
+    <div className={`py-3 px-3 ${open ? 'bg-secondary-300' : 'bg-gray'} border-b ${open ? 'bg-secondary-300' : 'border-gray-300'} rounded-lg`}>
       <button
         onClick={() => setOpen(!open)}
         className="flex justify-between items-center w-full text-left font-medium text-gray-800 text-xl"
@@ -121,7 +121,7 @@ const FAQItem = ({ question, answer }) => {
         <span>{open ? '−' : '+'}</span>
       </button>
       {open && (
-        <p className="mt-2 text-gray-600 text-xl bg-yellow-400 p-2 rounded">
+        <p className="mt-2 text-gray-600 text-xl p-2">
           {answer}
         </p>
       )}
