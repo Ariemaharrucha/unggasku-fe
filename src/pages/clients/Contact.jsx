@@ -1,132 +1,139 @@
 import React from 'react';
 import { Layout } from '../../layouts/Layout';
 
-const Contact= () => {
-  return (
-    <Layout>
-    <div className="font-poppins flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-      <div className="w-full max-w-6xl mb-10">
-        <div className="bg-secondary-300 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
-          
-          <div className="bg-gray-800 text-white p-8 md:w-1/2">
-            <h2 className="text-xl font-semibold">Informasi Kontak</h2>
-            <p className="mt-2">Halo, ada yang bisa kami bantu?</p>
-            <ul className="mt-4 space-y-2">
-              <li>📞 (021) 1234-5678</li>
-              <li>✉️ unggasku.id@gmail.com</li>
-              <li>🔗 @unggasku_id_official</li>
-              <li>📍 Batam, Kepulauan Riau</li>
-            </ul>
-          </div>
-          
-          <div className="p-8 bg-secondary-300 md:w-1/2">
-            <form>
-              <form>
-                <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block mb-2 font-semibold text-gray-700">Nama Depan</label>
-                  <input
-                    type="text"
-                    className="p-3 border-b border-black bg-transparent rounded-none focus:outline-none focus:border-b focus:border-black w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2 font-semibold text-gray-700">Nama Belakang</label>
-                  <input
-                    type="text"
-                    className="p-3 border-b border-black bg-transparent rounded-none focus:outline-none focus:border-b focus:border-black w-full"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label className="block mb-2 font-semibold text-gray-700">Email</label>
-                  <input
-                    type="email"
-                    className="p-3 border-b border-black bg-transparent rounded-none focus:outline-none focus:border-b focus:border-black w-full"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label className="block mb-2 font-semibold text-gray-700">Nomor Telepon</label>
-                  <input
-                    type="text"
-                    className="p-3 border-b border-black bg-transparent rounded-none focus:outline-none focus:border-b focus:border-black w-full"
-                  />
-                </div>
-                </div>
-              </form>
-              
-              <div className="mt-4">
-                <label className="block mb-2">Pilih Subjek:</label>
-                <div className="flex flex-wrap items-center gap-2">
-                  <label className="flex items-center gap-1"><input type="radio" name="subject" /> Umum</label>
-                  <label className="flex items-center gap-1"><input type="radio" name="subject" /> Pengaduan</label>
-                  <label className="flex items-center gap-1"><input type="radio" name="subject" /> Layanan</label>
-                  <label className="flex items-center gap-1"><input type="radio" name="subject" /> Saran dan Masukan</label>
-                </div>
-              </div>
-              
-              <div className="col-span-2 py-6">
-                <label className="block mb-2 font-semibold text-gray-700">Pesan</label>
-                <textarea
-                  placeholder="Tulis pesan anda..."
-                  className="p-2 mt-4 w-full border-b border-black bg-transparent rounded-none focus:outline-none focus:border-b focus:border-black h-20"
-                />
-              </div>
+const testimonials = [
+  { text: "Unggasku.id memberi solusi tepat untuk kesehatan ayam saya...", author: "Kelvin", role: "Peternak", image: kelvinImage },
+  { text: "Unggasku.id membantu saya mencegah wabah penyakit...", author: "Hasan", role: "Peternak", image: hasanImage },
+];
 
+const team = [
+{ name: "Stefanus Fandi", role: "Project Manager", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Amallia", role: "Hipster", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Rizkia", role: "Hipster", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Didik", role: "Konsultan", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Radita", role: "Marketing", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Stefanus Dwi", role: "Peneliti", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Arie ", role: "Teknisi", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+];
+
+const About = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % team.length);
+  };
+
+  const handlePrevious = () => {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + team.length) % team.length);
+  };
+
+  const displayedMembers = [
+      team[(currentIndex - 1 + team.length) % team.length],
+      team[currentIndex],
+      team[(currentIndex + 1) % team.length]
+  ];
+
+  return (
+      <Layout>
+      <div className="font-poppins">
+          <section className=" text-black py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
+              <div className="flex-1 flex flex-col justify-center">
+                  <h2 className="text-4xl md:text-5xl font-bold">Visi & Misi</h2>
+                  <p className="mt-6 md:mt-8 text-lg md:text-xl leading-relaxed">Menjadi platform terpercaya yang mendukung kesehatan unggas dan kesejahteraan peternak melalui solusi digital yang inovatif dan berkelanjutan.</p>
+                  <ul className="mt-6 space-y-4 text-lg md:text-xl leading-relaxed">
+                      <li>🌐 Menyediakan akses mudah ke panduan kesehatan unggas yang komprehensif dan akurat.</li>
+                      <li>🤝 Memberikan dukungan kepada peternak melalui fitur konsultasi ahli dan komunitas interaktif.</li>
+                      <li>⚙️ Mengembangkan teknologi praktis untuk meningkatkan pengelolaan peternakan unggas secara efektif.</li>
+                  </ul>
+              </div>
+              <div className="flex-1 flex justify-center mt-10 md:mt-0">
+                  <img src={logo} alt="Unggasku Logo" className="bg-primary-900 rounded-lg max-w-md h-80 md:max-w-md md:h-80" />
+              </div>
+          </section>
+
+          <section className="bg-secondary-300 text-black my-20 py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
+              <div className="flex-1 flex justify-center mb-10 md:mb-0">
+                  <img src={ttg1} alt="Tentang Unggasku" className="bg-primary-900 rounded-full max-w-md h-80 md:max-w-md md:h-80" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center text-left md:max-w-md mx-40">
+                  <h2 className="text-4xl md:text-5xl font-bold">Tentang Unggasku.id</h2>
+                  <p className="mt-6 md:mt-8 text-lg md:text-xl leading-relaxed">
+                      Unggasku.id didirikan sejak 2024 sebagai platform digital untuk mendukung kesehatan unggas. Kami menyediakan layanan konsultasi ahli dan panduan lengkap agar peternak dapat menjaga kesehatan ternaknya dengan lebih mudah. Dengan Unggasku.id, kami berkomitmen membantu mewujudkan peternakan unggas yang sehat dan berkelanjutan.
+                  </p>
+              </div>
+          </section>
+
+          <section className="p-8 text-center">
+              <h2 className="text-2xl font-bold mb-8">Apa kata mereka tentang Unggasku.id</h2>
+              <div className="flex flex-wrap justify-center gap-4">
+                  {testimonials.map((testimonial, index) => (
+                      <div key={index} className="bg-yellow-300 p-4 rounded-lg shadow-md max-w-sm">
+                          <img src={testimonial.image} alt={testimonial.author} className="w-full h-40 object-cover rounded-t-lg" />
+                          <p className="mt-4 italic">"{testimonial.text}"</p>
+                          <div className="mt-4 text-right font-bold">{testimonial.author}</div>
+                          <div className="text-right text-sm text-gray-600">{testimonial.role}</div>
+                      </div>
+                  ))}
+              </div>
+          </section>
+
+          <section className="bg-gray-900 text-white p-8 text-center rounded-full m-8">
+              <div className="flex justify-around">
+                  <div className="mx-4">
+                      <p className="text-lg font-semibold">Rp 5 Miliar</p>
+                      <p>Kepuasan Pengguna</p>
+                  </div>
+                  <div className="mx-4">
+                      <p className="text-lg font-semibold">2500+</p>
+                      <p>Pengalaman Konsultasi</p>
+                  </div>
+                  <div className="mx-4">  
+                      <p className="text-lg font-semibold">250+</p>
+                      <p>Peternak Aktif</p>
+                  </div>
+              </div>
+          </section>
+
+          <section className="p-8 text-center">
+          <h2 className="text-2xl font-bold mb-8">Kenalan dengan Tim Kami</h2>
+          <div className="flex items-center justify-center space-x-4">
+              <button 
+              onClick={handlePrevious} 
+              className="font-bold text-xl text-white p-2 rounded-full bg-primary-800 hover:bg-primary-600"
+              >
+              {'<'}
+              </button>
               
-              <button type="submit" className="mt-4 bg-gray-800 text-white py-2 px-4 rounded w-full md:w-auto">Kirim</button>
-            </form>
+              {displayedMembers.map((member, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg text-center w-64 mx-2">
+                  <img 
+                  src={member.image} 
+                  alt={member.name} 
+                  className="w-32 h-32 object-cover rounded-full mx-auto mb-4" // Foto bulat
+                  />
+                  <div className="text-3xl font-bold">{member.name}</div>
+                  <div className="text-sm text-gray-600">{member.role}</div>
+                  <p className="mt-2 text-gray-800">{member.description}</p>
+                  <a 
+                  href={member.social} 
+                  className="mt-4 inline-block bg-black text-white py-1 px-4 rounded-lg"
+                  >
+                  Sosial Media
+                  </a>
+              </div>
+              ))}
+              
+              <button 
+              onClick={handleNext} 
+              className="font-bold text-xl text-white p-2 rounded-full bg-primary-800 hover:bg-primary-600"
+              >
+              {'>'}
+              </button>
           </div>
-        </div>
+          </section>
       </div>
-
-      <FAQSection />
-    </div>
-    </Layout>
+      </Layout>
   );
 };
 
-const FAQSection = () => {
-  return (
-    <div className="w-full max-w-3xl mt-12 p-6">
-      <h2 className="text-5xl font-bold mb-6 text-gray-800">Frequently Asked Questions</h2>
-      <FAQItem 
-        question="Di mana saya bisa menemukan panduan lengkap perawatan unggas?" 
-        answer="Anda dapat menemukan panduan perawatan unggas di halaman bantuan kami." 
-      />
-      <FAQItem 
-        question="Apakah ada fitur untuk bertanya langsung kepada ahli?" 
-        answer="Ya, Anda dapat menggunakan fitur konsultasi langsung untuk bertanya kepada ahli mengenai masalah kesehatan unggas Anda." 
-      />
-      <FAQItem 
-        question="Kapan saya bisa mengakses fitur layanan untuk mendapatkan bantuan?" 
-        answer="Fitur ini tersedia 24/7 di situs kami." 
-      />
-      <FAQItem 
-        question="Bagaimana cara memberikan ulasan atau feedback tentang website ini?" 
-        answer="Anda dapat memberikan feedback melalui formulir kontak kami." 
-      />
-    </div>
-  );
-};
-
-const FAQItem = ({ question, answer }) => {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <div className={`py-3 px-3 ${open ? 'bg-secondary-300' : 'bg-gray'} border-b ${open ? 'bg-secondary-300' : 'border-gray-300'} rounded-lg`}>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex justify-between items-center w-full text-left font-medium text-gray-800 text-xl"
-      >
-        {question}
-        <span>{open ? '−' : '+'}</span>
-      </button>
-      {open && (
-        <p className="mt-2 text-gray-600 text-xl p-2">
-          {answer}
-        </p>
-      )}
-    </div>
-  );
-};  
-
-export default Contact;
+export default About;
