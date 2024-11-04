@@ -10,10 +10,10 @@ const team = [
 { name: "Stefanus Fandi", role: "Project Manager", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
 { name: "Amallia", role: "Hipster", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
 { name: "Rizkia", role: "Hipster", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
-{ name: "Didik", role: "Konsultan", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
-{ name: "Radita", role: "Marketing", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
-{ name: "Stefanus Dwi", role: "Peneliti", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
-{ name: "Arie ", role: "Teknisi", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Didik", role: "Hipster", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Radita", role: "Hacker", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Stefanus Dwi", role: "Hacker", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
+{ name: "Arie ", role: "Hacker", description: "STUPEN BATCH 7", social: "#",image: kelvinImage },
 ];
 
 const About = () => {
