@@ -52,7 +52,7 @@ export const Navbar = () => {
                   <Navlink to="/">Beranda</Navlink>
                   <Navlink to="/artikel">Artikel</Navlink>
                   <Navlink to="/layanan">Layanan</Navlink>
-                  <Navlink to="/tetang_kami">Tentang kami</Navlink>
+                  <Navlink to="/tentang_kami">Tentang kami</Navlink>
                   <Navlink to="/kontak_kami">kontak kami</Navlink>
                   <Link to='/profile'>
                     <div className="size-10 overflow-hidden rounded-full">
