@@ -12,8 +12,8 @@ export const DetailsArtikel = () => {
           </h2>
         </section>
 
-        <section className="px-16 -mt-20">
-          <div className="px-20 pt-14 pb-6 rounded-t-2xl bg-white shadow-md">
+        <section className="md:px-16 px-4 -mt-20">
+          <div className="md:px-20 px-5 pt-14 pb-6 rounded-t-2xl bg-white shadow-md">
             <article>
               <header className="flex gap-28">
                 <div className="">
@@ -26,7 +26,7 @@ export const DetailsArtikel = () => {
                 </div>
               </header>
 
-              <section className="mt-32 text-wrap leading-relaxed">
+              <section className="md:mt-32 mt-20 text-wrap leading-relaxed">
                 <p>
                   Banyak pertanyaan atas masalah yang dihadapi peternak ayam
                   petelur, salah satunya adalah bagaimana cara mengatasi ayam

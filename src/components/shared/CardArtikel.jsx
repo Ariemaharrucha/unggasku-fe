@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const CardArtikel = ({to, image, date, description}) => {
   return (
-    <div className="col-span-1 flex flex-col bg-white shadow-md rounded-md overflow-hidden">
+    <div className="md:col-span-1 col-span-3 flex flex-col bg-white shadow-md rounded-md overflow-hidden">
     <div className="h-40">
       <img
         src={image}

@@ -39,16 +39,16 @@ export const ArtikelPage = () => {
   return (
     <Layout>
       {/* Jumbotron */}
-      <section className="min-h-screen bg-primary-950 ">
-        <div className="container mx-auto grid grid-cols-2 py-8 gap-20 items-center">
-          <div className="col-span-1">
+      <section className="md:min-h-screen bg-primary-950 ">
+        <div className="container mx-auto grid md:grid-cols-12 py-8 gap-20 items-center">
+          <div className="md:col-span-6 grid-cols-12 md:px-0 px-8">
             <div className="overflow-hidden">
               <img src={image} alt="" className="w-full h-full object-cover" />
             </div>
           </div>
-          <div className="col-span-1 px-8">
+          <div className="md:col-span-6 grid-cols-12 px-8">
             <div className="text-balance space-y-4 w-fit">
-              <h1 className="text-secondary-300 text-6xl font-bold">Baca Artikel Terbaru</h1>
+              <h1 className="text-secondary-300 md:text-6xl text-5xl  font-bold">Baca Artikel Terbaru</h1>
               <p className="text-white">
                 Dapatkan informasi terbaru mengenai penyakit hewan unggas, gejala, dan pencegahannya.
                 Temukan wawasan praktis yang relevan untuk menjaga kesehatan unggas.
@@ -60,7 +60,7 @@ export const ArtikelPage = () => {
       </section>
 
       {/* Search */}
-      <section className="bg-secondary-300 py-16">
+      <section className="bg-secondary-300 py-16 md:px-0 px-4">
         <div className="text-center space-y-4">
           <h4 className="text-2xl font-bold">Temukan Artikel Terbaru Terkait Unggas</h4>
           <h2 className="text-4xl font-bold">Unggasku.id</h2>
@@ -82,7 +82,7 @@ export const ArtikelPage = () => {
       </section>
 
       {/* Kategori */}
-      <section className="container mx-auto py-10">
+      <section className="container md:mx-auto py-10 px-2 md:px-0">
         <div className="space-y-5 text-center">
           <h2 className="text-3xl font-semibold">Kategori</h2>
           <p className="font-semibold">Temukan artikel lengkap berdasarkan kategori</p>
