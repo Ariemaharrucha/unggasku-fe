@@ -106,7 +106,6 @@ const About = () => {
                 </div>
             </section>
 
-            {/* Include the Testimonials component here */}
             <Testimonials />
 
             <section className="bg-gray-900 text-white p-8 text-center rounded-full m-8">
