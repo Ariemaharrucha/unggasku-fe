@@ -1,47 +1,85 @@
-import React, { useState } from 'react';
-import logo from '../../assets/logo.png';
-import ttg1 from '../../assets/tentangkami-1.jpg';
-import kelvinImage from '../../assets/card profil-tentang-kami1.jpg';
-import hasanImage from '../../assets/card profil-tentang-kami2.jpg';
-import { Layout } from '../../layouts/Layout';
-
+import React from 'react';
+import logo from '../assets/logo.png';
+import ttg1 from '../assets/tentangkami-1.jpg';
+import kelvinImage from '../assets/card profil-tentang-kami1.jpg';
+import hasanImage from '../assets/card profil-tentang-kami2.jpg';
+import { Layout } from '../layout/Layout';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Pagination, Navigation } from 'swiper/modules';
+import Slider from 'react-slick';
 
 const testimonials = [
     { text: "Unggasku.id memberi solusi tepat untuk kesehatan ayam saya...", author: "Kelvin", role: "Peternak", image: kelvinImage },
     { text: "Unggasku.id membantu saya mencegah wabah penyakit...", author: "Hasan", role: "Peternak", image: hasanImage },
+    { text: "Platform ini sangat membantu saya mengelola peternakan dengan lebih efisien.", author: "Kelvin", role: "Peternak", image: kelvinImage },
+    { text: "Dengan Unggasku.id, hasil produksi telur saya meningkat drastis!", author: "Hasan", role: "Peternak", image: hasanImage },
 ];
 
+const Testimonials = () => {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        centerMode: true,
+        centerPadding: '60px',
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    centerPadding: '40px',
+                },
+            },
+            {
+                breakpoint: 640,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    centerPadding: '20px',
+                },
+            },
+        ],
+    };
+
+    return (
+        <section className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-8">Apa kata mereka tentang Unggasku.id</h2>
+            <Slider {...{...settings, dots: false}}>
+                {testimonials.map((testimonial, index) => (
+                    <div key={index} className="bg-yellow-300 p-4 rounded-lg shadow-md max-w-sm mx-auto mb-6">
+                        <img src={testimonial.image} alt={testimonial.author} className="w-full h-40 object-cover rounded-t-lg" />
+                        <p className="mt-4 italic">"{testimonial.text}"</p>
+                        <div className="mt-4 text-right font-bold">{testimonial.author}</div>
+                        <div className="text-right text-sm text-gray-600">{testimonial.role}</div>
+                    </div>
+                ))}
+            </Slider>
+        </section>
+
+    );
+};
+
 const team = [
-  { name: "Stefanus F", role: "Project Manager", description: "Seorang peternak handal...", social: "#",image: kelvinImage },
-  { name: "Amallia B", role: "Hipster", description: "Seorang peternak handal...", social: "#",image: kelvinImage },
-  { name: "Rizkia A", role: "Hipster", description: "Seorang peternak handal...", social: "#",image: kelvinImage },
-  { name: "Didik V", role: "Hipster", description: "Konsultan yang berpengalaman dalam peternakan unggas...", social: "#",image: kelvinImage },
-  { name: "I Komang R S", role: "Hacker", description: "Ahli pemasaran yang siap membantu peternak...", social: "#",image: kelvinImage },
-  { name: "Arie M Z", role: "Hacker", description: "Peneliti yang fokus pada kesehatan unggas...", social: "#",image: kelvinImage },
-  { name: "Stefanus D C", role: "Hacker", description: "Teknisi unggas berpengalaman...", social: "#",image: kelvinImage },
+  { name: "Stefanus Fandi", role: "Project Manager", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Amallia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Rizkia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Didik", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Radita", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Stefanus Dwi", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Arie", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
 ];
 
 const About = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % team.length);
-    };
-
-    const handlePrevious = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + team.length) % team.length);
-    };
-
-    const displayedMembers = [
-        team[(currentIndex - 1 + team.length) % team.length],
-        team[currentIndex],
-        team[(currentIndex + 1) % team.length]
-    ];
-
     return (
         <Layout>
         <div className="font-poppins">
-            <section className=" text-black py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
+            <section className="text-black py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
                 <div className="flex-1 flex flex-col justify-center">
                     <h2 className="text-4xl md:text-5xl font-bold">Visi & Misi</h2>
                     <p className="mt-6 md:mt-8 text-lg md:text-xl leading-relaxed">Menjadi platform terpercaya yang mendukung kesehatan unggas dan kesejahteraan peternak melalui solusi digital yang inovatif dan berkelanjutan.</p>
@@ -68,19 +106,8 @@ const About = () => {
                 </div>
             </section>
 
-            <section className="p-8 text-center">
-                <h2 className="text-2xl font-bold mb-8">Apa kata mereka tentang Unggasku.id</h2>
-                <div className="flex flex-wrap justify-center gap-4">
-                    {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-yellow-300 p-4 rounded-lg shadow-md max-w-sm">
-                            <img src={testimonial.image} alt={testimonial.author} className="w-full h-40 object-cover rounded-t-lg" />
-                            <p className="mt-4 italic">"{testimonial.text}"</p>
-                            <div className="mt-4 text-right font-bold">{testimonial.author}</div>
-                            <div className="text-right text-sm text-gray-600">{testimonial.role}</div>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            {/* Include the Testimonials component here */}
+            <Testimonials />
 
             <section className="bg-gray-900 text-white p-8 text-center rounded-full m-8">
                 <div className="flex justify-around">
@@ -100,24 +127,36 @@ const About = () => {
             </section>
 
             <section className="p-8 text-center">
-                    <h2 className="text-2xl font-bold mb-8">Kenalan dengan Tim Kami</h2>
-                    <div className="flex items-center justify-center space-x-4">
-                        <button onClick={handlePrevious} className="font-bold text-xl text-white p-2 rounded-full bg-primary-800 hover:bg-primary-600">
-                            {'<'}
-                        </button>
-                        {displayedMembers.map((member, index) => (
-                            <div key={index} className="bg-yellow-300 p-4 rounded-lg shadow-md text-center w-64 mx-2">
-                                <img src={member.image} alt={member.name} className="w-full h-40 object-cover rounded-t-lg mb-4" />
-                                <div className="text-3xl font-bold">{member.name}</div>
-                                <div className="text-sm text-gray-600">{member.role}</div>
-                                <p className="mt-2 text-gray-800">{member.description}</p>
-                                <a href={member.social} className="mt-4 inline-block bg-black text-white py-1 px-4 rounded-lg">Sosial Media</a>
+                <h2 className='text-2xl font-semibold text-gray-400'>Nusantara Growth</h2>
+                <h2 className="text-2xl font-bold mb-8">Kenalan dengan Tim Kami</h2>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={-200}
+                    pagination={{ clickable: true }}
+                    navigation={false}
+                    breakpoints={{
+                        640: { slidesPerView: 1 },
+                        768: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
+                    }}
+                    modules={[Pagination, Navigation]}
+                    className="w-full flex justify-center"
+                >
+                    {team.map((member, index) => (
+                        <SwiperSlide key={index}>
+                            <div className="bg-white p-4 rounded-lg text-center w-64 mx-auto">
+                                <img 
+                                    src={member.image} 
+                                    alt={member.name} 
+                                    className="rounded-full w-24 h-24 mx-auto mb-4" 
+                                />
+                                <h3 className="text-lg font-bold">{member.name}</h3>
+                                <p className="text-gray-600">{member.role}</p>
+                                <p className="text-gray-500 mb-6">{member.description}</p>
                             </div>
-                        ))}
-                        <button onClick={handleNext} className="font-bold text-xl text-white p-2 rounded-full bg-primary-800 hover:bg-primary-600">
-                            {'>'}
-                        </button>
-                    </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </section>
         </div>
         </Layout>
