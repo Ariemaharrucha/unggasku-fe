@@ -4,8 +4,6 @@ import Button from "../../components/ui/Button.jsx";
 import image from "../../assets/jumbotronArtikelPage.png";
 import { IoSearch } from "react-icons/io5";
 import { Cardkateori } from "../../components/shared/Cardkateori.jsx";
-import { Link } from "react-router-dom";
-import { MdFavoriteBorder } from "react-icons/md";
 import kategoriArtikel1 from '../../assets/kategoriArtikel1.jpg'
 import kategoriArtikel2 from '../../assets/kategoriArtikel2.jpeg'
 import kategoriArtikel3 from '../../assets/kategoriArtikel3.jpeg'
@@ -40,13 +38,13 @@ export const ArtikelPage = () => {
     <Layout>
       {/* Jumbotron */}
       <section className="md:min-h-screen bg-primary-950 ">
-        <div className="container mx-auto grid md:grid-cols-12 py-8 gap-20 items-center">
-          <div className="md:col-span-6 grid-cols-12 md:px-0 px-8">
+        <div className="container mx-auto grid md:grid-cols-12 py-8 gap-20 content-center px-8 md:px-0">
+          <div className="md:col-span-6 grid-cols-12 ">
             <div className="overflow-hidden">
               <img src={image} alt="" className="w-full h-full object-cover" />
             </div>
           </div>
-          <div className="md:col-span-6 grid-cols-12 px-8">
+          <div className="md:col-span-6 grid-cols-12 px-8 self-center">
             <div className="text-balance space-y-4 w-fit">
               <h1 className="text-secondary-300 md:text-6xl text-5xl  font-bold">Baca Artikel Terbaru</h1>
               <p className="text-white">
@@ -82,7 +80,7 @@ export const ArtikelPage = () => {
       </section>
 
       {/* Kategori */}
-      <section className="container md:mx-auto py-10 px-2 md:px-0">
+      <section className="container md:mx-auto py-10 px-2 ">
         <div className="space-y-5 text-center">
           <h2 className="text-3xl font-semibold">Kategori</h2>
           <p className="font-semibold">Temukan artikel lengkap berdasarkan kategori</p>
