@@ -8,15 +8,20 @@ const Contact= () => {
         <div className="w-full max-w-6xl mb-10">
           <div className="bg-secondary-300 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
             
-            <div className="bg-gray-800 text-white p-8 md:w-1/2">
-              <h2 className="text-xl font-semibold">Informasi Kontak</h2>
-              <p className="mt-2">Halo, ada yang bisa kami bantu?</p>
-              <ul className="mt-4 space-y-2">
-                <li>📞 (021) 1234-5678</li>
-                <li>✉️ unggasku.id@gmail.com</li>
-                <li>🔗 @unggasku_id_official</li>
-                <li>📍 Batam, Kepulauan Riau</li>
+          <div className="bg-gray-800 text-white p-8 md:w-1/2">
+              <h2 className="text-4xl font-semibold">Informasi Kontak</h2>
+              <p className="mt-2 text-2xl">Halo, ada yang bisa kami bantu?</p>
+              <ul className="mt-20 space-y-16">
+                <li className="text-xl">📞 (021) 1234-5678</li>
+                <li className="text-xl">✉️ unggasku.id@gmail.com</li>
+                <li className="text-xl">🔗 @unggasku.id_official</li>
+                <li className="text-xl">📍 Batam, Kepulauan Riau</li>
               </ul>
+              <div className="flex space-x-4 mt-20">
+                <div className="w-8 h-8 bg-secondary-300 rounded-full"></div>
+                <div className="w-8 h-8 bg-secondary-300 rounded-full"></div>
+                <div className="w-8 h-8 bg-secondary-300 rounded-full"></div>
+              </div>
             </div>
             
             <div className="p-8 bg-secondary-300 md:w-1/2">
