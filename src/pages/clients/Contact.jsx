@@ -78,7 +78,11 @@ const Contact= () => {
                 </div>
 
                 
-                <button type="submit" className="mt-4 bg-gray-800 text-white py-2 px-4 rounded w-full md:w-auto">Kirim</button>
+                <div className="flex justify-end">
+                  <button type="submit" className="font-semibold mt-4 bg-gray-800 text-white py-2 px-8 rounded-3xl w-full md:w-auto">
+                    Kirim
+                  </button>
+                </div>
               </form>
             </div>
           </div>
