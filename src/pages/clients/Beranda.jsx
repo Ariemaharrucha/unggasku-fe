@@ -7,39 +7,42 @@ export const Beranda = () => {
   return (
     <Layout>
       {/* Section 1 */}
-      <div className="flex flex-col w-fit height-[760px] mx-auto my-14 bg-primary-950 py-[47px] px-[41px] rounded-[15px]">
-        <img
-          className="w-[1085px] h-[665px]"
-          src="src\assets\Images\beranda\beranda-header.jpg"
-          alt=""
-        />
-        <div className="absolute flex items-center justify-center w-[1085px] h-[665px] flex-col gap-14">
-          <h1 className="text-primary-50 font-extrabold text-5xl  ">
-            Unggasku.id
-          </h1>
-          <div className="flex flex-col gap-y-3">
-            <h2 className="text-primary-50 font-extrabold text-4xl">
-              Belajar cara memelihara unggas yang sehat
-            </h2>
-            <p className="text-primary-50 font-medium text-2xl">
-              Dapatkan saran ahli dari tim ilmuwan unggas dan dokter hewan kami
-            </p>
-            {/* Button Daftar and Masuk */}
-            <div className="flex items-center justify-center gap-x-3">
-              <Button
-                variant="secondary"
-                size="large"
-                className="w-[175px] justify-center"
-              >
-                Daftar
-              </Button>
-              <Button
-                variant="secondary"
-                size="large"
-                className="w-[175px] justify-center"
-              >
-                Masuk
-              </Button>
+      <div className="min-h-screen md:mx-24 flex justify-center items-center p-16">
+        <div className="flex flex-col w-fit h-fit bg-primary-950 p-10 rounded-2xl relative">
+          <img
+            className=""
+            src="src\assets\Images\beranda\beranda-header.jpg"
+            alt=""
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center md:gap-14 sm:gap-12 p-10 text-center">
+            <h1 className="text-xl md:text-5xl sm:text-4xl text-primary-50 font-extrabold text-center">
+              Unggasku.id
+            </h1>
+            <div className="flex flex-col gap-y-3 items-center">
+              <h2 className="text-primary-50 font-extrabold text-sm md:text-4xl sm:text-2xl">
+                Belajar cara memelihara unggas yang sehat
+              </h2>
+              <p className="text-primary-50 font-medium text-sm md:text-2xl sm:text-lg">
+                Dapatkan saran ahli dari tim ilmuwan unggas dan dokter hewan
+                kami
+              </p>
+              {/* Button Daftar and Masuk */}
+                <div className="flex items-center justify-center gap-x-5">
+                  <Button
+                    variant="secondary"
+                    size="large"
+                    className="xl:py-4 xl:px-6 xl:text-lg md:py-3 md:px-4 md:text-sm py-2 sm:px-3 sm:text-xs"
+                  >
+                    Daftar
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="large"
+                    className="xl:py-4 xl:px-6 xl:text-lg md:py-3 md:px-4 md:text-sm py-2 sm:px-3 sm:text-xs"
+                  >
+                    Masuk
+                  </Button>
+                </div>
             </div>
           </div>
         </div>
