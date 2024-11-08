@@ -5,6 +5,7 @@ import { ArtikelPage } from "../pages/clients/ArtikelPage.jsx";
 import { Dashboard } from "../pages/dashboard/index.dashboard.jsx";
 import { ArtikelDetails } from "../pages/clients/ArtikelDetails.jsx";
 import { Artikel } from "../pages/dashboard/Artikel.jsx";
+import { FormAddArtikel } from "../pages/dashboard/FormAddArtikel.jsx";
 
 export const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ export const AppRouter = () => {
       <Route path="/artikel/detailsArtikel" element={<ArtikelDetails/>}></Route>
       <Route path="/dashboard" element={<Dashboard/>}></Route>
       <Route path="/dashboard/artikel" element={<Artikel/>}></Route>
+      <Route path="/dashboard/artikel/create" element={<FormAddArtikel/>}></Route>
     </Routes>
   </BrowserRouter>
   )
