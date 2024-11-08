@@ -14,14 +14,14 @@ export const Artikel = () => {
           </div>
           <Link to="/dashboard/artikel/create">
             <Button variant="secondary">
-              <FiPlusCircle size={24}/>
+              <FiPlusCircle size={24} />
               Buat Artikel
             </Button>
           </Link>
         </section>
         <section className="mt-4">
-          <ArtikelTable></ArtikelTable>     
-      </section>
+          <ArtikelTable></ArtikelTable>
+        </section>
       </main>
     </DashboardLayout>
   );

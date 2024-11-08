@@ -23,7 +23,7 @@ export const ArtikelTable = () => {
     <section className="">
       <div className="relative overflow-x-auto">
         <table className="text-left text-sm text-gray-500 w-full">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+          <thead className="bg-gray-50 text-sm uppercase text-gray-700">
             <tr>
               <th scope="col" className="px-6 py-3">
                 No
@@ -51,7 +51,7 @@ export const ArtikelTable = () => {
                 <td className="px-6 py-4">{index + 1}</td>
                 <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4">
                   {artikel.judul.length > 20
-                    ? `${artikel.name.substring(0, 25)}...`
+                    ? `${artikel.judul.substring(0, 25)}...`
                     : artikel.judul}
                 </td>
                 <td className="px-6 py-4 overflow-hidden">
