@@ -20,9 +20,9 @@ const artikel = [
 
 export const ArtikelTable = () => {
   return (
-    <section className="max-w-6xl">
+    <section className="">
       <div className="relative overflow-x-auto">
-        <table className="text-left text-sm text-gray-500">
+        <table className="text-left text-sm text-gray-500 w-full">
           <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="px-6 py-3">
