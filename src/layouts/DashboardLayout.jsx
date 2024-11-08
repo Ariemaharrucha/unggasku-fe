@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import Button from "../components/ui/Button.jsx";
+import { IoNewspaper } from "react-icons/io5";
+import { IoMdHome } from "react-icons/io";
+import { FaUserDoctor } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 export const DashboardLayout = ({children}) => {
   return (
@@ -9,8 +13,10 @@ export const DashboardLayout = ({children}) => {
           <div className="mb-4 px-3 py-2 text-base font-bold text-slate-600">
             Unggasku.id
           </div>
-        <Menu label={'Create artikel'} to={'/dashboard/create'} />
-        <Menu label={'Daftar artikel'} to={'/dashboard/artikel'} />
+        <Menu label={'Home'} to={'/dashboard'} icon={<IoMdHome size={24}/>} />
+        <Menu label={'Artikel'} to={'/dashboard/artikel'} icon={<IoNewspaper size={24}/>} />
+        <Menu label={'Dokter'} to={'/dashboard/dokter'} icon={<FaUserDoctor size={24}/>} />
+        <Menu label={'Users'} to={'/dashboard/users'} icon={<FaUser size={24}/>} />
         </section>
         <div>
           <Button variant="secondary" className={"flex justify-center w-full"}>
@@ -31,10 +37,10 @@ const Menu = ({to, label, icon}) => {
     return (
         <Link
         to={to}
-        className="flex items-center text-md gap-2 rounded-lg bg-secondary-300 py-2.5 px-4 font-medium transition duration-200 hover:bg-secondary-400"
+        className="flex items-center text-md gap-3 rounded-lg bg-secondary-300 py-2.5 px-4 font-medium transition duration-200 hover:bg-secondary-400"
       >
-        {label}
         {icon || ' '}
+        {label}
       </Link>
     )
 }
