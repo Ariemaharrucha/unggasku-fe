@@ -6,6 +6,7 @@ import { Dashboard } from "../pages/dashboard/index.dashboard.jsx";
 import { ArtikelDetails } from "../pages/clients/ArtikelDetails.jsx";
 import { Artikel } from "../pages/dashboard/Artikel.jsx";
 import { FormAddArtikel } from "../pages/dashboard/FormAddArtikel.jsx";
+import { FormEditArtikel } from "../pages/dashboard/FormEditArtikel.jsx";
 
 export const AppRouter = () => {
   return (
@@ -18,6 +19,7 @@ export const AppRouter = () => {
       <Route path="/dashboard" element={<Dashboard/>}></Route>
       <Route path="/dashboard/artikel" element={<Artikel/>}></Route>
       <Route path="/dashboard/artikel/create" element={<FormAddArtikel/>}></Route>
+      <Route path="/dashboard/artikel/edit/:id" element={<FormEditArtikel/>}></Route>
     </Routes>
   </BrowserRouter>
   )
