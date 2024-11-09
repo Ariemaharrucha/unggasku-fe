@@ -57,7 +57,7 @@ export const FormAddArtikel = () => {
               <Button
                 variant="secondary"
                 className={
-                  "w-1/3 bg-red-600 text-white flex items-center justify-center"
+                  "w-1/3 bg-red-600 hover:bg-red-700 text-white flex items-center justify-center"
                 }
               >
                 Clear
