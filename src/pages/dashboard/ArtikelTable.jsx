@@ -4,7 +4,7 @@ const artikel = [
     _id: "11",
     judul: "kenapa ayam",
     images:
-      "https://i.pinimg.com/474x/d9/b2/b9/d9b2b9480c1e6ee25c6bbd046a78533a.jpg",
+      "https://i.pinimg.com/564x/3b/9e/46/3b9e46620204718c614b1f89b6ff268a.jpg",
     teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
     tanggal: "02-06-2004",
   },
@@ -12,7 +12,7 @@ const artikel = [
     _id: "1",
     judul: "kenapa ayam",
     images:
-      "https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg",
+      "https://i.pinimg.com/236x/6d/f1/a5/6df1a510d05a33d260ad91b4d1384fd4.jpg",
     teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
     tanggal: "02-06-2004",
   },

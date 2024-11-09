@@ -5,7 +5,7 @@ export const ArtikelDetails = () => {
   return (
     <Layout>
       <section>
-        <section className="bg-primary-950 text-center space-y-5 bg-[url('https://i.pinimg.com/564x/72/32/5c/72325ccaefec920c633c898564ed0511.jpg')] bg-no-repeat bg-center bg-cover pt-28 pb-40">
+        <section className="bg-primary-950 text-center space-y-5 bg-[url('https://www.putraperkasa.co.id/wp-content/uploads/2023/05/Waspadai-Jamur-Mikotoksin-pada-Ayam-Ini-Bahayanya-1200x675.webp')] bg-no-repeat bg-center bg-cover pt-28 pb-40">
           <h4 className="text-white">Perawat Harian</h4>
           <h2 className="text-2xl font-semibold text-white">
             Cara Mengatasi Ayam Bertelur Sembarangan
@@ -147,19 +147,19 @@ const artikelList = Object.values({
   artikel1: {
     date: '18 Oktober 2024',
     description: 'Kenali CRD, penyakit sistem pernafasan kronis pada ayam',
-    img: 'https://i.pinimg.com/564x/72/32/5c/72325ccaefec920c633c898564ed0511.jpg',
+    img: 'https://i.pinimg.com/236x/6a/02/18/6a0218319f83a37995bb7a7bc54d5875.jpg',
     to: '#',
   },
   artikel2: {
     date: '19 Oktober 2024',
     description: 'Cara Meningkatkan Produktivitas Telur Ayam',
-    img: 'https://i.pinimg.com/564x/72/32/5c/72325ccaefec920c633c898564ed0511.jpg',
+    img: 'https://i.pinimg.com/236x/6d/f1/a5/6df1a510d05a33d260ad91b4d1384fd4.jpg',
     to: '#',
   },
   artikel3: {
     date: '20 Oktober 2024',
     description: 'Pentingnya Vitamin untuk Kesehatan Ayam',
-    img: 'https://i.pinimg.com/564x/72/32/5c/72325ccaefec920c633c898564ed0511.jpg',
+    img: 'https://i.pinimg.com/236x/7d/de/4c/7dde4c37be6dc7771821141af3693bce.jpg',
     to: '#',
   },
 });
