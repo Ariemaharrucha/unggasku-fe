@@ -1,4 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import About from "../pages/clients/About";
+import Contact from "../pages/clients/Contact";
+import UserProfile from "../pages/clients/Profile";
 import { Login } from "../pages/authentication/Login.jsx";
 import { Register } from "../pages/authentication/Register.jsx";
 import { ArtikelPage } from "../pages/clients/ArtikelPage.jsx";
@@ -13,6 +17,10 @@ export const AppRouter = () => {
   return (
   <BrowserRouter>
     <Routes>
+      <Route path="/" element={''}></Route>
+      <Route path="/tentang_kami" element={<About/>}></Route>
+      <Route path="/kontak_kami" element={<Contact/>}></Route>
+      <Route path="/profile" element={<UserProfile/>}></Route>
       <Route path="/login" element={<Login/>}></Route>
       <Route path="/register" element={<Register/>}></Route>
       <Route path="/artikel" element={<ArtikelPage/>}></Route>
