@@ -89,8 +89,8 @@ const About = () => {
                         <li>⚙️ Mengembangkan teknologi praktis untuk meningkatkan pengelolaan peternakan unggas secara efektif.</li>
                     </ul>
                 </div>
-                <div className="flex-1 flex justify-center mt-10 md:mt-0">
-                    <img src={logo} alt="Unggasku Logo" className="bg-primary-900 rounded-lg max-w-md h-80 md:max-w-md md:h-80" />
+                <div className="flex-1 flex justify-center  mt-10 md:mt-0">
+                    <img src={logo} alt="Unggasku Logo" className="bg-primary-900 rounded-lg max-w-md h-80 md:max-w-md md:h-80 md:ml-36 ml-0" />
                 </div>
             </section>
 
