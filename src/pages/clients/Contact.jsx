@@ -24,9 +24,9 @@ const Contact = () => {
   return (
     <Layout>
       <main className="font-poppins ">
-        <div className="min-h-screen">
-          <section className=" py-8 flex items-center">
-            <div className="w-full max-w-6xl mx-auto p-2 bg-secondary-300 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row gap-20">
+        <div className="md:min-h-screen">
+          <section className="py-8 flex items-center px-4 mx:px-0">
+            <div className="w-full max-w-6xl mx-auto md:p-2 p-4 bg-secondary-300 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row md:gap-20 gap-8">
               <div className="bg-gray-800 rounded-lg text-white flex flex-col px-6 py-6 justify-between md:w-1/2">
                 <div>
                   <h2 className="text-4xl font-semibold">Informasi Kontak</h2>
@@ -128,11 +128,11 @@ const Contact = () => {
           </section>
         </div>
 
-        <div className="min-h-screen flex items-center justify-center">
-          <section className="">
+        <div className="md:min-h-screen pt-6 pb-10 md:py-0 flex items-center justify-center">
+          <section className="px-4 md:px-0">
             {/* FAQSection */}
             <div className="w-full max-w-5xl mx-auto">
-              <h2 className="text-5xl font-bold text-gray-800">
+              <h2 className="md:text-5xl text-4xl font-bold text-gray-800">
                 Frequently Asked Questions
               </h2>
               <div className="space-y-6 mt-4">
@@ -158,7 +158,7 @@ const FAQItem = ({ question, answer }) => {
     >
       <button
         onClick={() => setOpen(!open)}
-        className="flex justify-between items-center w-full text-left font-medium text-gray-800 text-xl"
+        className="flex justify-between items-center w-full text-left font-medium text-gray-800 text:lg md:text-xl"
       >
         {question}
         <span>{open ? "−" : "+"}</span>
@@ -169,7 +169,7 @@ const FAQItem = ({ question, answer }) => {
         }`}
         style={{ maxHeight: open ? "12rem" : "0" }} // Customize max height here
       >
-        <p className="mt-2 text-gray-600 text-lg p-2">{answer}</p>
+        <p className="mt-2 text-gray-600 text-base md:text-lg p-2">{answer}</p>
       </div>
     </div>
   );

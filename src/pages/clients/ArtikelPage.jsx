@@ -39,7 +39,7 @@ export const ArtikelPage = () => {
       {/* Jumbotron */}
       <section className="md:min-h-screen bg-primary-950 ">
         <div className="container mx-auto grid md:grid-cols-12 py-8 gap-20 content-center px-8 md:px-0">
-          <div className="md:col-span-6 grid-cols-12 ">
+          <div className="md:col-span-6 md:block hidden">
             <div className="overflow-hidden">
               <img src={image} alt="" className="w-full h-full object-cover" />
             </div>
@@ -80,7 +80,7 @@ export const ArtikelPage = () => {
       </section>
 
       {/* Kategori */}
-      <section className="container md:mx-auto py-10 px-2 ">
+      <section className="container md:mx-auto py-10 px-4 ">
         <div className="space-y-5 text-center">
           <h2 className="text-3xl font-semibold">Kategori</h2>
           <p className="font-semibold">Temukan artikel lengkap berdasarkan kategori</p>

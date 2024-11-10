@@ -79,8 +79,8 @@ const About = () => {
     return (
         <Layout>
         <div className="font-poppins">
-            <section className="text-black py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
-                <div className="flex-1 flex flex-col justify-center">
+            <section className="text-black md:py-20 py-8 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
+                <div className="flex-1 flex flex-col justify-center order-2 md:order-1 px-6 md:px-0 mt-8 md:mt-0">
                     <h2 className="text-4xl md:text-5xl font-bold">Visi & Misi</h2>
                     <p className="mt-6 md:mt-8 text-lg md:text-xl leading-relaxed">Menjadi platform terpercaya yang mendukung kesehatan unggas dan kesejahteraan peternak melalui solusi digital yang inovatif dan berkelanjutan.</p>
                     <ul className="mt-6 space-y-4 text-lg md:text-xl leading-relaxed">
@@ -89,16 +89,16 @@ const About = () => {
                         <li>⚙️ Mengembangkan teknologi praktis untuk meningkatkan pengelolaan peternakan unggas secara efektif.</li>
                     </ul>
                 </div>
-                <div className="flex-1 flex justify-center  mt-10 md:mt-0">
+                <div className="flex-1 flex justify-center  mt-5 md:mt-0 order-1 md:order-2">
                     <img src={logo} alt="Unggasku Logo" className="bg-primary-900 rounded-lg max-w-md h-80 md:max-w-md md:h-80 md:ml-36 ml-0" />
                 </div>
             </section>
 
-            <section className="bg-secondary-300 text-black my-20 py-20 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
+            <section className="bg-secondary-300 text-black md:my-20 my-0 md:py-20 py-8 px-5 md:px-20 flex flex-col md:flex-row items-center min-h-96">
                 <div className="flex-1 flex justify-center mb-10 md:mb-0">
                     <img src={ttg1} alt="Tentang Unggasku" className="bg-primary-900 rounded-full max-w-md h-80 md:max-w-md md:h-80" />
                 </div>
-                <div className="flex-1 flex flex-col justify-center text-left md:max-w-md mx-40">
+                <div className="flex-1 flex flex-col justify-center text-left md:max-w-md md:mx-40 mx-6">
                     <h2 className="text-4xl md:text-5xl font-bold">Tentang Unggasku.id</h2>
                     <p className="mt-6 md:mt-8 text-lg md:text-xl leading-relaxed">
                         Unggasku.id didirikan sejak 2024 sebagai platform digital untuk mendukung kesehatan unggas. Kami menyediakan layanan konsultasi ahli dan panduan lengkap agar peternak dapat menjaga kesehatan ternaknya dengan lebih mudah. Dengan Unggasku.id, kami berkomitmen membantu mewujudkan peternakan unggas yang sehat dan berkelanjutan.
@@ -108,19 +108,19 @@ const About = () => {
 
             <Testimonials />
 
-            <section className="bg-gray-900 text-white p-8 text-center rounded-full m-8">
+            <section className="bg-gray-900 text-white md:p-8 p-0 px-4  py-3  text-center rounded-full md:m-8 m-4">
                 <div className="flex justify-around">
-                    <div className="mx-4">
-                        <p className="text-lg font-semibold">Rp 5 Miliar</p>
-                        <p>Kepuasan Pengguna</p>
+                    <div className="md:mx-4">
+                        <p className="md:text-lg text-base font-semibold">200+</p>
+                        <p className='text-sm md:text-base'>Kepuasan Pengguna</p>
                     </div>
-                    <div className="mx-4">
-                        <p className="text-lg font-semibold">2500+</p>
-                        <p>Pengalaman Konsultasi</p>
+                    <div className="md:mx-4">
+                        <p className="md:text-lg font-semibold">2500+</p>
+                        <p className='text-sm md:text-base'>Pengalaman Konsultasi</p>
                     </div>
-                    <div className="mx-4">  
-                        <p className="text-lg font-semibold">250+</p>
-                        <p>Peternak Aktif</p>
+                    <div className="md:mx-4">  
+                        <p className="md:text-lg font-semibold">250+</p>
+                        <p className='text-sm md:text-base'>Peternak Aktif</p>
                     </div>
                 </div>
             </section>
@@ -130,7 +130,7 @@ const About = () => {
                 <h2 className="text-2xl font-bold mb-8">Kenalan dengan Tim Kami</h2>
                 <Swiper
                     slidesPerView={1}
-                    spaceBetween={-200}
+                    spaceBetween={20}
                     pagination={{ clickable: true }}
                     navigation={false}
                     breakpoints={{

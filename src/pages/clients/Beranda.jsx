@@ -39,8 +39,8 @@ export const Beranda = () => {
   return (
     <Layout>
       {/* Section 1 */}
-      <section className="min-h-screen">
-        <div className="max-w-6xl mx-auto p-6 my-8 h-[650px] bg-primary-950 rounded-2xl relative">
+      <section className="md:min-h-screen md:px-0 px-4">
+        <div className="max-w-6xl mx-auto md:p-6 p-2 my-8 md:h-[650px] h-full bg-primary-950 rounded-2xl relative">
           <div className="overflow-hidden h-full rounded-xl ">
             <img
               src={imagejumbotron}
@@ -81,15 +81,15 @@ export const Beranda = () => {
       </section>
 
       {/* Section 2 */}
-      <div className="min-h-screen flex items-center justify-center gap-x-5 py-8">
+      <div className="md:min-h-screen flex items-center justify-center gap-x-5 md:py-8">
         <img
-          className="w-[384px] h-[453px]"
+          className="w-[384px] h-[453px] md:block hidden"
           src="src\assets\Images\beranda\beranda-unggas.jpg"
           alt=""
         />
-        <div className="flex justify-center items-start flex-col gap-y-3 max-w-[50%]">
+        <div className="flex justify-center items-start flex-col gap-y-3 md:max-w-[50%] max-w-xl px-4">
           <div className="bg-primary-950 p-5 rounded-br-3xl rounded-tl-3xl">
-            <h2 className="text-secondary-300 text-6xl font-bold">
+            <h2 className="text-secondary-300 md:text-6xl font-bold">
               Unggasku.id
             </h2>
           </div>
@@ -105,9 +105,9 @@ export const Beranda = () => {
       </div>
 
       {/* Section 3 */}
-      <div className="py-16">
+      <div className="md:pt-0 md:pb-16 md:px-0 px-4 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
-          <h2 className="text-center text-primary-950 text-5xl font-bold">
+          <h2 className="text-center text-primary-950 md:text-5xl text-3xl font-bold">
             Mengapa Unggasku.id ?
           </h2>
           <div className="flex flex-col items-center gap-y-4">
@@ -124,7 +124,7 @@ export const Beranda = () => {
 
       {/* Section 4 */}
       <div className="w-4/5 py-8  mx-auto">
-        <h2 className="text-primary-950 text-5xl text-center font-bold">
+        <h2 className="text-primary-950 md:text-5xl text-3xl text-center font-bold">
           Rekomendasi Artikel
         </h2>
         <div className="flex flex-col mt-10 md:flex-row md:gap-10 gap-10 max-w-full mx-auto">
@@ -151,7 +151,7 @@ const List = ({ num, text }) => {
       <div className="flex absolute bg-primary-950 p-8 size-10 justify-center items-center text-lg font-semibold rounded-full text-white shadow-[2px_2px_3px_2px_rgba(0,0,0,0.3)] z-10">
         {num}.
       </div>
-      <div className="bg-secondary-300 w-full py-4 pe-16 text-2xl font-semibold pl-20 rounded-full ml-3">
+      <div className="bg-secondary-300 w-full py-4 md:pe-16 pe-5 md:text-2xl font-semibold pl-20 rounded-full ml-3">
         {text}
       </div>
     </div>

@@ -161,7 +161,7 @@ const Dokter = () => {
   return (
     <section className="p-10 md:min-h-screen">
       <div className="container mx-auto">
-        <h2 className="text-5xl font-bold mb-10 text-center">
+        <h2 className="md:text-5xl text-4xl font-bold mb-10 text-center">
           Daftar Dokter Ahli
         </h2>
         <SliderLayanan>
@@ -237,8 +237,8 @@ export const Layanan = () => {
   return (
     <Layout>
       <section className="md:min-h-screen justify-center">
-        <div className="container h-screen items-center justify-center mx-auto grid md:grid-cols-12 py-8">
-          <div className="md:col-span-6 order-2 md:order-1 grid-cols-12 px-8">
+        <div className="container md:h-screen items-center justify-center mx-auto grid md:grid-cols-12 py-8">
+          <div className="md:col-span-6 order-2 md:order-1 grid-cols-12 px-8 md:mt-0 mt-8">
             <div className="text-pretty space-y-4 w-fit">
               <h1 className="font-bold md:text-6xl text-4xl">
                 Temukan Docter Terbaik Anda
