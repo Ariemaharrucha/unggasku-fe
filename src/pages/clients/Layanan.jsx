@@ -159,14 +159,14 @@ const DokterList = [
 
 const Dokter = () => {
   return (
-    <section className="p-10 mid:min-h-screen">
+    <section className="p-10 md:min-h-screen">
       <div className="container mx-auto">
-        <h2 className="text-6xl font-bold mb-10 text-center">
+        <h2 className="text-5xl font-bold mb-10 text-center">
           Daftar Dokter Ahli
         </h2>
         <SliderLayanan>
           {DokterList.map((dokter, index) => (
-            <div key={index} className="m p-4">
+            <div key={index} className="p-4">
               <div className="bg-gray-300 p-5 rounded-lg">
                 <div className="w-full h-80 overflow-hidden">
                   <img
