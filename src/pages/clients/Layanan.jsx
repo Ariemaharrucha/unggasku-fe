@@ -241,7 +241,7 @@ export const Layanan = () => {
           <div className="md:col-span-6 order-2 md:order-1 grid-cols-12 px-8 md:mt-0 mt-8">
             <div className="text-pretty space-y-4 w-fit">
               <h1 className="font-bold md:text-6xl text-4xl">
-                Temukan Docter Terbaik Anda
+                Temukan Dokter Terbaik Anda
               </h1>
               <p>
                 Dokter hewan unggas terbaik yang siap membantu Anda menjaga
