@@ -9,7 +9,7 @@ import { NewUserTable } from "./NewUserTable.jsx";
 export const Dashboard = () => {
   return (
     <DashboardLayout>
-      <main className="max-w-6xl fixed w-full">
+      <main className="max-w-6xl w-full">
         <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-2">
           <div className="flex items-center gap-3">
             <div className="bg-secondary-300 flex justify-center items-center p-2 rounded-lg">
