@@ -22,7 +22,7 @@ const categoriesData = {
     { title: "Nutrisi Unggas", image: kategoriArtikel3 },
   ],
   lingkungan: [
-    { title: "Lingkungan", image: 'https://i.pinimg.com/474x/df/1c/2e/df1c2e9da37bda778f82127e96103e53.jpg' },
+    { title: "Lingkungan", image: 'https://i.pinimg.com/736x/c6/ce/db/c6cedb4f2d8a843076246165f2c02e8a.jpg' },
   ],
 };
 

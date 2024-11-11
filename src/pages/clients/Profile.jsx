@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Navbar } from "../../components/shared/Navbar";
+import fotoProfil from "../../assets/card profil-tentang-kami1.jpg"
 
 const UserProfile = () => {
     const [fullName, setFullName] = useState("Stefanus Fandi Wibowo");
@@ -24,7 +25,7 @@ const UserProfile = () => {
 
             <div className="flex flex-col items-center mb-8">
                 <img
-                    src="https://via.placeholder.com/150" 
+                    src={fotoProfil} 
                     alt="Profile"
                     className="w-32 h-32 rounded-full mb-4 border-2 border-gray-300"
                 />

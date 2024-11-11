@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
+import fotoProfil from '../../assets/card profil-tentang-kami1.jpg'
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +57,7 @@ export const Navbar = () => {
                   <Navlink to="/kontak_kami">kontak kami</Navlink>
                   <Link to='/profile'>
                     <div className="size-10 overflow-hidden rounded-full">
-                        <img src="https://i.pinimg.com/474x/7d/88/de/7d88deff9740b79b7103036e39e893f7.jpg" alt="" className="w-full h-full object-cover" />
+                        <img src={fotoProfil} alt="" className="w-full h-full object-cover" />
                     </div>
                   </Link>
                 </div>
