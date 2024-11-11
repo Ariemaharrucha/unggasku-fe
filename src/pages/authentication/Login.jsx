@@ -54,7 +54,7 @@ export const Login = () => {
           variant="secondary"
           className={"w-full flex justify-center text-md"}
         >
-          Daftar
+          Masuk
         </Button>
         <p className="text-white text-center">
           Sudah punya akun?{" "}
