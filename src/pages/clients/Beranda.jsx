@@ -18,21 +18,21 @@ export const Beranda = () => {
       description: "Inovasi pakan ternak unggas tingkatkan produktivitas",
       date: "13 Oktober 2024",
       imgSrc: "src/assets/Images/beranda/artikel_1.jpg",
-      detailLink: "#"
+      detailLink: ""
     },
     {
       title: "Lingkungan Hewan Ternak",
       description: "Hanya berbekal insting, induk ayam dapat lindungi anak dari ancaman predator",
       date: "22 September 2024",
       imgSrc: "src/assets/Images/beranda/artikel_2.jpg",
-      detailLink: "#"
+      detailLink: ""
     },
     {
       title: "Lingkungan Hewan Ternak",
       description: "Perilaku Unik Ayam Jantan dan Betina: Apa Saja Bedanya?",
       date: "11 Oktober 2024",
       imgSrc: "src/assets/Images/beranda/artikel_3.jpg",
-      detailLink: "#"
+      detailLink: ""
     }
   ];
 
@@ -135,9 +135,9 @@ export const Beranda = () => {
           })}
         </div>
         <div className="flex justify-end items-center gap-2 mt-5">
-          <a href="" className="text-secondary-300 text-xl font-semibold">
+          <Link to={'/artikel'} className="text-secondary-300 text-xl font-semibold">
             Lainnya
-          </a>
+          </Link>
           <IoIosArrowForward className="text-secondary-300 text-xl" />
         </div>
       </div>

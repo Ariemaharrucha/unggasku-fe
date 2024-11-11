@@ -1,4 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 export const CardRekomendasi = ({
   title,
@@ -25,9 +26,9 @@ export const CardRekomendasi = ({
           </span>
         </p>
         <div className="flex justify-end items-center gap-2 mt-auto">
-          <a href={detailLink} className="text-secondary-300">
+          <Link to={`/artikel/detailsArtikel/${detailLink}`} className="text-secondary-300">
             Detail
-          </a>
+          </Link>
           <IoIosArrowForward className="text-secondary-50" />
         </div>
       </div>
