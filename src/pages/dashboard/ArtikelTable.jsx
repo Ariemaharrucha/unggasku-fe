@@ -5,7 +5,7 @@ const artikel = [
     judul: "kenapa ayam",
     images:
       "https://i.pinimg.com/564x/3b/9e/46/3b9e46620204718c614b1f89b6ff268a.jpg",
-    teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
+    teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
     tanggal: "02-06-2004",
   },
   {
@@ -13,7 +13,7 @@ const artikel = [
     judul: "kenapa ayam",
     images:
       "https://i.pinimg.com/236x/6d/f1/a5/6df1a510d05a33d260ad91b4d1384fd4.jpg",
-    teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
+    teks: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, quam alias. Nostrum iure assumenda possimus obcaecati voluptatibus minima, quos aut debitis temporibus eos velit excepturi recusandae consectetur enim rem dolorem!",
     tanggal: "02-06-2004",
   },
 ];
@@ -63,8 +63,10 @@ export const ArtikelTable = () => {
                     />
                   </div>
                 </td>
-                <td className="w-96 px-6 py-4 ">
-                  <p>{artikel.teks}</p>
+                <td className="block w-96 px-6 py-4 ">
+                  <p>{artikel.teks.length > 400
+                    ? `${artikel.teks.substring(0, 425)}...`
+                    : artikel.teks}</p>
                 </td>
                 <td className="px-6 py-4">
                   {new Date(artikel.tanggal).toLocaleDateString("id-ID")}
