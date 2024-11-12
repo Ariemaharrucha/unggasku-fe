@@ -4,7 +4,6 @@ import { useState } from "react";
 import Button from "../../components/ui/Button.jsx";
 
 export const FormAddArtikel = () => {
-  const [imagesPrevieew, setImagesPrevieew] = useState(null);
 
   return (
     <DashboardLayout>
@@ -33,6 +32,18 @@ export const FormAddArtikel = () => {
                 className="block mt-2 w-full border p-2 rounded-md ocus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-500 shadow-sm"
                 rows={8}
               ></textarea>
+            </div>
+            <div>
+              <label htmlFor="kategori" className="">
+                Kategori
+              </label>
+              <select name="kategori" id="kategori" className="w-full mt-2 border p-2 rounded-md bg-white">
+                <option value="">Pilih Kategori</option>
+                <option value="kesehatan">Kesehatan</option>
+                <option value="pakan">Pakan</option>
+                <option value="nutrisari">Nutrisari</option>
+                <option value="lingkungan">Lingkungan</option>
+              </select>
             </div>
             <div className="w-1/3">
               <label htmlFor="file-input" className="">
