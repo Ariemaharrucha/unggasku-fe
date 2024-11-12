@@ -4,13 +4,15 @@ import { IoNewspaper } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
+import logo from '../assets/logo.png'
 
 export const DashboardLayout = ({children}) => {
   return (
     <div className="flex h-screen">
       <aside className="flex w-[240px] flex-col justify-between bg-gradient-to-b from-primary-50/50 to-violet-50/50 p-6">
         <section className="space-y-2">
-          <div className="mb-4 px-3 py-2 text-base font-bold text-slate-600">
+          <div className="mb-4 px-3 py-2 text-sm font-bold bg-primary-950 text-white flex justify-center items-center gap-2 rounded-3xl">
+            <img src={logo} alt="logo" className="size-7" />
             Unggasku.id
           </div>
         <Menu label={'Home'} to={'/dashboard'} icon={<IoMdHome size={24}/>} />
