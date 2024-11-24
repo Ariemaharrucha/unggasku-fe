@@ -89,7 +89,7 @@ export const Konsultasi = () => {
   // Fungsi untuk melakukan scroll ke pesan terbaru
   useEffect(() => {
     if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      latestMessageRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [messages])
 
@@ -136,7 +136,7 @@ export const Konsultasi = () => {
 
             {/* Area chat dengan scrollable */}
             <div className="w-2/3 flex flex-col bg-gray-200">
-              <div className="flex-grow p-6 space-y-4 overflow-y-auto max-h-[83vh]">
+              <div className="flex-grow p-6 space-y-4 overflow-y-auto max-h-[79vh]">
                 {/* Tampilkan pesan */}
                 {messages.map((message, index) => (
                   <div
