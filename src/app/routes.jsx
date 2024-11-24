@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Beranda } from "../pages/clients/Beranda";
 import { Layanan } from "../pages/clients/Layanan";
+import { Konsultasi } from "../pages/clients/Konsultasi";
+import { UserKonsultasi } from "../pages/clients/UserKonsultasi";
 
 import About from "../pages/clients/About";
 import Contact from "../pages/clients/Contact";
@@ -21,6 +23,8 @@ export const AppRouter = () => {
     <Routes>
       <Route path="/" element={<Beranda/>}></Route>
       <Route path="/layanan" element={<Layanan/>}></Route>
+      <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
+      <Route path="/layanan/konsultasi/user" element={<UserKonsultasi/>}></Route>
       <Route path="/" element={''}></Route>
       <Route path="/tentang_kami" element={<About/>}></Route>
       <Route path="/kontak_kami" element={<Contact/>}></Route>
