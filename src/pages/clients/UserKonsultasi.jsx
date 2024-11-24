@@ -88,7 +88,7 @@ export const UserKonsultasi = () => {
 
                 {/* Chat */}
                 <div className='flex flex-grow flex-col'>
-                    <div className='flex flex-grow flex-col overflow-y-auto max-h-[70vh] p-6 px-32 space-y-4'>
+                    <div className='flex flex-grow flex-col overflow-y-auto max-h-[76vh] p-6 px-32 space-y-4'>
                         {messages.map((message, index) => (
                             <div
                                 key={index}
