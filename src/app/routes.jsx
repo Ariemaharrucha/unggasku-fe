@@ -16,6 +16,8 @@ import { ArtikelOverview } from "../pages/dashboard/ArtikelOverview.jsx";
 import { FormAddArtikel } from "../pages/dashboard/FormAddArtikel.jsx";
 import { FormEditArtikel } from "../pages/dashboard/FormEditArtikel.jsx";
 import { DokterOverview } from "../pages/dashboard/DokterOverview.jsx";
+import DokterPage from "../pages/clients/Dokter.jsx";
+import { DokterArtikelOverview } from "../pages/dashboard/DokterArtikel.jsx";
 
 export const AppRouter = () => {
   return (
@@ -33,6 +35,10 @@ export const AppRouter = () => {
       <Route path="/register" element={<Register/>}></Route>
       <Route path="/artikel" element={<ArtikelPage/>}></Route>
       <Route path="/artikel/detailsArtikel" element={<ArtikelDetails/>}></Route>
+      <Route path="/dokter" element={<DokterPage/>}></Route>
+      <Route path="/dokter/dokterArtikel" element={<DokterArtikelOverview/>}></Route>
+      <Route path="/dokter/dokterArtikel/create" element={<FormAddArtikel/>}></Route>
+      <Route path="/dokter/dokterArtikel/edit/:id" element={<FormEditArtikel/>}></Route>
       <Route path="/dashboard" element={<Dashboard/>}></Route>
       <Route path="/dashboard/artikel" element={<ArtikelOverview/>}></Route>
       <Route path="/dashboard/artikel/create" element={<FormAddArtikel/>}></Route>
