@@ -6,6 +6,7 @@ import { UserKonsultasi } from "../pages/clients/UserKonsultasi";
 
 import About from "../pages/clients/About";
 import Contact from "../pages/clients/Contact";
+import DokterPage from "../pages/clients/Dokter";
 import UserProfile from "../pages/clients/Profile";
 import { Login } from "../pages/authentication/Login.jsx";
 import { Register } from "../pages/authentication/Register.jsx";
@@ -16,8 +17,8 @@ import { ArtikelOverview } from "../pages/dashboard/ArtikelOverview.jsx";
 import { FormAddArtikel } from "../pages/dashboard/FormAddArtikel.jsx";
 import { FormEditArtikel } from "../pages/dashboard/FormEditArtikel.jsx";
 import { DokterOverview } from "../pages/dashboard/DokterOverview.jsx";
-import DokterPage from "../pages/clients/Dokter.jsx";
 import { DokterArtikelOverview } from "../pages/dashboard/DokterArtikel.jsx";
+import { Langganan } from "../pages/clients/Langganan.jsx";
 
 export const AppRouter = () => {
   return (
@@ -27,7 +28,7 @@ export const AppRouter = () => {
       <Route path="/layanan" element={<Layanan/>}></Route>
       <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
       <Route path="/layanan/konsultasi/chat" element={<UserKonsultasi/>}></Route>
-      <Route path="/" element={''}></Route>
+        <Route path="/langganan" element={<Langganan />}></Route>
       <Route path="/tentang_kami" element={<About/>}></Route>
       <Route path="/kontak_kami" element={<Contact/>}></Route>
       <Route path="/profile" element={<UserProfile/>}></Route>
