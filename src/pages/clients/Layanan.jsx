@@ -4,6 +4,7 @@ import Button from "../../components/ui/Button";
 import SliderLayanan from "../../hooks/SliderLayanan";
 import { AiOutlineLike } from "react-icons/ai";
 import { FiBriefcase } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 function scrollToSection() {
   const section = document.getElementById("detail");
@@ -282,7 +283,7 @@ export const Layanan = () => {
             Riwayat Konsultasi
           </h3>
           <div className="bg-white py-3 px-7 rounded-xl">
-            <a href="">Detail</a>
+            <Link to={'/layanan/konsultasi'}>Riwayat Konsultasi</Link>
           </div>
         </div>
         <div className="w-11/12 mx-auto my-auto grid grid-cols-1 p-12">
@@ -336,7 +337,7 @@ export const Layanan = () => {
                       size="medium"
                       className="w-24 py-2 text-center flex text-lg justify-center mt-2"
                     >
-                      {"Chat"}
+                      <Link to={'/layanan/konsultasi/chat'}>Chat</Link>
                     </Button>
                   </div>
                 </div>
