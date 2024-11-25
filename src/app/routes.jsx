@@ -26,7 +26,7 @@ export const AppRouter = () => {
       <Route path="/" element={<Beranda/>}></Route>
       <Route path="/layanan" element={<Layanan/>}></Route>
       <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
-      <Route path="/layanan/konsultasi/user" element={<UserKonsultasi/>}></Route>
+      <Route path="/layanan/konsultasi/chat" element={<UserKonsultasi/>}></Route>
       <Route path="/" element={''}></Route>
       <Route path="/tentang_kami" element={<About/>}></Route>
       <Route path="/kontak_kami" element={<Contact/>}></Route>

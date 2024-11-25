@@ -4,17 +4,17 @@ import logo from "../../assets/logo.png";
 
 export const Footer = () => {
   return (
-    <footer className="mt-auto w-full bg-primary-950 text-white py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+    <footer className="mt-auto w-full bg-primary-950 text-white py-5 px-4 sm:px-6 lg:px-8 mx-auto">
       {/* Grid */}
 
-      <div className=" border-b pb-10 border-gray-200 flex items-center gap-2">
+      <div className=" border-b pb-5 border-gray-200 flex items-center gap-2">
         <img src={logo} alt="" className="size-8" />
         <a className="text-3xl text-white" href="#">
           Ungassku.id
         </a>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-5">
         <div>
           <h4 className="text-md font-semibold ">Tentang kami</h4>
           <div className="mt-3 grid space-y-3 text-sm">
@@ -82,7 +82,7 @@ export const Footer = () => {
       </div>
       {/* End Grid */}
 
-      <div className="pt-8 mt-5 border-t border-gray-200">
+      <div className="pt-4 border-t border-gray-200">
         <a className="text-sm text-white" href="#">
           NusantaraGrowth @ 2024
         </a>

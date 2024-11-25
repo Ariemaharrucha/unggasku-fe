@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Layout } from "../../layouts/Layout";
 import { VscSend } from "react-icons/vsc";
+import { Navbar } from "../../components/shared/Navbar.jsx";
 
 const DokterList = [
   {
@@ -95,32 +96,32 @@ export const Konsultasi = () => {
 
   return (
     <div>
-      <Layout>
-        <section className="h-screen flex flex-col">
-          <div className="w-full bg-secondary-300 py-4 px-6">
-            <h1 className="text-2xl font-bold text-gray-800">Chat</h1>
+      <>
+      <div>
+        <Navbar/>
+      </div>
+        <section className="min-h-screen">
+          <div className="w-full bg-secondary-300 py-3 px-6">
+            <h1 className="text-xl font-bold text-gray-800">Chat</h1>
           </div>
 
-          {/* Sidebar untuk daftar dokter */}
-          <div className="flex flex-grow">
-            <div className="w-1/3 bg-white">
+         <div className="flex h-screen">
+            <div className="w-1/4 bg-white">
               {DokterList.map((dokter, index) => (
                 <div key={index}>
                   <div
                     onClick={() => setActiveIndex(index)}
-                    className={`p-4 cursor-pointer ${activeIndex === index ? "bg-gray-200 text-gray-900" : "bg-white text-gray-900"
+                    className={`px-4 py-2 cursor-pointer ${activeIndex === index ? "bg-gray-200 text-gray-900" : "bg-white text-gray-900"
                       }`}
                   >
                     <div className="relative flex items-center space-x-4">
-                      <img
-                        src={dokter.foto}
-                        alt={`Foto dokter ${dokter.nama}`}
-                        className="w-20 h-20 object-cover object-top rounded-full border-2 border-primary-950"
-                      />
-                      <span
-                        className={`absolute bottom-2 left-7 w-4 h-4 rounded-full ${index !== DokterList.length - 1 ? "bg-green-500" : "bg-red-600"
-                          } border-2 border-white translate-x-2 translate-y-2`}
-                      ></span>
+                      <div className="size-16 overflow-hidden rounded-full border-2 border-primary-950">
+                        <img
+                          src={dokter.foto}
+                          alt={`Foto dokter ${dokter.nama}`}
+                          className=" object-cover  "
+                        />
+                      </div>
                       <div>
                         <div className="font-semibold">{dokter.nama}</div>
                         <div className="text-xs text-gray-400">{dokter.tanggal}</div>
@@ -132,12 +133,11 @@ export const Konsultasi = () => {
                   )}
                 </div>
               ))}
-            </div>
+            </div> 
 
-            {/* Area chat dengan scrollable */}
-            <div className="w-2/3 flex flex-col bg-gray-200">
-              <div className="flex-grow p-6 space-y-4 overflow-y-auto max-h-[79vh]">
-                {/* Tampilkan pesan */}
+            <div className="flex-1 flex flex-col justify-between p-4 bg-gray-200">
+              <div className="flex-grow space-y-4 overflow-y-auto ">
+                
                 {messages.map((message, index) => (
                   <div
                     key={index}
@@ -156,7 +156,6 @@ export const Konsultasi = () => {
                   </div>
                 ))}
 
-                {/* Animasi mengetik untuk dokter */}
                 {isTyping && (
                   <div className="flex items-center space-x-2">
                     <div className="bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl p-3 max-w-md">
@@ -165,7 +164,6 @@ export const Konsultasi = () => {
                   </div>
                 )}
 
-                {/* Animasi mengetik untuk user */}
                 {isUserTyping && (
                   <div className="flex items-center space-x-2 justify-end">
                     <div className="bg-gray-800 text-white rounded-l-xl rounded-tr-xl p-3 max-w-md">
@@ -175,8 +173,7 @@ export const Konsultasi = () => {
                 )}
               </div>
 
-              {/* Input area tetap di bawah */}
-              <div className="p-1 mx-6 flex items-center bg-white rounded-full">
+              <div className="p-0.5 flex items-center bg-white rounded-full">
                 <div className="flex w-full">
                   <input
                     type="text"
@@ -184,7 +181,7 @@ export const Konsultasi = () => {
                     value={inputMessage}
                     onChange={handleUserTyping}
                     onKeyDown={handleKeyDown}
-                    className="flex-grow px-7 text-lg border rounded-full focus:outline-none border-none"
+                    className="flex-grow px-6 text-lg border rounded-full focus:outline-none border-none"
                   />
                   <div className="p-2">
                     <button
@@ -197,9 +194,10 @@ export const Konsultasi = () => {
                 </div>
               </div>
             </div>
-          </div>
+
+          </div>   
         </section>
-      </Layout>
+      </>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Layout } from '../../layouts/Layout'
 import { VscSend } from "react-icons/vsc";
+import { Navbar } from '../../components/shared/Navbar.jsx';
 
 
 
@@ -73,13 +74,18 @@ export const UserKonsultasi = () => {
     }, [messages])
 
     return (
-        <Layout>
+        <>
+            <div>
+                <Navbar/>
+            </div>
             <section className='min-h-screen w-full flex flex-col bg-gray-200'>
                 <div className='bg-secondary-300 w-full py-2 px-32'>
-                    <div className='flex overflow-hidden object-cover'>
-                        <img className='w-16 h-16 object-cover object-top rounded-full border-2 border-black' src="\src\assets\Images\layanan\dr_card1.jpeg" alt="" />
+                    <div className='flex items-center'>
+                        <div className='w-14 h-14 overflow-hidden rounded-full border-2 border-black'>
+                            <img className=' object-cover object-top ' src="\src\assets\Images\layanan\dr_card1.jpeg" alt="" />
+                        </div>
                         <div className='flex flex-col'>
-                            <h3 className='text-lg font-bold pl-3'>Dr. Stefanus Fandi W</h3>
+                            <h3 className='text-md font-bold pl-3'>Dr. Stefanus Fandi W</h3>
                             <p className='text-sm pl-3 opacity-50'>Nutrisi hewan unggas</p>
                             <p className='text-sm pl-3 opacity-50'>08.00 - 20.00</p>
                         </div>
@@ -87,8 +93,8 @@ export const UserKonsultasi = () => {
                 </div>
 
                 {/* Chat */}
-                <div className='flex flex-grow flex-col'>
-                    <div className='flex flex-grow flex-col overflow-y-auto max-h-[76vh] p-6 px-32 space-y-4'>
+                <div className='flex flex-grow flex-col justify-between py-4 px-32'>
+                    <div className='flex flex-grow flex-col overflow-y-auto space-y-4'>
                         {messages.map((message, index) => (
                             <div
                                 key={index}
@@ -123,7 +129,7 @@ export const UserKonsultasi = () => {
                     </div>
 
                     <div className='flex mx-auto w-full justify-center'>
-                        <div className="p-1 flex items-center bg-white rounded-full w-full mx-32">
+                        <div className="p-0.5 flex items-center bg-white rounded-full w-full ">
                             <div className="flex w-full">
                                 <input
                                     type="text"
@@ -146,7 +152,7 @@ export const UserKonsultasi = () => {
                     </div>
                 </div>
             </section>
-        </Layout >
+        </ >
     )
 }
 
