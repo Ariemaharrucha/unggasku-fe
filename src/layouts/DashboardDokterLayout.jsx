@@ -15,7 +15,7 @@ export const DashboardDokterLayout = ({children}) => {
           </div>
         <Menu label={'Home'} to={'/dashboard/dokter'} icon={<IoMdHome size={24}/>} />
         <Menu label={'Artikel'} to={'/dashboard/dokter/artikel'} icon={<IoNewspaper size={24}/>} />
-        <Menu label={'Chat'} to={'/dashboard/dokterChat'} icon={<FaUserDoctor size={24}/>} />
+        <Menu label={'Chat'} to={'/dashboard/dokter/chat'} icon={<FaUserDoctor size={24}/>} />
         </section>
         <div>
           <Button variant="secondary" className={"flex justify-center w-full"}>
@@ -24,7 +24,7 @@ export const DashboardDokterLayout = ({children}) => {
         </div>
       </aside>
       <main className="w-[calc(100vw-240px)] my-auto">
-        <div className="m-auto p-6">
+        <div className="m-auto">
             {children}
         </div>
       </main>
