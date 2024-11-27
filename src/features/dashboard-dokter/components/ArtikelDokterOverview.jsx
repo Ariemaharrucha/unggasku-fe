@@ -14,7 +14,7 @@ export const ArtikelDokterOverview = () => {
             <h3 className="text-xl">Artikel Dokter</h3>
             <p className="text-sm text-gray-600">Kelola dan lihat artikel kesehatan yang relevan untuk pasien dan pengobatan.</p>
           </div>
-          <Link to="">
+          <Link to="/dashboard/dokter/artikel/create">
             <Button variant="secondary">
               <FiPlusCircle size={24} />
               Buat Artikel

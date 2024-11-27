@@ -53,7 +53,7 @@ export const AppRouter = () => {
       <Route path="/dashboard/dokter" element={<DashboardDokter/>}></Route>
       <Route path="/dashboard/dokter/artikel" element={<ArtikelDokterOverview/>}></Route>
       <Route path="/dashboard/dokter/artikel/create" element={<FormDokterAddArtikel/>}></Route>
-      <Route path="/dashboard/dokter/artikel/edit/id" element={<FormDokterEditArtikel/>}></Route>
+      <Route path="/dashboard/dokter/artikel/edit/:id" element={<FormDokterEditArtikel/>}></Route>
       <Route path="/dashboard/dokter/chat" element={<DokterChat/>}></Route>
 
     </Routes>
