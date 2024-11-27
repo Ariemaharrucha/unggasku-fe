@@ -9,6 +9,13 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import Slider from 'react-slick';
 import { Layout } from '../../layouts/Layout.jsx';
+import AB from '../../assets/Images/about/AB.png';
+import AM from '../../assets/Images/about/AM.png';
+import DV from '../../assets/Images/about/DV.png';
+import IK from '../../assets/Images/about/IK.png';
+import RA from '../../assets/Images/about/RA.png';
+import SD from '../../assets/Images/about/SD.png';
+import SF from '../../assets/Images/about/SF.png';
 
 const testimonials = [
     { text: "Unggasku.id memberi solusi tepat untuk kesehatan ayam saya...", author: "Kelvin", role: "Peternak", image: kelvinImage },
@@ -65,13 +72,13 @@ const Testimonials = () => {
 };
 
 const team = [
-  { name: "Stefanus Fandi", role: "Project Manager", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Amallia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Rizkia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Didik", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Radita", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Stefanus Dwi", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
-  { name: "Arie", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: kelvinImage },
+  { name: "Stefanus Fandi", role: "Project Manager", description: "STUPEN BATCH 7", social: "#", image: SF },
+  { name: "Amallia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: AB },
+  { name: "Rizkia", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: RA },
+  { name: "Didik", role: "Hipster", description: "STUPEN BATCH 7", social: "#", image: DV },
+  { name: "Radita", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: IK },
+  { name: "Stefanus Dwi", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: SD },
+  { name: "Arie", role: "Hacker", description: "STUPEN BATCH 7", social: "#", image: AM },
 ];
 
 export const About = () => {
