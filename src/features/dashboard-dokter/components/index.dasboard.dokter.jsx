@@ -1,15 +1,16 @@
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
+import ProfileDokter from "../../../assets/Images/layanan/dr_card1.jpeg";
 
 export const DashboardDokter = () => {
   return (
     <DashboardDokterLayout>
-      <div className="flex justify-center items-center h-screen">
-        <div className="flex max-w-4xl w-full bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="flex-none w-1/2 flex justify-center items-center">
+      <div className="flex justify-center items-center md:px-40">
+        <div className="flex w-full bg-white shadow-xl rounded-xl">
+          <div className="flex mx-auto justify-center items-center">
             <img
-              src="src/assets/images/layanan/dr_card1.jpeg"
+              src={ProfileDokter}
               alt="Doctor"
-              className="w-96  object-cover rounded-full"
+              className="w-80 h-80 object-cover object-top rounded-full border-4 border-black"
             />
           </div>
 
