@@ -53,9 +53,9 @@ export const Navbar = () => {
                   <Navlink to="/">Beranda</Navlink>
                   <Navlink to="/artikel">Artikel</Navlink>
                   <Navlink to="/layanan">Layanan</Navlink>
-                  <Navlink to="/tentang_kami">Tentang kami</Navlink>
-                  <Navlink to="/kontak_kami">kontak kami</Navlink>
-                  <Link to='/profile'>
+                  <Navlink to="/tentang-kami">Tentang kami</Navlink>
+                  <Navlink to="/kontak-kami">kontak kami</Navlink>
+                  <Link to='/profile/1'>
                     <div className="size-10 overflow-hidden rounded-full">
                         <img src={fotoProfil} alt="" className="w-full h-full object-cover" />
                     </div>
