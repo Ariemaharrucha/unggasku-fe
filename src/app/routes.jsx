@@ -21,6 +21,7 @@ import { Konsultasi } from "../features/konsultasi/components/Konsultasi.jsx";
 import { Chatkonsultasi } from "../features/konsultasi/components/ChatKonsultasi.jsx";
 import { DokterOverview } from "../features/dashboard-admin/components/DokterOverview.jsx";
 import { UserOverview } from "../features/dashboard-admin/components/UserOverview.jsx";
+import { FormAddDokter } from "../features/dashboard-admin/components/FormAddDokter.jsx";
 
 
 export const AppRouter = () => {
@@ -47,6 +48,7 @@ export const AppRouter = () => {
       <Route path="/dashboard/admin/artikel/create" element={<FormAddArtikel/>}></Route>
       <Route path="/dashboard/admin/artikel/edit/:id" element={<FormEditArtikel/>}></Route>
       <Route path="/dashboard/admin/dokter" element={<DokterOverview/>}></Route>
+      <Route path="/dashboard/admin/dokter/create" element={<FormAddDokter/>}></Route>
       <Route path="/dashboard/admin/users" element={<UserOverview/>}></Route>
 
       {/* dasboard dokter */}
