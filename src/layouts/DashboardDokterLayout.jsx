@@ -23,7 +23,7 @@ export const DashboardDokterLayout = ({children}) => {
           </Button>
         </div>
       </aside>
-      <main className="w-[calc(100vw-240px)] overflow-y-scroll px-6">
+      <main className="w-[calc(100vw-240px)] my-auto">
         <div className="m-auto p-6">
             {children}
         </div>
