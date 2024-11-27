@@ -1,8 +1,7 @@
-
 import { Link } from "react-router-dom";
-import { AuthLayout } from "../../../layouts/AuthLayout.jsx";
-import Input from "../../../components/ui/Input.jsx";
-import Button from "../../../components/ui/Button.jsx";
+import Input from "../../../../components/ui/Input.jsx";
+import Button from "../../../../components/ui/Button.jsx";
+import { AuthLayout } from "../../../../layouts/AuthLayout.jsx";
 
 export const Register = () => {
   return (

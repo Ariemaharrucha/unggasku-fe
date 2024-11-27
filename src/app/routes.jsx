@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Beranda } from "../features/landing-page/Beranda.jsx";
-import { Login } from "../features/authentication/components/Login.jsx";
-import { Register } from "../features/authentication/components/Register.jsx";
+import { Login } from "../features/authentication/user/components/Login.jsx";
+import { Register } from "../features/authentication/user/components/Register.jsx";
 import { About } from "../features/landing-page/About.jsx";
 import { Contact } from "../features/landing-page/Contact.jsx";
 import { Layanan } from "../features/landing-page/Layanan.jsx";
@@ -22,6 +22,8 @@ import { Chatkonsultasi } from "../features/konsultasi/components/ChatKonsultasi
 import { DokterOverview } from "../features/dashboard-admin/components/DokterOverview.jsx";
 import { UserOverview } from "../features/dashboard-admin/components/UserOverview.jsx";
 import { FormAddDokter } from "../features/dashboard-admin/components/FormAddDokter.jsx";
+import { LoginAdmin } from "../features/authentication/admin/components/LoginAdmin.jsx";
+
 
 
 export const AppRouter = () => {
@@ -41,6 +43,9 @@ export const AppRouter = () => {
       {/* konsultasi */}
       <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
       <Route path="/layanan/konsultasi/chat/:konsultasiId" element={<Chatkonsultasi/>}></Route>
+
+      {/* dashboard login */}
+      <Route path="/dashboard/login" element={<LoginAdmin/>}></Route>
 
       {/* dasboard admin */}
       <Route path="/dashboard/admin" element={<DashboardAdmin/>}></Route>

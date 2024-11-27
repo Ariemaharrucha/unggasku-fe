@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { AuthLayout } from "../../../layouts/AuthLayout.jsx";
-import Input from "../../../components/ui/Input.jsx";
-import Button from "../../../components/ui/Button.jsx";
+import { AuthLayout } from "../../../../layouts/AuthLayout.jsx";
+import Input from "../../../../components/ui/Input.jsx";
+import Button from "../../../../components/ui/Button.jsx";
 
-export const Login = () => {
+
+export const LoginAdmin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -18,7 +18,7 @@ export const Login = () => {
   }
 
   return (
-    <AuthLayout title="Login Sekarang">
+    <AuthLayout title="Dashboard Login">
       <form className="space-y-4">
         <div>
           <h5 className="text-white font-semibold">Email</h5>
@@ -56,12 +56,6 @@ export const Login = () => {
         >
           Masuk
         </Button>
-        <p className="text-white text-center">
-          Sudah punya akun?{" "}
-          <Link to={"/register"} className="text-blue-700 font-semibold">
-            Daftar
-          </Link>
-        </p>
       </form>
     </AuthLayout>
   );
