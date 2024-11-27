@@ -101,6 +101,7 @@ export const FormAddArtikel = () => {
               file:bg-gray-50 file:border-0
                 file:me-4
                 file:py-3 file:px-4"
+                accept="image/png, image/jpeg"
                 {...register("image_artikel", {
                   required: "Gambar artikel wajib diunggah",
                 })}

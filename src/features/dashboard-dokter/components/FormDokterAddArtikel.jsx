@@ -98,6 +98,7 @@ export const FormDokterAddArtikel = () => {
                 type="file"
                 name="image_artikel"
                 id="image_artikel"
+                accept="image/png, image/jpeg"
                 className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer
               file:bg-gray-50 file:border-0
                 file:me-4
