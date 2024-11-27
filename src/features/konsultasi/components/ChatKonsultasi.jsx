@@ -72,7 +72,6 @@ export const Chatkonsultasi = () => {
   };
 
   useEffect(() => {
-    console.log(latestMessageRef.current);
     if (latestMessageRef.current) {
       latestMessageRef.current.scrollIntoView({
         behavior: "smooth",
