@@ -35,10 +35,16 @@ export const ArtikelTable = () => {
                 Images
               </th>
               <th scope="col" className="px-6 py-3">
-                teks
+                konten
               </th>
               <th scope="col" className="px-6 py-3">
-                tanggal
+                kategori
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Tanggal
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Role
               </th>
               <th scope="col" className="px-6 py-3">
                 Action
@@ -69,7 +75,13 @@ export const ArtikelTable = () => {
                     : artikel.teks}</p>
                 </td>
                 <td className="px-6 py-4">
+                  {'lingkungan'}
+                </td>
+                <td className="px-6 py-4">
                   {new Date(artikel.tanggal).toLocaleDateString("id-ID")}
+                </td>
+                <td className="px-6 py-4">
+                  {'admin || dokter'}
                 </td>
                 <td className="space-x-4 px-6 py-4">
                   <Link
