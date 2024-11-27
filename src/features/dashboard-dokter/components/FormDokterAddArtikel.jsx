@@ -24,7 +24,7 @@ export const FormDokterAddArtikel = () => {
   return (
     <DashboardDokterLayout>
       <main>
-        <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-1">
+        <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-1 mx-32">
           <h3 className="text-lg text-black">Tambah Artikel</h3>
         </section>
         <section className="max-w-2xl m-auto mt-1">
