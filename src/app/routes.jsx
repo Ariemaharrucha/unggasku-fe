@@ -23,6 +23,7 @@ import { DokterOverview } from "../features/dashboard-admin/components/DokterOve
 import { UserOverview } from "../features/dashboard-admin/components/UserOverview.jsx";
 import { FormAddDokter } from "../features/dashboard-admin/components/FormAddDokter.jsx";
 import { LoginAdmin } from "../features/authentication/admin/components/LoginAdmin.jsx";
+import { ProtectedRoute } from "../middleware/ProtectedRoute.jsx";
 
 
 
@@ -36,13 +37,14 @@ export const AppRouter = () => {
       <Route path="/tentang-kami" element={<About/>}></Route>
       <Route path="/kontak-kami" element={<Contact/>}></Route>
       <Route path="/layanan" element={<Layanan/>}></Route>
-      <Route path="/profile/:id" element={<UserProfile/>}></Route>
       <Route path="/artikel" element={<ArtikelPage/>}></Route>
       <Route path="/artikel/:id" element={<ArtikelDetails/>}></Route>
 
-      {/* konsultasi */}
-      <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
-      <Route path="/layanan/konsultasi/chat/:konsultasiId" element={<Chatkonsultasi/>}></Route>
+      <Route element={<ProtectedRoute allowedRoles={['user']}/>}>
+        <Route path="/profile/:id" element={<UserProfile/>}></Route>
+        <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
+        <Route path="/layanan/konsultasi/chat/:konsultasiId" element={<Chatkonsultasi/>}></Route>
+      </Route>
 
       {/* dashboard login */}
       <Route path="/dashboard/login" element={<LoginAdmin/>}></Route>
