@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const { setUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,18 +32,21 @@ export const Login = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
+      setErrorMessage("");
       const data = await loginUser(email, password);
       const token = data.accessToken;
       const decoded = jwtDecode(token);
 
       setUser(decoded);
       localStorage.setItem("token", token);
-      setErrorMessage("");
       // Redirect ke halaman sebelumnya atau beranda
       const redirectPath = location.state?.from?.pathname || "/";
       navigate(redirectPath); 
     } catch (error) {
       setErrorMessage("Login gagal, periksa email dan password Anda.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -95,8 +99,9 @@ export const Login = () => {
           variant="secondary"
           className={"w-full flex justify-center text-md"}
           type="submit"
+          disable={isLoading}
         >
-          Masuk
+          {isLoading ? "Loading..." : "Masuk"}
         </Button>
         {errorMessage && (
           <p className="text-red-500 text-center">{errorMessage}</p>
