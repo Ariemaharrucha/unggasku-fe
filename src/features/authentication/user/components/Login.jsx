@@ -36,7 +36,7 @@ export const Login = () => {
       const decoded = jwtDecode(token);
 
       setUser(decoded);
-      localStorage.setItem("token", JSON.stringify(token));
+      localStorage.setItem("token", token);
       setErrorMessage("");
       // Redirect ke halaman sebelumnya atau beranda
       const redirectPath = location.state?.from?.pathname || "/";

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { jwtDecode } from "jwt-decode";
+import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom"
 
@@ -12,11 +13,11 @@ export const ProtectedRoute = ({children, allowedRoles}) => {
     }
     
     const decoded = jwtDecode(token)
-    console.log(decoded);
+    console.log(decoded.role);
     
     if(!allowedRoles.includes(decoded.role)) {
         return <Navigate to="/" />;
     }
 
-    return children;
+    return  <Outlet />;
 }
