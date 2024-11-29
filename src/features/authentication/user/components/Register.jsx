@@ -2,40 +2,19 @@ import { Link } from "react-router-dom";
 import Input from "../../../../components/ui/Input.jsx";
 import Button from "../../../../components/ui/Button.jsx";
 import { AuthLayout } from "../../../../layouts/AuthLayout.jsx";
-import { registerUser } from "../services/api.register.js";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import useRegister from "../hooks/useRegister.jsx";
 
 export const Register = () => {
-  const [isLoading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
   const {
+    isLoading,
+    successMessage,
+    errorMessage,
     register,
     handleSubmit,
-    formState: { errors },
-    watch,
-    reset,
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    try {
-      await registerUser(data.username, data.email, data.password);
-      reset();
-      setSuccessMessage("register berhasil, silahkan anda login");
-    } catch (error) {
-      setErrorMessage(error.message || "Pendaftaran gagal, coba lagi.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const password = watch("password");
+    errors,
+    password,
+    onSubmit,
+  } = useRegister();
 
   return (
     <AuthLayout title="Daftar Sekarang">

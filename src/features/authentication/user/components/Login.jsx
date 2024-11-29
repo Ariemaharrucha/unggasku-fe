@@ -1,75 +1,33 @@
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useState } from "react";
 import Input from "../../../../components/ui/Input.jsx";
 import Button from "../../../../components/ui/Button.jsx";
 import { AuthLayout } from "../../../../layouts/AuthLayout.jsx";
-import { loginUser } from "../services/api.login.js";
-import { jwtDecode } from "jwt-decode";
-import useUser from "../../../../stores/useStore.js";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import useLogin from "../hooks/useLogin.jsx";
 
-export const Login = () => {
-  const { setUser } = useUser();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Hapus history state sebelumnya
-    if (location.state?.from) {
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location, navigate]);
-
-  async function onSubmitlogin(e) {
-    e.preventDefault();
-
-    try {
-      setLoading(true);
-      setErrorMessage("");
-      const data = await loginUser(email, password);
-      const token = data.accessToken;
-      const decoded = jwtDecode(token);
-
-      setUser(decoded);
-      localStorage.setItem("token", token);
-      // Redirect ke halaman sebelumnya atau beranda
-      const redirectPath = location.state?.from?.pathname || "/";
-      navigate(redirectPath); 
-    } catch (error) {
-      setErrorMessage("Login gagal, periksa email dan password Anda.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
-  }
-
-  function togglePassword() {
-    setShowPassword(!showPassword);
-  }
+export const Login = () => { 
+    const {
+      email,
+      password,
+      showPassword,
+      isLoading,
+      errorMessage,
+      handleEmailChange,
+      handlePasswordChange,
+      togglePassword,
+      onSubmitLogin,
+    } = useLogin();
 
   return (
     <AuthLayout title="Login Sekarang">
-      <form className="space-y-4" onSubmit={onSubmitlogin}>
+      <form className="space-y-4" onSubmit={onSubmitLogin}>
         <div>
           <h5 className="text-white font-semibold">Email</h5>
           <Input
             className={"bg-transparent placeholder:text-white text-white mt-1"}
             type="email"
             placeholder="Masukan email anda"
+            value={email}
             onChange={handleEmailChange}
           ></Input>
         </div>
@@ -94,6 +52,12 @@ export const Login = () => {
               )}
             </div>
           </div>
+          <p className="text-white text-right mt-2">
+          Lupa{" "}
+          <Link to={"/"} className="text-blue-700 font-semibold">
+            Password {"?"}
+          </Link>
+        </p>
         </div>
         <Button
           variant="secondary"
