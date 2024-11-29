@@ -4,16 +4,21 @@ import { Navbar } from "../../components/shared/Navbar.jsx";
 import { useParams } from "react-router-dom";
 import { getUser } from "./services/api.profile.js";
 import { editProfile } from "./services/api.profile.js";
+import useUser from "../../stores/useStore.js";
+import { useNavigate } from "react-router-dom";
 
 export const UserProfile = () => {
   const { id } = useParams();
   const idUser = parseInt(id);
+  const {clearUser} = useUser();
   const [userData, setUserData] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState(""); 
   const [passwordError, setPasswordError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchUser() {
@@ -36,6 +41,15 @@ export const UserProfile = () => {
     setUserData((prev) => ({...prev, [name]: value}))
     console.log(value);
   }
+
+  const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const imageUrl = URL.createObjectURL(file); // Buat preview image dari file yang dipilih
+    setPreviewImage(imageUrl);
+    setUserData((prev) => ({ ...prev, image_profile: file })); // Simpan file ke state userData
+  }
+};
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -72,9 +86,12 @@ export const UserProfile = () => {
 
     try {
         const response = await editProfile(idUser, formData);
-        alert("Profil berhasil diperbarui!");
         setUserData(response);
         setSuccessMessage("update succes")
+        alert("Profil berhasil diperbarui!, silakan login ulang");
+        clearUser();
+        localStorage.removeItem("token")
+        navigate('/login')
     } catch (error) {
         console.error("Error updating profile:", error);
         console.log(fileInputRef.current.files[0]);
@@ -98,7 +115,7 @@ export const UserProfile = () => {
         <div className="flex flex-col items-center mb-8">
           <img
             src={
-              userData?.image_profile ||
+              previewImage ||userData?.image_profile ||
               "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"
             }
             alt="Profile"
@@ -116,7 +133,7 @@ export const UserProfile = () => {
             name="image_profile"
             ref={fileInputRef}
             accept=".jpeg,.jpg,.png"
-            onChange={(e) => handleChange(e)}
+            onChange={handleFileChange}
           />
         </div>
         {/* usernname */}
