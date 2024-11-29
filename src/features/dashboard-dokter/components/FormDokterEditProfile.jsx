@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
 import { Link } from "react-router-dom";
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
-import ReactQuill from "react-quill";
 
 export const FormDokterEditProfile = () => {
   const id = useParams();
