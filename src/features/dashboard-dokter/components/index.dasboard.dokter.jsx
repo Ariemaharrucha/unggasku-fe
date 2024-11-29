@@ -50,7 +50,7 @@ export const DashboardDokter = () => {
             {/* Profesi */}
             <div className="p-4 bg-gray-100 rounded-lg shadow-md">
               <label className="block text-gray-700 text-lg font-bold mb-1">
-                Profesi
+                Spesialis
               </label>
               <span className="text-gray-800 text-lg">{Spesialis}</span>
             </div>
