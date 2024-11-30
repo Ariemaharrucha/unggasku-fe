@@ -107,20 +107,23 @@ export const UserProfile = () => {
   return (
     <div>
       <Navbar />
+        
       <div className="p-8 max-w-2xl mx-auto">
         <h1 className="text-3xl text-center font-bold text-gray-800 mb-8">
           Selamat Datang di Halaman Akun Anda
         </h1>
         {/* image */}
         <div className="flex flex-col items-center mb-8">
+        <div className="size-36 rounded-full overflow-hidden border-2 border-gray-300 mb-4">
           <img
             src={
               previewImage ||userData?.image_profile ||
               "https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"
             }
             alt="Profile"
-            className="w-32 h-32 rounded-full mb-4 border-2 border-gray-300"
+            className="h-full w-full object-cover"
           />
+        </div>
           <button
             className="text-primary-500 hover:underline focus:outline-none"
             onClick={handleFileInputClick}
@@ -191,7 +194,8 @@ export const UserProfile = () => {
           )}
         </div>
           
-        <div>
+        <div className="flex justify-between">
+          <button className="text-white bg-red-500  px-4 py-2 rounded-md">Log out</button>
           <button
           onClick={handleSubmit}
             className="px-4 py-2 bg-primary-500 text-white font-semibold rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
