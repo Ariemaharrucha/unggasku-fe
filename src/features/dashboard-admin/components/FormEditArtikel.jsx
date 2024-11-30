@@ -9,8 +9,8 @@ import { useState, useEffect } from "react";
 
 export const FormEditArtikel = () => {
   const { id } = useParams();
-  const [content, setContent] = useState("");
-  const [article, setArticle] = useState(null);
+  const [content, setContent] = useState(""); // Menyimpan konten editor Quill
+  const [article, setArticle] = useState(null); // Menyimpan data artikel
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,18 +23,19 @@ export const FormEditArtikel = () => {
     reset,
   } = useForm();
 
+  // Memuat data artikel berdasarkan ID
   useEffect(() => {
     const fetchArtikel = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`);
-  
         const contentType = response.headers.get("Content-Type");
-  
+
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
           setArticle(data);
-          setContent(data.teks || "");
+          setContent(data.teks || ""); // Mengatur nilai awal editor Quill
           setIsLoading(false);
+          // Mengatur nilai input form sesuai data artikel
           setValue("judul", data.judul);
           setValue("author_name", data.author_name);
           setValue("kategori", data.kategori);
@@ -48,40 +49,45 @@ export const FormEditArtikel = () => {
         setIsLoading(false);
       }
     };
-  
-    fetchArtikel();
-  }, [id, setValue]);   
 
+    fetchArtikel();
+  }, [id, setValue]);
+
+  // Menangani perubahan di editor Quill
   const handleChange = (value) => {
     setContent(value);
   };
 
+  // Mengirim data form untuk diperbarui
   const onSubmit = async (data) => {
-    setIsLoading(true);
+    setIsLoading(true); // Mengindikasikan bahwa proses sedang berjalan
     try {
-      const response = await fetch(`/api/v1/admin/artikel/${id}`, {
-        method: "PUT",
+      const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`, {
+        method: "PUT", // Menggunakan metode PUT untuk memperbarui artikel
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Mengindikasikan data yang dikirimkan dalam format JSON
         },
         body: JSON.stringify({
           judul: data.judul,
           author_name: data.author_name,
           kategori: data.kategori,
-          teks: content,
+          teks: content, // Konten artikel dari editor Quill
           tanggal: data.tanggal,
         }),
       });
 
+      const result = await response.json(); // Menangani hasil dari response API
       if (!response.ok) {
-        throw new Error("Failed to update the article");
+        throw new Error(result.message || "Gagal memperbarui artikel.");
       }
 
-      setSuccessMessage("Artikel berhasil diperbarui!");
+      setSuccessMessage("Artikel berhasil diperbarui!"); // Tampilkan pesan sukses
+      reset(); // Mengatur form kembali ke keadaan awal
     } catch (error) {
-      setError(error.message);
+      console.error("Error updating article:", error); // Debugging error
+      setError(error.message); // Tampilkan pesan error
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Menyelesaikan status loading
     }
   };
 
@@ -150,9 +156,8 @@ export const FormEditArtikel = () => {
                   name="image_artikel"
                   id="image_artikel"
                   className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
-                  {...register("image_artikel", { required: "Gambar artikel wajib diunggah" })}
+                  {...register("image_artikel")}
                 />
-                {errors.image_artikel && <p className="text-red-500">{errors.image_artikel.message}</p>}
               </div>
 
               <div>
