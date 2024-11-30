@@ -7,12 +7,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export const FormAddArtikel = () => {
-  const [content, setContent] = useState(""); // State untuk menyimpan konten artikel
-  const [successMessage, setSuccessMessage] = useState(""); // State untuk pesan sukses
-  const [isLoading, setLoading] = useState(false); // State untuk loading spinner
-  const [errorMessage, setErrorMessage] = useState(""); // State untuk pesan error
+  const [content, setContent] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Menggunakan react-hook-form untuk validasi dan pengelolaan form
   const {
     register,
     handleSubmit,
@@ -20,12 +19,10 @@ export const FormAddArtikel = () => {
     reset,
   } = useForm();
 
-  // Menangani perubahan nilai konten di ReactQuill
   const handleChange = (value) => {
     setContent(value);
   };
 
-  // Fungsi untuk menangani pengiriman form
   const onSubmit = async (data) => {
     setLoading(true);
     try {
@@ -33,21 +30,18 @@ export const FormAddArtikel = () => {
       formData.append("judul", data.judul);
       formData.append("author_name", data.author_name);
       formData.append("kategori", data.kategori);
-      formData.append("teks", content);  // Pastikan konten sudah ada
+      formData.append("teks", content);
       formData.append("tanggal", data.tanggal);
 
-      // Pastikan image_artikel ada sebelum mencoba mengirim
       if (data.image_artikel && data.image_artikel[0]) {
         formData.append("image_artikel", data.image_artikel[0]);
       }
 
-      // Log data untuk debugging
       console.log("FormData yang dikirim:");
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
 
-      // Mengirim data ke server
       const response = await axios.post("http://localhost:3000/api/v1/admin/artikel", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -57,7 +51,7 @@ export const FormAddArtikel = () => {
       if (response.status === 201) {
         setSuccessMessage("Artikel berhasil ditambahkan!");
         reset();
-        setContent(""); // Reset konten setelah berhasil
+        setContent("");
       } else {
         setErrorMessage("Gagal menambahkan artikel. Coba lagi.");
       }
@@ -77,13 +71,11 @@ export const FormAddArtikel = () => {
         </section>
         <section className="max-w-2xl m-auto mt-1">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            {/* author_id disembunyikan, tetapi pastikan data dikirim */}
             <div className="hidden">
               <label htmlFor="author_id"></label>
               <Input value={"1"} readOnly {...register("author_id")} />
             </div>
 
-            {/* Judul Artikel */}
             <div>
               <label htmlFor="judul">Judul Artikel</label>
               <Input
@@ -94,7 +86,6 @@ export const FormAddArtikel = () => {
               {errors.judul && <p className="text-red-500">{errors.judul.message}</p>}
             </div>
 
-            {/* Nama Author */}
             <div>
               <label htmlFor="author_name">Nama Author</label>
               <Input
@@ -105,7 +96,6 @@ export const FormAddArtikel = () => {
               {errors.author_name && <p className="text-red-500">{errors.author_name.message}</p>}
             </div>
 
-            {/* Kategori */}
             <div>
               <label htmlFor="kategori" className="mr-2">Kategori</label>
               <select
@@ -123,7 +113,6 @@ export const FormAddArtikel = () => {
               {errors.kategori && <p className="text-red-500">{errors.kategori.message}</p>}
             </div>
 
-            {/* Konten Artikel */}
             <div>
               <label htmlFor="konten">Konten:</label>
               <ReactQuill
@@ -134,7 +123,6 @@ export const FormAddArtikel = () => {
               />
             </div>
 
-            {/* Gambar Artikel */}
             <div className="w-1/3">
               <label htmlFor="image_artikel">Tambah Gambar</label>
               <input
@@ -148,7 +136,6 @@ export const FormAddArtikel = () => {
               {errors.image_artikel && <p className="text-red-500">{errors.image_artikel.message}</p>}
             </div>
 
-            {/* Tanggal Artikel */}
             <div>
               <label htmlFor="tanggal">Tanggal</label>
               <input
@@ -159,7 +146,6 @@ export const FormAddArtikel = () => {
               {errors.tanggal && <p className="text-red-500">{errors.tanggal.message}</p>}
             </div>
 
-            {/* Tombol Clear dan Submit */}
             <div className="flex gap-4">
               <Button
                 variant="secondary"
@@ -183,7 +169,6 @@ export const FormAddArtikel = () => {
             </div>
           </form>
 
-          {/* Pesan Status */}
           {isLoading && <p className="text-blue-500">Mengirim artikel...</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}

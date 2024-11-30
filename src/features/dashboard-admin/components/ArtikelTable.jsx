@@ -12,7 +12,7 @@ export const ArtikelTable = () => {
     const fetchArtikel = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/v1/admin/artikel");
-        console.log("Fetched Articles:", response.data); // Cek struktur data di console
+        console.log("Fetched Articles:", response.data); 
         if (response.data && Array.isArray(response.data.data)) {
           setArtikelList(response.data.data);
         } else {
@@ -30,28 +30,26 @@ export const ArtikelTable = () => {
   }, []); 
 
   const handleDelete = async (id) => {
-    console.log("Deleting article with ID: ", id); // Debugging line: Log ID artikel yang akan dihapus
+    console.log("Deleting article with ID: ", id);
   
     if (window.confirm("Are you sure you want to delete this article?")) {
-      setDeleting(id); // Set the article being deleted to show a loading state
+      setDeleting(id);
       try {
         const response = await axios.delete(`http://localhost:3000/api/v1/admin/artikel/${id}`);
-        console.log("Delete Response: ", response); // Debugging line: Log response dari API delete
+        console.log("Delete Response: ", response);
   
-        // Cek apakah statusnya 200
         if (response.status === 200) {
-          console.log("Successfully deleted article:", id); // Debugging line: Log jika berhasil menghapus artikel
-          // Successfully deleted, filter the article out of the list
+          console.log("Successfully deleted article:", id);
           setArtikelList((prevList) => prevList.filter((artikel) => artikel._id !== id));
         } else {
           setError("Failed to delete the article");
-          console.error("Delete failed with status:", response.status); // Log jika statusnya tidak sesuai
+          console.error("Delete failed with status:", response.status);
         }
       } catch (err) {
         setError("Failed to delete the article");
-        console.error("Delete Error: ", err); // Log error delete
+        console.error("Delete Error: ", err);
       } finally {
-        setDeleting(null); // Reset the deleting state once the process is finished
+        setDeleting(null);
       }
     }
   };

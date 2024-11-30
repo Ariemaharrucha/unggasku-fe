@@ -9,8 +9,8 @@ import { useState, useEffect } from "react";
 
 export const FormEditArtikel = () => {
   const { id } = useParams();
-  const [content, setContent] = useState(""); // Menyimpan konten editor Quill
-  const [article, setArticle] = useState(null); // Menyimpan data artikel
+  const [content, setContent] = useState("");
+  const [article, setArticle] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,7 +23,6 @@ export const FormEditArtikel = () => {
     reset,
   } = useForm();
 
-  // Memuat data artikel berdasarkan ID
   useEffect(() => {
     const fetchArtikel = async () => {
       try {
@@ -33,9 +32,8 @@ export const FormEditArtikel = () => {
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
           setArticle(data);
-          setContent(data.teks || ""); // Mengatur nilai awal editor Quill
+          setContent(data.teks || ""); 
           setIsLoading(false);
-          // Mengatur nilai input form sesuai data artikel
           setValue("judul", data.judul);
           setValue("author_name", data.author_name);
           setValue("kategori", data.kategori);
@@ -53,41 +51,39 @@ export const FormEditArtikel = () => {
     fetchArtikel();
   }, [id, setValue]);
 
-  // Menangani perubahan di editor Quill
   const handleChange = (value) => {
     setContent(value);
   };
 
-  // Mengirim data form untuk diperbarui
   const onSubmit = async (data) => {
-    setIsLoading(true); // Mengindikasikan bahwa proses sedang berjalan
+    setIsLoading(true); 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`, {
-        method: "PUT", // Menggunakan metode PUT untuk memperbarui artikel
+        method: "PUT", 
         headers: {
-          "Content-Type": "application/json", // Mengindikasikan data yang dikirimkan dalam format JSON
+          "Content-Type": "application/json", 
         },
         body: JSON.stringify({
           judul: data.judul,
           author_name: data.author_name,
           kategori: data.kategori,
-          teks: content, // Konten artikel dari editor Quill
+          teks: content, 
           tanggal: data.tanggal,
         }),
       });
 
-      const result = await response.json(); // Menangani hasil dari response API
+      const result = await response.json();
       if (!response.ok) {
         throw new Error(result.message || "Gagal memperbarui artikel.");
       }
 
-      setSuccessMessage("Artikel berhasil diperbarui!"); // Tampilkan pesan sukses
-      reset(); // Mengatur form kembali ke keadaan awal
+      setSuccessMessage("Artikel berhasil diperbarui!"); 
+      reset();
     } catch (error) {
-      console.error("Error updating article:", error); // Debugging error
-      setError(error.message); // Tampilkan pesan error
+      console.error("Error updating article:", error);
+      setError(error.message); 
     } finally {
-      setIsLoading(false); // Menyelesaikan status loading
+      setIsLoading(false); 
     }
   };
 
