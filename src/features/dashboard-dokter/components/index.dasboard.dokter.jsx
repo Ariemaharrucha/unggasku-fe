@@ -1,7 +1,16 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
 import ProfileDokter from "../../../assets/Images/layanan/dr_card1.jpeg";
+import Button from "../../../components/ui/Button.jsx";
 
 export const DashboardDokter = () => {
+  const [Id, setId] = useState(1);
+  const [fullName, setFullName] = useState("Stefanus Fandi Wibowo");
+  const [nomorSTR, setNomorSTR] = useState("712183827489239");
+  const [teleponHP, setTeleponHP] = useState("085565988112");
+  const [Spesialis, setSpesialis] = useState("Dokter Hewan Unggas");
+
   return (
     <DashboardDokterLayout>
       <div className="flex justify-center items-center md:px-40">
@@ -19,7 +28,7 @@ export const DashboardDokter = () => {
               <label className="block text-gray-700 text-lg font-bold mb-1">
                 Nama Lengkap
               </label>
-              <span className="text-gray-800 text-lg">Dr. Stefanus Fandi Wibowo</span>
+              <span className="text-gray-800 text-lg">{fullName}</span>
             </div>
 
             {/* Nomor STR */}
@@ -27,7 +36,7 @@ export const DashboardDokter = () => {
               <label className="block text-gray-700 text-lg font-bold mb-1">
                 Nomor STR
               </label>
-              <span className="text-gray-800 text-lg">712183827489239</span>
+              <span className="text-gray-800 text-lg">{nomorSTR}</span>
             </div>
 
             {/* Nomor Telepon */}
@@ -35,21 +44,23 @@ export const DashboardDokter = () => {
               <label className="block text-gray-700 text-lg font-bold mb-1">
                 Nomor Telepon
               </label>
-              <span className="text-gray-800 text-lg">085565988112</span>
+              <span className="text-gray-800 text-lg">{teleponHP}</span>
             </div>
 
             {/* Profesi */}
             <div className="p-4 bg-gray-100 rounded-lg shadow-md">
               <label className="block text-gray-700 text-lg font-bold mb-1">
-                Profesi
+                Spesialis
               </label>
-              <span className="text-gray-800 text-lg">Dokter Hewan Unggas</span>
+              <span className="text-gray-800 text-lg">{Spesialis}</span>
             </div>
 
             <div className="flex justify-end mt-6">
-              <button className="px-8 py-3 bg-yellow-400 text-black text-lg font-bold rounded-full hover:bg-yellow-500">
-                Edit
-              </button>
+              <Link to={`/dashboard/dokter/profile/edit/${Id}`}>
+                <Button variant="secondary" className={"px-8 py-3 bg-secondary-300 text-black text-lg font-bold rounded-full"}>
+                  {"Edit"}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

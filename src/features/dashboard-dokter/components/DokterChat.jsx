@@ -107,6 +107,7 @@ export const DokterChat = () => {
       });
     }
   }, [messages]);
+  
   return (
     <DashboardDokterLayout >
       <section className="min-h-screen">

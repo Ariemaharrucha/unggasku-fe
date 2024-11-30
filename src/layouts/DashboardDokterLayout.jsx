@@ -3,11 +3,10 @@ import Button from "../components/ui/Button.jsx";
 import { IoNewspaper } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { FaUserDoctor } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa";
 
 export const DashboardDokterLayout = ({children}) => {
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <aside className="flex w-[240px] flex-col justify-between bg-gradient-to-b from-primary-50/50 to-violet-50/50 p-6">
         <section className="space-y-2">
           <div className="mb-4 px-3 py-2 text-base font-bold text-slate-600">
