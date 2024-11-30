@@ -43,7 +43,6 @@ export const Register = () => {
           <h5 className="text-white font-semibold">Password</h5>
           <Input
             className={"bg-transparent placeholder:text-white text-white mt-1"}
-            type="password"
             placeholder="password"
             {...register("password", {
               required: "password wajib diisi",

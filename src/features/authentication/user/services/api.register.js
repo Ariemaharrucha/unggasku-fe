@@ -12,7 +12,9 @@ export const registerUser = async (username, email, password) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
-    throw new Error("Failed to register users.");
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Terjadi kesalahan pada jaringan");
   }
 };

@@ -25,7 +25,8 @@ const useRegister = () => {
       reset();
       setSuccessMessage("Pendaftaran berhasil, silakan Anda login.");
     } catch (error) {
-      setErrorMessage(error.message || "Pendaftaran gagal, coba lagi.");
+      console.log("Error captured:", error.message);
+      setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
