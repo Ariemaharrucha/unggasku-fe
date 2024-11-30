@@ -13,6 +13,7 @@ export const ArtikelTable = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/v1/admin/artikel");
         console.log("Fetched Articles:", response.data); 
+
         if (response.data && Array.isArray(response.data.data)) {
           setArtikelList(response.data.data);
         } else {
@@ -20,34 +21,34 @@ export const ArtikelTable = () => {
         }
         setLoading(false);
       } catch (err) {
-        console.error("API Error: ", err); // Log error API
+        console.error("API Error: ", err);
         setError("Gagal mengambil data artikel");
         setLoading(false);
       }
     };
-  
+
     fetchArtikel();
   }, []); 
 
   const handleDelete = async (id) => {
     console.log("Deleting article with ID: ", id);
-  
+
     if (window.confirm("Are you sure you want to delete this article?")) {
       setDeleting(id);
       try {
         const response = await axios.delete(`http://localhost:3000/api/v1/admin/artikel/${id}`);
         console.log("Delete Response: ", response);
-  
+
         if (response.status === 200) {
           console.log("Successfully deleted article:", id);
-          setArtikelList((prevList) => prevList.filter((artikel) => artikel._id !== id));
+          setArtikelList((prevList) => prevList.filter((artikel) => artikel.artikel_id !== id));
         } else {
-          setError("Failed to delete the article");
-          console.error("Delete failed with status:", response.status);
+          console.error("Failed to delete, status: ", response.status);
+          setError("Failed to delete the article. Status code: " + response.status);
         }
       } catch (err) {
-        setError("Failed to delete the article");
         console.error("Delete Error: ", err);
+        setError("Failed to delete the article. Error message: " + err.message);
       } finally {
         setDeleting(null);
       }
@@ -79,60 +80,63 @@ export const ArtikelTable = () => {
             </tr>
           </thead>
           <tbody>
-          {artikelList.length > 0 ? (
-              artikelList.map((artikel, index) => (
-                <tr key={artikel._id || index} className="border-b bg-white">
-                  {/* Konten table */}
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4">
-                    {artikel.judul && artikel.judul.length > 20
-                      ? `${artikel.judul.substring(0, 25)}...`
-                      : artikel.judul || 'No Title'}
-                  </td>
-                  <td className="px-6 py-4 overflow-hidden">
-                    <div className="size-52">
-                      <img
-                        src={artikel.image_artikel || "https://via.placeholder.com/150"}
-                        alt={artikel.judul || 'Image'}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </td>
-                  <td className="block w-96 px-6 py-4">
-                    <p>{artikel.konten && artikel.konten.length > 400 ? `${artikel.konten.substring(0, 425)}...` : artikel.konten || 'No content available'}</p>
-                  </td>
-                  <td className="px-6 py-4">
-                    {artikel.kategori || 'Lingkungan'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {artikel.tanggal ? new Date(artikel.tanggal).toLocaleDateString("id-ID") : 'No date'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {artikel.role || 'Admin / Dokter'}
-                  </td>
-                  <td className="flex space-x-4 px-6 py-4">
-                    <Link
-                      to={`/dashboard/admin/artikel/edit/${artikel._id}`}
-                      className="text-white p-2 rounded-md bg-primary-400"
-                    >
-                      Update
-                    </Link>
-                    <button
-                      className="text-white p-2 rounded-md bg-red-500"
-                      onClick={() => handleDelete(artikel._id)}
-                      disabled={deleting === artikel._id}
-                    >
-                      {deleting === artikel._id ? "Deleting..." : "Delete"}
-                    </button>
-                  </td>
-                </tr>
-              ))
+            {artikelList.length > 0 ? (
+              artikelList.map((artikel, index) => {
+                console.log(`Artikel ID: ${artikel.artikel_id}`); 
+                return (
+                  <tr key={artikel._id || index} className="border-b bg-white">
+                    {/* Konten table */}
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4">
+                      {artikel.judul && artikel.judul.length > 20
+                        ? `${artikel.judul.substring(0, 25)}...`
+                        : artikel.judul || 'No Title'}
+                    </td>
+                    <td className="px-6 py-4 overflow-hidden">
+                      <div className="size-52">
+                        <img
+                          src={artikel.image_artikel || "https://via.placeholder.com/150"}
+                          alt={artikel.judul || 'Image'}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
+                    <td className="block w-96 px-6 py-4">
+                      <p>{artikel.konten && artikel.konten.length > 400 ? `${artikel.konten.substring(0, 425)}...` : artikel.konten || 'No content available'}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      {artikel.kategori || 'Lingkungan'}
+                    </td>
+                    <td className="px-6 py-4">
+                      {artikel.tanggal ? new Date(artikel.tanggal).toLocaleDateString("id-ID") : 'No date'}
+                    </td>
+                    <td className="px-6 py-4">
+                      {artikel.role || 'Admin / Dokter'}
+                    </td>
+                    <td className="flex space-x-4 px-6 py-4">
+                      <Link
+                        to={`/dashboard/admin/artikel/edit/${artikel.artikel_id}`} 
+                        className="text-white p-2 rounded-md bg-primary-400"
+                      >
+                        Update
+                      </Link>
+                      <button
+                        className="text-white p-2 rounded-md bg-red-500"
+                        onClick={() => handleDelete(artikel.artikel_id)} 
+                        disabled={deleting === artikel._id}
+                      >
+                        {deleting === artikel._id ? "Deleting..." : "Delete"}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="8" className="text-center px-6 py-4">No articles available</td>
               </tr>
             )}
-            </tbody>
+          </tbody>
         </table>
       </div>
     </section>

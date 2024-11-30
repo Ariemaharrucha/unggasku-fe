@@ -5,7 +5,8 @@ import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 export const FormEditArtikel = () => {
   const { id } = useParams();
@@ -19,71 +20,75 @@ export const FormEditArtikel = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm();
+
+  const quillRef = useRef(null);
 
   useEffect(() => {
     const fetchArtikel = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`);
-        const contentType = response.headers.get("Content-Type");
+        const response = await axios.get(`http://localhost:3000/api/v1/admin/artikel/${id}`);
+        const data = response.data;
 
-        if (contentType && contentType.includes("application/json")) {
-          const data = await response.json();
-          setArticle(data);
-          setContent(data.teks || ""); 
-          setIsLoading(false);
-          setValue("judul", data.judul);
-          setValue("author_name", data.author_name);
-          setValue("kategori", data.kategori);
-          setValue("tanggal", data.tanggal);
-        } else {
-          const text = await response.text();
-          throw new Error(`Expected JSON, but got: ${text}`);
-        }
-      } catch (error) {
-        setError(error.message);
+        setArticle(data);
+        setContent(data.teks || "");
+        reset({
+          judul: data.judul || "",
+          author_name: data.author_name || "",
+          kategori: data.kategori || "",
+          tanggal: data.tanggal || "",
+        });
+        setIsLoading(false);
+      } catch (fetchError) {
+        console.error("Error fetching article:", fetchError);
+        setError(fetchError.message);
         setIsLoading(false);
       }
     };
 
     fetchArtikel();
-  }, [id, setValue]);
+  }, [id, reset]);
 
   const handleChange = (value) => {
     setContent(value);
   };
 
   const onSubmit = async (data) => {
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`, {
-        method: "PUT", 
-        headers: {
-          "Content-Type": "application/json", 
-        },
-        body: JSON.stringify({
-          judul: data.judul,
-          author_name: data.author_name,
-          kategori: data.kategori,
-          teks: content, 
-          tanggal: data.tanggal,
-        }),
-      });
-
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.message || "Gagal memperbarui artikel.");
+      const formData = new FormData();
+      formData.append("judul", data.judul);
+      formData.append("author_name", data.author_name);
+      formData.append("kategori", data.kategori);
+      formData.append("teks", content);
+      formData.append("tanggal", data.tanggal);
+      if (data.image_artikel?.[0]) {
+        formData.append("image_artikel", data.image_artikel[0]);
       }
 
-      setSuccessMessage("Artikel berhasil diperbarui!"); 
-      reset();
+      const response = await axios.put(
+        `http://localhost:3000/api/v1/admin/artikel/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setSuccessMessage("Artikel berhasil diperbarui!");
+        reset();
+      } else {
+        throw new Error(response.data.message || "Gagal memperbarui artikel.");
+      }
     } catch (error) {
       console.error("Error updating article:", error);
-      setError(error.message); 
+      setError(error.message);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -98,6 +103,8 @@ export const FormEditArtikel = () => {
           {error && <p className="text-red-500">{error}</p>}
           {article && (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+              <input type="hidden" value="admin" {...register("role")} />
+
               <div>
                 <label htmlFor="judul">Judul Artikel</label>
                 <Input
@@ -123,7 +130,7 @@ export const FormEditArtikel = () => {
                 <select
                   name="kategori"
                   id="kategori"
-                  className="w-fit border mt-2 p-2 rounded-md bg-white"
+                  className="w-full border mt-2 p-2 rounded-md bg-white"
                   {...register("kategori", { required: "Kategori wajib dipilih" })}
                 >
                   <option value="">Pilih kategori</option>
@@ -138,6 +145,7 @@ export const FormEditArtikel = () => {
               <div>
                 <label htmlFor="konten">Konten:</label>
                 <ReactQuill
+                  ref={quillRef}
                   value={content}
                   onChange={handleChange}
                   placeholder="Tulis di sini"
@@ -146,12 +154,12 @@ export const FormEditArtikel = () => {
               </div>
 
               <div className="w-1/3">
-                <label htmlFor="image_artikel">Add images</label>
+                <label htmlFor="image_artikel">Tambah Gambar</label>
                 <input
                   type="file"
                   name="image_artikel"
                   id="image_artikel"
-                  className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
+                  className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   {...register("image_artikel")}
                 />
               </div>

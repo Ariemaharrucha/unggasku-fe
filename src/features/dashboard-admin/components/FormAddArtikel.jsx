@@ -2,15 +2,18 @@ import { DashboardAdminLayout } from "../../../layouts/DashboardAdminLayout.jsx"
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import useUser from '../../../stores/useStore.js';
 
 export const FormAddArtikel = () => {
-  const [content, setContent] = useState(""); 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isLoading, setLoading] = useState(false); 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [content, setContent] = useState(""); // Konten artikel
+  const [adminData, setAdminData] = useState(null); // Data admin
+  const [isLoading, setLoading] = useState(false); // Status loading
+  const [successMessage, setSuccessMessage] = useState(""); // Pesan keberhasilan
+  const [errorMessage, setErrorMessage] = useState(""); // Pesan error
+  const {user} = useUser();
 
   const {
     register,
@@ -19,45 +22,56 @@ export const FormAddArtikel = () => {
     reset,
   } = useForm();
 
+  // Ambil data admin dari localStorage
+  useEffect(() => {
+    const dokterData = localStorage.getItem("user");
+    if (dokterData) {
+      const parsedData = JSON.parse(dokterData);
+      if (parsedData && parsedData.id) {
+        setAdminData(parsedData); // Set data admin
+      } else {
+        setErrorMessage("ID pengguna tidak ditemukan dalam data login.");
+      }
+    } else {
+      setErrorMessage("User data tidak ditemukan, harap login terlebih dahulu.");
+    }
+  }, []);
+
+  // Handle perubahan konten ReactQuill
   const handleChange = (value) => {
-    setContent(value);
+    setContent(value); // Menyimpan konten apa adanya tanpa perubahan
   };
 
+  // Submit form untuk menambah artikel
   const onSubmit = async (data) => {
-    setLoading(true);
+    const formData = new FormData();
+    formData.append("author_id", data.author_id); // ID pengguna
+    formData.append("author_name", data.author_name);
+    formData.append("judul", data.judul);
+    formData.append("konten", content); // Mengirimkan konten yang sudah diproses
+    formData.append("image_artikel", data.image_artikel[0]);
+    formData.append("kategori", data.kategori);
+    formData.append("tanggal", data.tanggal);
+    formData.append("role", "admin");
+
     try {
-      const formData = new FormData();
-      formData.append("judul", data.judul);
-      formData.append("author_name", data.author_name);
-      formData.append("kategori", data.kategori);
-      formData.append("teks", content);
-      formData.append("tanggal", data.tanggal);
+      setLoading(true);
+      setSuccessMessage("");
+      setErrorMessage(""); // Reset error message sebelum pengiriman
 
-      if (data.image_artikel && data.image_artikel[0]) {
-        formData.append("image_artikel", data.image_artikel[0]);
-      }
-
-      console.log("FormData yang dikirim:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-
-      const response = await axios.post("http://localhost:3000/api/v1/admin/artikel", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.status === 201) {
-        setSuccessMessage("Artikel berhasil ditambahkan!");
-        reset();
-        setContent("");
-      } else {
-        setErrorMessage("Gagal menambahkan artikel. Coba lagi.");
-      }
-    } catch (err) {
-      setErrorMessage("Gagal menambahkan artikel. Silakan coba lagi.");
-      console.error("Error adding article:", err.response ? err.response.data : err);
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/admin/artikel",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setSuccessMessage("Artikel berhasil ditambahkan!");
+      reset(); // Reset form setelah berhasil
+      setContent(""); // Reset konten editor
+    } catch (error) {
+      console.error("Gagal menambahkan artikel:", error);
+      setErrorMessage("Gagal menambahkan artikel, silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -71,11 +85,13 @@ export const FormAddArtikel = () => {
         </section>
         <section className="max-w-2xl m-auto mt-1">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            {/* Input ID Author */}
             <div className="hidden">
-              <label htmlFor="author_id"></label>
-              <Input value={"1"} readOnly {...register("author_id")} />
+                <label htmlFor="author_id"></label>
+                <input value={user.id} readOnly {...register("author_id")}></input>
             </div>
 
+            {/* Judul Artikel */}
             <div>
               <label htmlFor="judul">Judul Artikel</label>
               <Input
@@ -86,6 +102,7 @@ export const FormAddArtikel = () => {
               {errors.judul && <p className="text-red-500">{errors.judul.message}</p>}
             </div>
 
+            {/* Nama Author */}
             <div>
               <label htmlFor="author_name">Nama Author</label>
               <Input
@@ -96,6 +113,7 @@ export const FormAddArtikel = () => {
               {errors.author_name && <p className="text-red-500">{errors.author_name.message}</p>}
             </div>
 
+            {/* Kategori */}
             <div>
               <label htmlFor="kategori" className="mr-2">Kategori</label>
               <select
@@ -113,6 +131,7 @@ export const FormAddArtikel = () => {
               {errors.kategori && <p className="text-red-500">{errors.kategori.message}</p>}
             </div>
 
+            {/* Konten */}
             <div>
               <label htmlFor="konten">Konten:</label>
               <ReactQuill
@@ -123,6 +142,7 @@ export const FormAddArtikel = () => {
               />
             </div>
 
+            {/* Tambah Gambar */}
             <div className="w-1/3">
               <label htmlFor="image_artikel">Tambah Gambar</label>
               <input
@@ -136,6 +156,7 @@ export const FormAddArtikel = () => {
               {errors.image_artikel && <p className="text-red-500">{errors.image_artikel.message}</p>}
             </div>
 
+            {/* Tanggal */}
             <div>
               <label htmlFor="tanggal">Tanggal</label>
               <input
@@ -145,7 +166,8 @@ export const FormAddArtikel = () => {
               />
               {errors.tanggal && <p className="text-red-500">{errors.tanggal.message}</p>}
             </div>
-
+            
+            {/* Tombol */}
             <div className="flex gap-4">
               <Button
                 variant="secondary"
@@ -169,6 +191,7 @@ export const FormAddArtikel = () => {
             </div>
           </form>
 
+          {/* Status Messages */}
           {isLoading && <p className="text-blue-500">Mengirim artikel...</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
