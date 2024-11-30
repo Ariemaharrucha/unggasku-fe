@@ -1,25 +1,22 @@
-import { useState } from "react";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
 import { useForm } from "react-hook-form";
+import useAddArtikelDokter from "../hooks/useAddArtikelDokter.jsx";
 
 export const FormDokterAddArtikel = () => {
-  const [content, setContent] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-
-  const handleChange = (value) => {
-    setContent(value);
-  };
+    content,
+    setContent,
+    isLoading,
+    error,
+    successMessage,
+    handleChange,
+    onSubmit,
+  } = useAddArtikelDokter();
 
   return (
     <DashboardDokterLayout>
@@ -28,12 +25,16 @@ export const FormDokterAddArtikel = () => {
           <h3 className="text-lg text-black">Tambah Artikel</h3>
         </section>
         <section className="max-w-2xl m-auto mt-1">
-          <form action="" className="space-y-3" onSubmit={handleSubmit()}>
+          <form action="" className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
             {/* id */}
             <div className="hidden">
               <label htmlFor="author_id"></label>
-              <Input value={"1"} readOnly {...register("author_id")}></Input>
-              
+              <Input
+                type="text"
+                value="1"
+                {...register("author_id")}
+                readOnly
+              ></Input>
             </div>
             {/* jdudul */}
             <div>
@@ -44,11 +45,15 @@ export const FormDokterAddArtikel = () => {
                 placeholder="Judul artikel"
                 className={"mt-2 font-normal"}
                 {...register("judul", { required: "Judul wajib diisi" })}
-              ></Input>
+              >
+                {errors.judul && (
+                  <p className="text-red-500">{errors.judul.message}</p>
+                )}
+              </Input>
             </div>
             {/* author name */}
             <div>
-              <label htmlFor="author-name" className="">
+              <label htmlFor="author_name" className="">
                 Nama Author
               </label>
               <Input
@@ -57,7 +62,11 @@ export const FormDokterAddArtikel = () => {
                 {...register("author_name", {
                   required: "Author name wajib diisi",
                 })}
-              ></Input>
+              >
+                {errors.author_name && (
+                  <p className="text-red-500">{errors.author_name.message}</p>
+                )}
+              </Input>
             </div>
             {/* kategori */}
             <div className="flex flex-col">
@@ -78,6 +87,9 @@ export const FormDokterAddArtikel = () => {
                 <option value="nutrisi">Nutrisi</option>
                 <option value="kesehatan-unggas">Kesehatan-unggas</option>
               </select>
+              {errors.kategori && (
+                <p className="text-red-500">{errors.kategori.message}</p>
+              )}
             </div>
             {/* konten */}
             <div>
@@ -107,6 +119,9 @@ export const FormDokterAddArtikel = () => {
                   required: "Gambar artikel wajib diunggah",
                 })}
               />
+              {errors.image_artikel && (
+                <p className="text-red-500">{errors.image_artikel.message}</p>
+              )}
             </div>
             {/* tanggal */}
             <div>
@@ -116,6 +131,9 @@ export const FormDokterAddArtikel = () => {
                 className="block mt-2 border p-2 rounded-md"
                 {...register("tanggal", { required: "Tanggal wajib diisi" })}
               />
+              {errors.tanggal && (
+                <p className="text-red-500">{errors.tanggal.message}</p>
+              )}
             </div>
             {/* role */}
             <div className="hidden">
@@ -132,13 +150,13 @@ export const FormDokterAddArtikel = () => {
                 onClick={() => {
                   reset();
                   setContent("");
-                  setSuccessMessage("");
                 }}
               >
                 Clear
               </Button>
 
               <Button
+                type="submit"
                 variant="secondary"
                 className={"w-1/3 flex items-center justify-center"}
               >
@@ -148,6 +166,7 @@ export const FormDokterAddArtikel = () => {
           </form>
           {isLoading && <p className="text-blue-500">Mengirim artikel...</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
+          {error && <p className="text-red-500">{error}</p>}
         </section>
       </main>
     </DashboardDokterLayout>
