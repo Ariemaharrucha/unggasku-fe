@@ -16,6 +16,7 @@ import { DashboardDokter } from "../features/dashboard-dokter/components/index.d
 import { ArtikelDokterOverview } from "../features/dashboard-dokter/components/ArtikelDokterOverview.jsx";
 import { FormDokterAddArtikel } from "../features/dashboard-dokter/components/FormDokterAddArtikel.jsx";
 import { FormDokterEditArtikel } from "../features/dashboard-dokter/components/FormDokterEditArtikel.jsx";
+import { FormDokterEditProfile } from "../features/dashboard-dokter/components/FormDokterEditProfile.jsx";
 import { DokterChat } from "../features/dashboard-dokter/components/DokterChat.jsx";
 import { Konsultasi } from "../features/konsultasi/components/Konsultasi.jsx";
 import { Chatkonsultasi } from "../features/konsultasi/components/ChatKonsultasi.jsx";
@@ -67,7 +68,9 @@ export const AppRouter = () => {
         <Route path="/dashboard/dokter/artikel/create" element={<FormDokterAddArtikel/>}></Route>
         <Route path="/dashboard/dokter/artikel/edit/:id" element={<FormDokterEditArtikel/>}></Route>
         <Route path="/dashboard/dokter/chat" element={<DokterChat/>}></Route>
+        <Route path="/dashboard/dokter/profile/edit/:id" element={<FormDokterEditProfile/>}></Route>
       </Route>
+
 
     </Routes>
   </BrowserRouter>

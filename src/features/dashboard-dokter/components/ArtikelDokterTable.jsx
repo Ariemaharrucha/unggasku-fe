@@ -20,7 +20,7 @@ const artikel = [
 
 export const ArtikelDokterTable = () => {
   return (
-    <section className="">
+    <section className="translate-x-16">
       <div className="relative overflow-x-auto">
         <table className="text-left text-sm text-gray-500 w-full">
           <thead className="bg-gray-50 text-sm uppercase text-gray-700">
