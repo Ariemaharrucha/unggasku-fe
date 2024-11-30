@@ -36,6 +36,10 @@ export const Konsultasi = () => {
   const [isUserTyping, setIsUserTyping] = useState(false);
   const latestMessageRef = useRef(null);
 
+  useEffect(()=>{
+    console.log('tes');
+  },[])
+
   // Fungsi untuk mendapatkan waktu saat ini
   function getCurrentTime() {
     const now = new Date();

@@ -24,6 +24,7 @@ import { DokterOverview } from "../features/dashboard-admin/components/DokterOve
 import { UserOverview } from "../features/dashboard-admin/components/UserOverview.jsx";
 import { FormAddDokter } from "../features/dashboard-admin/components/FormAddDokter.jsx";
 import { LoginAdmin } from "../features/authentication/admin/components/LoginAdmin.jsx";
+import { ProtectedRoute } from "../middleware/ProtectedRoute.jsx";
 
 
 
@@ -37,33 +38,39 @@ export const AppRouter = () => {
       <Route path="/tentang-kami" element={<About/>}></Route>
       <Route path="/kontak-kami" element={<Contact/>}></Route>
       <Route path="/layanan" element={<Layanan/>}></Route>
-      <Route path="/profile/:id" element={<UserProfile/>}></Route>
       <Route path="/artikel" element={<ArtikelPage/>}></Route>
       <Route path="/artikel/:id" element={<ArtikelDetails/>}></Route>
 
-      {/* konsultasi */}
-      <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
-      <Route path="/layanan/konsultasi/chat/:konsultasiId" element={<Chatkonsultasi/>}></Route>
+      <Route element={<ProtectedRoute allowedRoles={['user']}/>}>
+        <Route path="/profile/:id" element={<UserProfile/>}></Route>
+        <Route path="/layanan/konsultasi" element={<Konsultasi/>}></Route>
+        <Route path="/layanan/konsultasi/chat/:konsultasiId" element={<Chatkonsultasi/>}></Route>
+      </Route>
 
       {/* dashboard login */}
       <Route path="/dashboard/login" element={<LoginAdmin/>}></Route>
 
       {/* dasboard admin */}
-      <Route path="/dashboard/admin" element={<DashboardAdmin/>}></Route>
-      <Route path="/dashboard/admin/artikel" element={<ArtikelOverview/>}></Route>
-      <Route path="/dashboard/admin/artikel/create" element={<FormAddArtikel/>}></Route>
-      <Route path="/dashboard/admin/artikel/edit/:id" element={<FormEditArtikel/>}></Route>
-      <Route path="/dashboard/admin/dokter" element={<DokterOverview/>}></Route>
-      <Route path="/dashboard/admin/dokter/create" element={<FormAddDokter/>}></Route>
-      <Route path="/dashboard/admin/users" element={<UserOverview/>}></Route>
+      <Route element={<ProtectedRoute allowedRoles={['admin']}/>}>
+        <Route path="/dashboard/admin" element={<DashboardAdmin/>}></Route>
+        <Route path="/dashboard/admin/artikel" element={<ArtikelOverview/>}></Route>
+        <Route path="/dashboard/admin/artikel/create" element={<FormAddArtikel/>}></Route>
+        <Route path="/dashboard/admin/artikel/edit/:id" element={<FormEditArtikel/>}></Route>
+        <Route path="/dashboard/admin/dokter" element={<DokterOverview/>}></Route>
+        <Route path="/dashboard/admin/dokter/create" element={<FormAddDokter/>}></Route>
+        <Route path="/dashboard/admin/users" element={<UserOverview/>}></Route>
+      </Route>
 
       {/* dasboard dokter */}
-      <Route path="/dashboard/dokter" element={<DashboardDokter/>}></Route>
-      <Route path="/dashboard/dokter/artikel" element={<ArtikelDokterOverview/>}></Route>
-      <Route path="/dashboard/dokter/artikel/create" element={<FormDokterAddArtikel/>}></Route>
-      <Route path="/dashboard/dokter/artikel/edit/:id" element={<FormDokterEditArtikel/>}></Route>
-      <Route path="/dashboard/dokter/chat" element={<DokterChat/>}></Route>
-      <Route path="/dashboard/dokter/profile/edit/:id" element={<FormDokterEditProfile/>}></Route>
+      <Route element={<ProtectedRoute allowedRoles={['dokter']}/>}>
+        <Route path="/dashboard/dokter" element={<DashboardDokter/>}></Route>
+        <Route path="/dashboard/dokter/artikel" element={<ArtikelDokterOverview/>}></Route>
+        <Route path="/dashboard/dokter/artikel/create" element={<FormDokterAddArtikel/>}></Route>
+        <Route path="/dashboard/dokter/artikel/edit/:id" element={<FormDokterEditArtikel/>}></Route>
+        <Route path="/dashboard/dokter/chat" element={<DokterChat/>}></Route>
+        <Route path="/dashboard/dokter/profile/edit/:id" element={<FormDokterEditProfile/>}></Route>
+      </Route>
+
 
     </Routes>
   </BrowserRouter>
