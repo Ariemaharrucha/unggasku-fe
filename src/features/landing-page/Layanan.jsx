@@ -1,20 +1,23 @@
 import { Layout } from "../../layouts/Layout";
-import { AiOutlineLike } from "react-icons/ai";
 import { FiBriefcase } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button.jsx";
-import Slider from "react-slick";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getDokter } from "./services/api.layanan.js";
-
-function scrollToSection() {
-  const section = document.getElementById("detail");
-  section.scrollIntoView({ behavior: "smooth" });
-}
+import { CardDokter } from "../../components/shared/CardSliderDokter.jsx";
+import axios from "axios";
+import useUser from "../../stores/useStore.js";
 
 export const Layanan = () => {
+  const {user} = useUser();
   const [listDokter, setListDokter] = useState([]);
+  const navigate = useNavigate();
+
+  function scrollToSection() {
+    const section = document.getElementById("detail");
+    section.scrollIntoView({ behavior: "smooth" });
+  }
 
   useEffect(()=>{
     const fetchDokter = async () => {
@@ -29,6 +32,28 @@ export const Layanan = () => {
     }
     fetchDokter();
   },[]);
+
+  async function handleCreateKonsultasi(user_id, dokter_id, nama_dokter, spesialis, image_profile, jam_kerja) {
+    console.log(user_id, dokter_id);
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/konsultasi/findOrCreate`,
+        {
+          user_id,
+          dokter_id,
+        }
+      );
+      const roomId = response.data.data;
+
+      if (roomId) {
+        navigate(`/layanan/konsultasi/chat/${roomId}`, {state: {nama_dokter, spesialis, image_profile, jam_kerja}});
+      }
+    } catch (error) {
+      console.error("Error handling konsultasi:", error);
+      alert("Terjadi kesalahan saat memulai chat.");
+    }
+  }
 
   return (
     <Layout>
@@ -132,8 +157,11 @@ export const Layanan = () => {
                       variant="primary"
                       size="medium"
                       className="w-24 py-2 text-center flex text-lg justify-center mt-2"
+                      onClick={() =>
+                        handleCreateKonsultasi(user.id, dokter.dokter_id, dokter.nama_dokter, dokter.spesialis, dokter.image_profile, dokter.jam_kerja)
+                      }
                     >
-                      <Link to={'/layanan/konsultasi/chat/123'}>Chat</Link>
+                      Chat
                     </Button>
                   </div>
                 </div>
@@ -143,95 +171,5 @@ export const Layanan = () => {
         </div>
       </section>
     </Layout>
-  );
-};
-
-function SliderLayanan({ children }) {
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
-    cssEase: "linear"
-  };
-
-  return (
-    <div className="slider-container">
-      <Slider {...{... settings}}>{children}</Slider>
-    </div>
-  );
-}
-
-const CardDokter = ({data}) => {
-
-  return (
-    <section className="p-10 md:min-h-screen">
-      <div className="container mx-auto">
-        <h2 className="md:text-5xl text-4xl font-bold mb-10 text-center">
-          Daftar Dokter Ahli
-        </h2>
-        <SliderLayanan>
-          {data && data.map((dokter, index) => (
-            <div key={dokter.dokter_id} className="p-4">
-              <div className="bg-gray-300 p-5 rounded-lg">
-                <div className="w-full h-80 overflow-hidden">
-                  <img
-                    className="rounded-t-lg"
-                    src={dokter.image_profile}
-                    alt={dokter.nama_dokter}
-                  />
-                </div>
-                <div className="border-black border-x-2 border-b-2 pt-2">
-                  <h3 className="text-xl font-semibold pl-3">{dokter.nama_dokter}</h3>
-                  <p className="text-sm font-normal pl-3">{dokter.spesialis}</p>
-                  <div className="flex gap-2 my-2 pl-3">
-                    {/* <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
-                      <AiOutlineLike className="text-lg" />
-                      {dokter.like}
-                    </span> */}
-                    <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
-                      <FiBriefcase className="text-lg" />
-                      {dokter.pengalaman}
-                    </span>
-                  </div>
-                  {/* <div className="bg-gray-50 w-full pl-3 py-1">
-                    <p>Rp. {parseInt(dokter.harga).toLocaleString("id-ID")}</p>
-                    <s className="opacity-50">
-                      Rp. {parseInt(dokter.discont).toLocaleString("id-ID")}
-                    </s>
-                  </div> */}
-                </div>
-                <div className="border-black border-x-2 border-b-2 rounded-b-lg">
-                  <div className="pl-8 py-3">
-                    <h3 className="text-base font-semibold">Alumni</h3>
-                    <ul>
-                      {dokter.alumni}
-                    </ul>
-                  </div>
-                  <div className="pl-8">
-                    <h3 className="text-base font-semibold">Praktik di</h3>
-                    <p className="text-sm font-medium">{dokter.tempat_praktek}</p>
-                  </div>
-                  <div className="pl-8 py-3">
-                    <h3 className="text-base font-semibold">Nomor STR</h3>
-                    <p className="text-sm font-medium">{dokter.nomer_str}</p>
-                  </div>
-                </div>
-                <Button
-                  variant="primary"
-                  size="large"
-                  className="w-full flex justify-center mt-4"
-                >
-                  {"Chat"}
-                </Button>
-              </div>
-            </div>
-          ))}
-        </SliderLayanan>
-      </div>
-    </section>
   );
 };
