@@ -8,11 +8,11 @@ import axios from "axios";
 import useUser from '../../../stores/useStore.js';
 
 export const FormAddArtikel = () => {
-  const [content, setContent] = useState(""); // Konten artikel
-  const [adminData, setAdminData] = useState(null); // Data admin
-  const [isLoading, setLoading] = useState(false); // Status loading
-  const [successMessage, setSuccessMessage] = useState(""); // Pesan keberhasilan
-  const [errorMessage, setErrorMessage] = useState(""); // Pesan error
+  const [content, setContent] = useState(""); 
+  const [adminData, setAdminData] = useState(null);
+  const [isLoading, setLoading] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState(""); 
   const {user} = useUser();
 
   const {
@@ -22,33 +22,28 @@ export const FormAddArtikel = () => {
     reset,
   } = useForm();
 
-  // Ambil data admin dari localStorage
   useEffect(() => {
     const dokterData = localStorage.getItem("user");
     if (dokterData) {
       const parsedData = JSON.parse(dokterData);
       if (parsedData && parsedData.id) {
-        setAdminData(parsedData); // Set data admin
-      } else {
-        setErrorMessage("ID pengguna tidak ditemukan dalam data login.");
-      }
+        setAdminData(parsedData); 
+      } 
     } else {
       setErrorMessage("User data tidak ditemukan, harap login terlebih dahulu.");
     }
   }, []);
 
-  // Handle perubahan konten ReactQuill
   const handleChange = (value) => {
-    setContent(value); // Menyimpan konten apa adanya tanpa perubahan
+    setContent(value);
   };
 
-  // Submit form untuk menambah artikel
   const onSubmit = async (data) => {
     const formData = new FormData();
-    formData.append("author_id", data.author_id); // ID pengguna
+    formData.append("author_id", data.author_id);
     formData.append("author_name", data.author_name);
     formData.append("judul", data.judul);
-    formData.append("konten", content); // Mengirimkan konten yang sudah diproses
+    formData.append("konten", content); 
     formData.append("image_artikel", data.image_artikel[0]);
     formData.append("kategori", data.kategori);
     formData.append("tanggal", data.tanggal);
@@ -57,7 +52,7 @@ export const FormAddArtikel = () => {
     try {
       setLoading(true);
       setSuccessMessage("");
-      setErrorMessage(""); // Reset error message sebelum pengiriman
+      setErrorMessage(""); 
 
       const response = await axios.post(
         "http://localhost:3000/api/v1/admin/artikel",
@@ -67,8 +62,8 @@ export const FormAddArtikel = () => {
         }
       );
       setSuccessMessage("Artikel berhasil ditambahkan!");
-      reset(); // Reset form setelah berhasil
-      setContent(""); // Reset konten editor
+      reset(); 
+      setContent(""); 
     } catch (error) {
       console.error("Gagal menambahkan artikel:", error);
       setErrorMessage("Gagal menambahkan artikel, silakan coba lagi.");

@@ -61,10 +61,13 @@ export const FormEditArtikel = () => {
   }, [id, reset]);
 
   const onSubmit = async (data) => {
+    console.log("Data yang diterima dalam onSubmit:", data);
     setLoading(true);
     const formData = new FormData();
-    
-    // Tambahkan data lainnya ke FormData
+  
+    // Debugging data yang masuk
+    console.log("Data image_artikel yang diterima:", data.image_artikel);
+  
     formData.append("author_id", user.id);
     formData.append("role", user.role);
     formData.append("judul", data.judul);
@@ -73,23 +76,14 @@ export const FormEditArtikel = () => {
     formData.append("konten", content);
     formData.append("tanggal", data.tanggal);
   
-    // Periksa jika ada gambar baru
     if (data.image_artikel && data.image_artikel[0]) {
+      console.log("Mengirim gambar baru:", data.image_artikel[0]);
       formData.append("image_artikel", data.image_artikel[0]);
     } else if (oldImage) {
-      // Jika tidak ada gambar baru, kirimkan gambar lama
-      const fileName = oldImage.split("/").pop(); // Ambil nama file
+      const fileName = oldImage.split("/").pop();
+      console.log("Mengirim gambar lama:", fileName);
       formData.append("image_artikel", fileName);
     }
-  
-    // Cek isi formData sebelum mengirimkan
-    console.log("Data yang akan dikirimkan: ", {
-      judul: data.judul,
-      author_name: data.author_name,
-      kategori: data.kategori,
-      konten: content,
-      image_artikel: data.image_artikel ? data.image_artikel[0] : oldImage,
-    });
   
     try {
       const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`, {
@@ -217,7 +211,11 @@ export const FormEditArtikel = () => {
                 name="image_artikel"
                 id="image_artikel"
                 className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm"
-                {...register("image_artikel")}
+                ref={register("image_artikel")}
+                onChange={e => {
+                  // Debugging untuk melihat file yang dipilih
+                  console.log(e.target.files);
+                }}
               />
             </div>
 
