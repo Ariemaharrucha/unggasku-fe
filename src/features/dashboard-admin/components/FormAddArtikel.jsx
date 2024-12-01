@@ -2,18 +2,17 @@ import { DashboardAdminLayout } from "../../../layouts/DashboardAdminLayout.jsx"
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import useUser from '../../../stores/useStore.js';
+import useUser from "../../../stores/useStore.js";
 
 export const FormAddArtikel = () => {
   const [content, setContent] = useState(""); 
-  const [adminData, setAdminData] = useState(null);
   const [isLoading, setLoading] = useState(false); 
   const [successMessage, setSuccessMessage] = useState(""); 
   const [errorMessage, setErrorMessage] = useState(""); 
-  const {user} = useUser();
+  const { user } = useUser();
 
   const {
     register,
@@ -22,32 +21,27 @@ export const FormAddArtikel = () => {
     reset,
   } = useForm();
 
-  useEffect(() => {
-    const dokterData = localStorage.getItem("user");
-    if (dokterData) {
-      const parsedData = JSON.parse(dokterData);
-      if (parsedData && parsedData.id) {
-        setAdminData(parsedData); 
-      } 
-    } else {
-      setErrorMessage("User data tidak ditemukan, harap login terlebih dahulu.");
-    }
-  }, []);
-
   const handleChange = (value) => {
     setContent(value);
   };
 
   const onSubmit = async (data) => {
+    const userId = user?.id; 
+
+    if (!userId) {
+      setErrorMessage("User id tidak tersedia.");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("author_id", data.author_id);
+    formData.append("author_id", userId);
     formData.append("author_name", data.author_name);
     formData.append("judul", data.judul);
     formData.append("konten", content); 
     formData.append("image_artikel", data.image_artikel[0]);
     formData.append("kategori", data.kategori);
     formData.append("tanggal", data.tanggal);
-    formData.append("role", "admin");
+    formData.append("role", "admin"); 
 
     try {
       setLoading(true);
@@ -63,9 +57,8 @@ export const FormAddArtikel = () => {
       );
       setSuccessMessage("Artikel berhasil ditambahkan!");
       reset(); 
-      setContent(""); 
+      setContent("");
     } catch (error) {
-      console.error("Gagal menambahkan artikel:", error);
       setErrorMessage("Gagal menambahkan artikel, silakan coba lagi.");
     } finally {
       setLoading(false);
@@ -83,7 +76,7 @@ export const FormAddArtikel = () => {
             {/* Input ID Author */}
             <div className="hidden">
                 <label htmlFor="author_id"></label>
-                <input value={user.id} readOnly {...register("author_id")}></input>
+                <input value={user?.id || ""} readOnly {...register("author_id")}></input>
             </div>
 
             {/* Judul Artikel */}
@@ -92,7 +85,7 @@ export const FormAddArtikel = () => {
               <Input
                 placeholder="Judul artikel"
                 className="mt-2 font-normal"
-                {...register("judul", { required: "Judul wajib diisi" })}
+                {...register("judul", { required: "Judul wajib diisi" })} 
               />
               {errors.judul && <p className="text-red-500">{errors.judul.message}</p>}
             </div>
@@ -103,7 +96,7 @@ export const FormAddArtikel = () => {
               <Input
                 placeholder="Nama author"
                 className="mt-2 font-normal"
-                {...register("author_name", { required: "Nama author wajib diisi" })}
+                {...register("author_name", { required: "Nama author wajib diisi" })} 
               />
               {errors.author_name && <p className="text-red-500">{errors.author_name.message}</p>}
             </div>
@@ -115,8 +108,7 @@ export const FormAddArtikel = () => {
                 name="kategori"
                 id="kategori"
                 className="w-fit border mt-2 p-2 rounded-md bg-white"
-                {...register("kategori", { required: "Kategori wajib dipilih" })}
-              >
+                {...register("kategori", { required: "Kategori wajib dipilih" })}>
                 <option value="">Pilih kategori</option>
                 <option value="pakan">Pakan</option>
                 <option value="lingkungan">Lingkungan</option>
@@ -146,7 +138,7 @@ export const FormAddArtikel = () => {
                 id="image_artikel"
                 className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 accept="image/png, image/jpeg"
-                {...register("image_artikel", { required: "Gambar artikel wajib diunggah" })}
+                {...register("image_artikel", { required: "Gambar artikel wajib diunggah" })} 
               />
               {errors.image_artikel && <p className="text-red-500">{errors.image_artikel.message}</p>}
             </div>
@@ -157,11 +149,11 @@ export const FormAddArtikel = () => {
               <input
                 type="date"
                 className="block mt-2 border p-2 rounded-md"
-                {...register("tanggal", { required: "Tanggal wajib diisi" })}
+                {...register("tanggal", { required: "Tanggal wajib diisi" })} 
               />
               {errors.tanggal && <p className="text-red-500">{errors.tanggal.message}</p>}
             </div>
-            
+
             {/* Tombol */}
             <div className="flex gap-4">
               <Button
