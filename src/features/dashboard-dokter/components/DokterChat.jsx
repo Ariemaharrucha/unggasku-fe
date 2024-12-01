@@ -1,86 +1,41 @@
 import { useState, useRef, useEffect } from "react";
 import { VscSend } from "react-icons/vsc";
 import { DashboardDokterLayout } from '../../../layouts/DashboardDokterLayout'
+import useUser from "../../../stores/useStore.js";
+import axios from "axios";
 
-  const UserUnggas = [
-    {
-      nama: "Rina Suryani",
-      konsultasi: "Unggas tidak nafsu makan dan terlihat lemas.",
-      tanggal: "23 Oktober 2024",
-      foto: "https://images.pexels.com/photos/4911743/pexels-photo-4911743.jpeg",
-    },
-    {
-      nama: "Budi Santoso",
-      konsultasi: "Masalah pada kulit ayam ternak, terlihat bercak merah.",
-      tanggal: "23 Oktober 2024",
-      foto: "https://images.pexels.com/photos/7781987/pexels-photo-7781987.jpeg",
-    },
-    {
-      nama: "Siti Nurhaliza",
-      konsultasi: "Produksi telur menurun, apakah masalah dari pakan?",
-      tanggal: "23 Oktober 2024",
-      foto: "https://images.pexels.com/photos/11371831/pexels-photo-11371831.jpeg",
-    },
-    {
-      nama: "Andi Wijaya",
-      konsultasi: "Lingkungan kandang terlihat lembap, ayam sering bersin.",
-      tanggal: "24 Oktober 2024",
-      foto: "https://images.pexels.com/photos/10141309/pexels-photo-10141309.jpeg",
-    },
-  ];
 
 export const DokterChat = () => {
+  const {user} = useUser();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [messages, setMessages] = useState([
-    {
-      text: "Halo, Dok! Ada beberapa ayam saya yang kelihatannya tidak sehat, kok lemas dan gak mau makan?",
-      sender: "user",
-      time: getCurrentTime(),
-    },
-  ]);
+  const [message, setMessage] = useState("")
+  const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState([])
+
   const [inputMessage, setInputMessage] = useState("");
   const [firstUserMessageSent, setFirstUserMessageSent] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
 
-  function getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-
-    return `${formattedHours}:${formattedMinutes} ${ampm}`;
-  }
+  useEffect(() => {
+    const fetchUsers = async () => {
+      if (user?.id) {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/dokter/${user.id}/users`
+          );
+          setUsers(response.data.data);
+        } catch (error) {
+          console.error("Failed to fetch users:", error);
+        }
+      }
+    };
+    fetchUsers();
+  }, [user?.id]);
 
   const handleSendMessage = () => {
-    if (inputMessage.trim() !== "") {
-      const newMessage = {
-        text: inputMessage,
-        sender: "dokter",
-        time: getCurrentTime(),
-      };
-      setMessages([...messages, newMessage]);
-      setInputMessage("");
-      setIsDokterTyping(false);
 
-      if (!firstUserMessageSent) {
-        setFirstUserMessageSent(true);
-        setIsTyping(true);
-
-        setTimeout(() => {
-          const userResponse = {
-            text: "Tidak ada batuk, tapi ada yang sedikit diare.",
-            sender: "user",
-            time: getCurrentTime(),
-          };
-          setMessages((prevMessages) => [...prevMessages, userResponse]);
-          setIsTyping(false);
-        }, 1000);
-      }
-    }
   };
 
   const handleKeyDown = (event) => {
@@ -98,16 +53,7 @@ export const DokterChat = () => {
       setIsDokterTyping(false);
     }
   };
-
-  useEffect(() => {
-    if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [messages]);
-  
+ 
   return (
     <DashboardDokterLayout >
       <section className="min-h-screen">
@@ -117,8 +63,8 @@ export const DokterChat = () => {
 
         <div className="flex h-auto">
           <div className="w-1/4 bg-white">
-            {UserUnggas.map((user, index) => (
-              <div key={index}>
+            {users && users.map((user, index) => (
+              <div key={user.id}>
                 <div
                   onClick={() => setActiveIndex(index)}
                   className={`px-4 py-2 cursor-pointer ${activeIndex === index
@@ -129,20 +75,20 @@ export const DokterChat = () => {
                   <div className="relative flex items-center space-x-4">
                     <div className="size-16 overflow-hidden rounded-full border-2 border-primary-950">
                       <img
-                        src={user.foto}
-                        alt={`Foto user ${user.nama}`}
+                        src={user.image_profile}
+                        alt={`Foto user ${user.username}`}
                         className=" object-cover  "
                       />
                     </div>
                     <div>
-                      <div className="font-semibold">{user.nama}</div>
+                      <div className="font-semibold">{user.username}</div>
                       <div className="text-xs text-gray-400">
-                        {user.tanggal}
+                        {/* {user.tanggal} */}
                       </div>
                     </div>
                   </div>
                 </div>
-                {index < UserUnggas.length - 1 && activeIndex !== index && (
+                {index < users.length - 1 && activeIndex !== index && (
                   <div className="h-[0.1px] bg-primary-950 mx-8 my-1" />
                 )}
               </div>
