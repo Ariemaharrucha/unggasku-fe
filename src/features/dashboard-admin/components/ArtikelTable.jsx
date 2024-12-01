@@ -111,7 +111,7 @@ export const ArtikelTable = () => {
                       {artikel.tanggal ? new Date(artikel.tanggal).toLocaleDateString("id-ID") : 'No date'}
                     </td>
                     <td className="px-6 py-4">
-                      {artikel.role || 'Admin / Dokter'}
+                      {artikel.role}
                     </td>
                     <td className="flex space-x-4 px-6 py-4">
                       <Link
