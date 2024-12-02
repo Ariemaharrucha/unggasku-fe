@@ -36,6 +36,11 @@ export const Layanan = () => {
   async function handleCreateKonsultasi(user_id, dokter_id, nama_dokter, spesialis, image_profile, jam_kerja) {
     console.log(user_id, dokter_id);
 
+    if(!user) {
+      navigate('/login');
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/konsultasi/findOrCreate`,
@@ -158,7 +163,7 @@ export const Layanan = () => {
                       size="medium"
                       className="w-24 py-2 text-center flex text-lg justify-center mt-2"
                       onClick={() =>
-                        handleCreateKonsultasi(user.id, dokter.dokter_id, dokter.nama_dokter, dokter.spesialis, dokter.image_profile, dokter.jam_kerja)
+                        handleCreateKonsultasi(user?.id, dokter.dokter_id, dokter.nama_dokter, dokter.spesialis, dokter.image_profile, dokter.jam_kerja)
                       }
                     >
                       Chat
