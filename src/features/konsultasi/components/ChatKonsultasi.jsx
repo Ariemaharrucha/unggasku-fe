@@ -18,7 +18,6 @@ export const Chatkonsultasi = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  // const [isTyping, setIsTyping] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
 
   const namaDokter = location.state?.nama_dokter || "Dokter Tidak Diketahui";
@@ -119,7 +118,7 @@ export const Chatkonsultasi = () => {
               <p>Loading messages...</p>
             ) : messages.length === 0 ? (
               <div className="flex flex-col flex-grow items-center justify-center text-gray-500">
-                <IoLogoWechat size={120}/>
+                <IoLogoWechat size={120} />
                 <p className="text-xl font-medium">
                   Silakan mulai konsultasi Anda
                 </p>
@@ -127,40 +126,49 @@ export const Chatkonsultasi = () => {
             ) : (
               <>
                 {messages &&
-                  messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`flex flex-col ${
-                        message.senderId !== user.id
-                          ? "items-start"
-                          : "items-end"
-                      }`}
-                      ref={
-                        index === messages.length - 1 ? latestMessageRef : null
-                      }
-                    >
-                      <div
-                        className={`${
-                          message.senderId !== user.id
-                            ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
-                            : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
-                        } max-w-md p-3`}
-                      >
-                        <p>{message.content}</p>
-                        <span className="text-xs text-gray-500 mt-1">
-                            {format(new Date(message.sent_at), "hh:mm a")}
-                        </span>
+                  messages.map((message, index) => {
+                    const tanggal =
+                      index === 0 ||
+                      new Date(messages[index].sent_at).toDateString() !==
+                        new Date(messages[index - 1].sent_at).toDateString();
+                    return (
+                      <div key={index}>
+                        {tanggal && (
+                          <div className="text-center text-gray-500 text-sm my-2">
+                            {format(
+                              new Date(message.sent_at),
+                              "EEEE, dd MMMM yyyy"
+                            )}
+                          </div>
+                        )}
+                        <div
+                          className={`flex flex-col ${
+                            message.senderId !== user.id
+                              ? "items-start"
+                              : "items-end"
+                          }`}
+                          ref={
+                            index === messages.length - 1
+                              ? latestMessageRef
+                              : null
+                          }
+                        >
+                          <div
+                            className={`${
+                              message.senderId !== user.id
+                                ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
+                                : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
+                            } max-w-md p-3`}
+                          >
+                            <p>{message.content}</p>
+                            <span className="text-xs text-gray-500 mt-1">
+                              {format(new Date(message.sent_at), "hh:mm a")}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-
-                {/* {isTyping && (
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl p-3 max-w-md">
-                      <TypingAnimation isUserTyping={false} />
-                    </div>
-                  </div>
-                )} */}
+                    );
+                  })}
 
                 {/* Animasi mengetik untuk user */}
                 {isUserTyping && (
