@@ -168,7 +168,7 @@ export const Konsultasi = () => {
               <div className="flex-grow space-y-4 overflow-y-auto ">
                 {loading ? (
                   <p>Loading messages...</p>
-                ) : messages.length === 0 ? (
+                ) : selectedDokter && messages.length === 0 ? (
                   <div className="h-full flex justify-center items-center ">
                     <div className="flex flex-col justify-center items-center text-gray-500">
                       <IoLogoWechat size={120} />
@@ -237,8 +237,9 @@ export const Konsultasi = () => {
                   </>
                 )}
               </div>
-
-              <div className="p-0.5 flex items-center bg-white rounded-full">
+              
+              {selectedDokter ? (
+              <div className="p-0.5 flex items-center bg-white rounded-full mt-4">
                 <div className="flex w-full">
                   <input
                     type="text"
@@ -258,6 +259,14 @@ export const Konsultasi = () => {
                   </div>
                 </div>
               </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                <p className="text-xl font-medium">
+                  Pilih user untuk mulai chat
+                </p>
+              </div>
+            )}
+              
             </div>
           </div>
         </section>

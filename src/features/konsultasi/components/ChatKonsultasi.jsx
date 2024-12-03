@@ -113,7 +113,7 @@ export const Chatkonsultasi = () => {
 
         {/* Chat */}
         <div className="flex flex-grow flex-col justify-between py-4 px-32">
-          <div className="flex flex-grow flex-col overflow-y-auto space-y-4">
+          <div className="flex flex-grow flex-col h-96 overflow-y-auto space-y-4 pb-1 ">
             {loading ? (
               <p>Loading messages...</p>
             ) : messages.length === 0 ? (
