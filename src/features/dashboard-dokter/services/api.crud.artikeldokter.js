@@ -58,3 +58,15 @@ export const updateArtikel = async (id, formData) => {
         throw new Error("Failed to update artikel.");
     }
 }
+
+export const deleteArtikel = async (id) => {
+    try {
+        const response = await axios.delete(
+            `${import.meta.env.VITE_API_URL}/dokter/artikel/${id}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting artikel:", error);
+        throw new Error("Failed to delete artikel.");
+    }
+}

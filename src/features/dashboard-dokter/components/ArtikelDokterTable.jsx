@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useGetArtikelDokter } from "../hooks/useGetArtikelDokter";
+import { deleteArtikel } from "../services/api.crud.artikeldokter";
 
 export const ArtikelDokterTable = () => {
   const { artikel, isLoading, error } = useGetArtikelDokter();
+  
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -11,6 +13,17 @@ export const ArtikelDokterTable = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
+
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus artikel ini?");
+    if (!isConfirmed) return; // If user cancels, do nothing
+    try {
+      await deleteArtikel(id);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting artikel:", error);
+    }
+  };
 
   return (
     <section className="translate-x-16">
@@ -77,20 +90,19 @@ export const ArtikelDokterTable = () => {
                   {new Date(artikel.tanggal).toLocaleDateString("id-ID")}
                 </td>
                 <td className="px-6 py-4">{artikel.role}</td>
-                <td className="space-x-4 px-6 py-4">
+                <td className="space-x-4 px-6 py-4 flex items-center justify-center">
                   <Link
                     to={`/dashboard/dokter/artikel/edit/${artikel.artikel_id}`}
                     className="text-white p-2 rounded-md bg-primary-400"
                   >
                     Update
                   </Link>
-                  <a
-                    href="#"
-                    className="text-white p-2 rounded-md bg-red-500"
-                    onClick={() => {}}
+                  <p
+                    className="inline-block cursor-pointer  text-white p-2 rounded-md bg-red-500"
+                    onClick={() => handleDelete(artikel.artikel_id)}
                   >
                     Delete
-                  </a>
+                  </p>
                 </td>
               </tr>
             ))}
