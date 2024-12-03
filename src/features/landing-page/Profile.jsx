@@ -6,6 +6,7 @@ import { getUser } from "./services/api.profile.js";
 import { editProfile } from "./services/api.profile.js";
 import useUser from "../../stores/useStore.js";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export const UserProfile = () => {
   const { id } = useParams();
@@ -98,7 +99,14 @@ export const UserProfile = () => {
         
         alert("Gagal memperbarui profil.");
     }
-};
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem('token');
+    Cookies.remove('accessToeken');
+    clearUser();
+    window.location.href = '/'
+  }
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -195,7 +203,7 @@ export const UserProfile = () => {
         </div>
           
         <div className="flex justify-between">
-          <button className="text-white bg-red-500  px-4 py-2 rounded-md">Log out</button>
+          <button className="text-white bg-red-500  px-4 py-2 rounded-md" onClick={handleLogOut}>Log out</button>
           <button
           onClick={handleSubmit}
             className="px-4 py-2 bg-primary-500 text-white font-semibold rounded-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
