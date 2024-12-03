@@ -8,17 +8,16 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
 export const FormEditArtikel = () => {
-  const { id } = useParams(); // Ambil ID artikel
+  const { id } = useParams(); 
   const [content, setContent] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [oldImage, setOldImage] = useState(""); // Menyimpan gambar lama
+  const [oldImage, setOldImage] = useState(""); 
   const [artikelData, setArtikelData] = useState(null);
 
-  // Default user setup
   const [user, setUser] = useState({
-    id: "admin", // Default ID untuk admin
-    role: "admin", // Default role sebagai admin
+    id: "admin", 
+    role: "admin",
   });
 
   const {
@@ -32,18 +31,16 @@ export const FormEditArtikel = () => {
     setContent(value);
   };
 
-  // Fetch artikel saat pertama kali di render
   useEffect(() => {
     const fetchArtikel = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`);
         if (response.ok) {
           const artikel = await response.json();
-          setArtikelData(artikel); // Menyimpan data artikel yang diambil
-          setContent(artikel.konten); // Muat konten awal
+          setArtikelData(artikel);
+          setContent(artikel.konten);
           setOldImage(artikel.image_artikel ? `http://localhost:3000/uploads/${artikel.image_artikel}` : "");
           
-          // Memuat artikel ke form dengan menggunakan reset
           reset({
             judul: artikel.judul,
             author_name: artikel.author_name,
@@ -65,11 +62,9 @@ export const FormEditArtikel = () => {
     setLoading(true);
     const formData = new FormData();
   
-    // Debugging data yang masuk
     console.log("Data image_artikel yang diterima:", data.image_artikel);
   
     formData.append("author_id", user.id);
-    formData.append("role", user.role);
     formData.append("judul", data.judul);
     formData.append("author_name", data.author_name);
     formData.append("kategori", data.kategori);
@@ -94,7 +89,7 @@ export const FormEditArtikel = () => {
       if (response.ok) {
         const result = await response.json();
         setSuccessMessage("Artikel berhasil diperbarui!");
-        reset(); // Reset form setelah berhasil
+        reset(); 
       } else {
         const error = await response.json();
         console.error("Error:", error);
@@ -128,17 +123,6 @@ export const FormEditArtikel = () => {
                 value={user.id}
                 readOnly
                 {...register("author_id")}
-              />
-            </div>
-
-            {/* Hidden Field untuk Role */}
-            <div className="hidden">
-              <label htmlFor="role"></label>
-              <input
-                type="text"
-                value={user.role}
-                readOnly
-                {...register("role")}
               />
             </div>
 
