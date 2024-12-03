@@ -6,6 +6,7 @@ import useUser from "../../../stores/useStore.js";
 import axios from "axios";
 import socket from "../../../socket/socket.js";
 import { format } from "date-fns";
+import { IoLogoWechat } from "react-icons/io5";
 
 export const Konsultasi = () => {
   const { user } = useUser();
@@ -167,7 +168,16 @@ export const Konsultasi = () => {
               <div className="flex-grow space-y-4 overflow-y-auto ">
                 {loading ? (
                   <p>Loading messages...</p>
-                ) : (
+                ) : messages.length === 0 ? (
+                  <div className="h-full flex justify-center items-center ">
+                    <div className="flex flex-col justify-center items-center text-gray-500">
+                      <IoLogoWechat size={120} />
+                      <p className="text-xl font-medium">
+                        Belum ada Chat dengan dokter
+                      </p>
+                    </div>
+                  </div>
+                ): (
                   <>
                     {messages &&
                       messages.map((message, index) => {
