@@ -1,118 +1,28 @@
 /* eslint-disable react/prop-types */
-import { useState, useRef, useEffect } from "react";
 import { VscSend } from "react-icons/vsc";
 import { Navbar } from "../../../components/shared/Navbar.jsx";
 import useUser from "../../../stores/useStore.js";
-import axios from "axios";
-import socket from "../../../socket/socket.js";
 import { format } from "date-fns";
 import { IoLogoWechat } from "react-icons/io5";
+import { useKonsultasi } from "../hooks/useKonsultasi.jsx";
 
 export const Konsultasi = () => {
   const { user } = useUser();
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [listDokter, setListDokter] = useState([]);
-  const [selectedDokter, setSelectedDokter] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isUserTyping, setIsUserTyping] = useState(false);
-  const latestMessageRef = useRef(null);
-
-  // fetch dokter
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (user?.id) {
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/konsultasi/dokter/${user?.id}`
-          );
-          console.log(response.data.data);
-          setListDokter(response.data.data);
-        } catch (error) {
-          console.error("Failed to fetch users:", error);
-        }
-      }
-    };
-    fetchUsers();
-  }, [user?.id]);
-
-  // sockter
-  useEffect(() => {
-    if (selectedDokter?.konsultasi_id) {
-      socket.emit("joinRoom", selectedDokter.konsultasi_id);
-
-      const handleReceiveMessage = (msg) => {
-        console.log("Message received in frontend:", msg);
-        setMessages((prev) => [...prev, msg]);
-      };
-
-      socket.on("receiveMessage", handleReceiveMessage);
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-      };
-    }
-  }, [selectedDokter?.konsultasi_id]);
-
-  // fetch message
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (selectedDokter?.konsultasi_id) {
-        try {
-          setLoading(true);
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/messages/${
-              selectedDokter.konsultasi_id
-            }`
-          );
-          setMessages(response.data.data);
-          console.log(response.data.data);
-        } catch (error) {
-          console.error("Failed to fetch messages:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchMessages();
-  }, [selectedDokter?.konsultasi_id]);
-
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      socket.emit("sendMessage", {
-        konsultasiId: selectedDokter.konsultasi_id,
-        senderId: user.id,
-        content: message,
-      });
-      setMessage("");
-      setIsUserTyping(false);
-    }
-  };
-
-  const handleMessage = (e) => {
-    setMessage(e.target.value);
-    if (e.target.value.trim() !== "") {
-      setIsUserTyping(true);
-    } else {
-      setIsUserTyping(false);
-    }
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  useEffect(() => {
-    if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [messages]);
+  
+  const {
+    message,
+    setMessage,
+    messages,
+    listDokter,
+    selectedDokter,
+    setSelectedDokter,
+    loading,
+    isUserTyping,
+    handleSendMessage,
+    handleMessage,
+    handleKeyDown,
+    latestMessageRef,
+  } = useKonsultasi(user);
 
   return (
     <div>
@@ -134,7 +44,7 @@ export const Konsultasi = () => {
                       onClick={() => {
                         if (selectedDokter?.id !== dokter.id) {
                           setSelectedDokter(dokter);
-                          setMessages([]);
+                          setMessage("");
                           console.log(dokter);
                         }
                       }}
