@@ -79,7 +79,7 @@ export const ArtikelDokterTable = () => {
                 <td className="px-6 py-4">{artikel.role}</td>
                 <td className="space-x-4 px-6 py-4">
                   <Link
-                    to={`/dashboard/dokter/artikel/edit/${artikel._id}`}
+                    to={`/dashboard/dokter/artikel/edit/${artikel.artikel_id}`}
                     className="text-white p-2 rounded-md bg-primary-400"
                   >
                     Update

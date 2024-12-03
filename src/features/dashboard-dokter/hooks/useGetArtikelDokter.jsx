@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getArtikelDokter } from '../services/api.get.artikeldokter';
+import { getArtikelDokter } from '../services/api.crud.artikeldokter';
 import useUser from '../../../stores/useStore';
 
 export const useGetArtikelDokter = () => {
