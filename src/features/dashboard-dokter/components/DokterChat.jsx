@@ -14,7 +14,6 @@ export const DokterChat = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [activeUser, setActiveUser] = useState(false);
 
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
