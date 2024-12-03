@@ -14,9 +14,26 @@ export const DokterChat = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null)
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
+
+    // socktet
+    useEffect(() => {
+      if (selectedUser?.konsultasi_id) {
+        socket.emit("joinRoom", selectedUser.konsultasi_id);
+  
+        const handleReceiveMessage = (msg) => {
+          console.log("Message received in frontend:", msg);
+          setMessages((prev) => [...prev, msg]);
+        };
+  
+        socket.on("receiveMessage", handleReceiveMessage);
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+        };
+      }
+    }, [selectedUser?.konsultasi_id]);
 
   // fetch pasien
   useEffect(() => {
@@ -60,22 +77,12 @@ export const DokterChat = () => {
     fetchMessages();
   }, [selectedUser?.konsultasi_id]);
 
-  // socktet
   useEffect(() => {
     if (selectedUser?.konsultasi_id) {
-      socket.emit("joinRoom", selectedUser.konsultasi_id);
-
-      const handleReceiveMessage = (msg) => {
-        console.log("Message received in frontend:", msg);
-        setMessages((prev) => [...prev, msg]);
-      };
-
-      socket.on("receiveMessage", handleReceiveMessage);
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-      };
+      socket.emit("leaveRoom", previousKonsultasiId);  // Make sure the doctor leaves the previous room
+      socket.emit("joinRoom", selectedUser.konsultasi_id);  // Join the new room
     }
-  }, [selectedUser?.konsultasi_id]);
+  }, [previousKonsultasiId, selectedUser?.konsultasi_id]);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -131,6 +138,7 @@ export const DokterChat = () => {
                       if (selectedUser?.id !== user.id) {
                         setSelectedUser(user);
                         setMessages([]);
+                        setPreviousKonsultasiId(user.konsultasi_id)
                         console.log(user);
                       }
                     }}
