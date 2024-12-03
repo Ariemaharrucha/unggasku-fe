@@ -5,7 +5,6 @@ import { IoLogoWechat } from "react-icons/io5";
 import { Navbar } from "../../../components/shared/Navbar.jsx";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-// import { LuMessageSquarePlus } from "react-icons/lu";
 import useUser from "../../../stores/useStore.js";
 import socket from "../../../socket/socket.js";
 
@@ -86,6 +85,15 @@ export const Chatkonsultasi = () => {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    if (latestMessageRef.current) {
+      latestMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [messages]);
 
   return (
     <>

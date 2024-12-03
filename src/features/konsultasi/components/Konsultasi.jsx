@@ -105,14 +105,14 @@ export const Konsultasi = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (latestMessageRef.current) {
-  //     latestMessageRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "nearest",
-  //     });
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (latestMessageRef.current) {
+      latestMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [messages]);
 
   return (
     <div>

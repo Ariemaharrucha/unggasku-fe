@@ -105,6 +105,15 @@ export const DokterChat = () => {
     }
   };
 
+  useEffect(() => {
+    if (latestMessageRef.current) {
+      latestMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [messages]);
+
   return (
     <DashboardDokterLayout>
       <section className="min-h-screen">
