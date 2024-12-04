@@ -47,11 +47,11 @@ const useAddArtikelDokter = () => {
       await createArtikelDokter(formData);
 
       setSuccessMessage("Artikel berhasil ditambahkan!");
-      alert("Artikel berhasil dibuat!");
       setContent("");
       setImagePreview(null);
-
-      navigate("/dashboard/dokter/artikel");
+      setTimeout(() => {
+        navigate("/dashboard/dokter/artikel");
+      }, 2000);
     } catch (err) {
       setError(err.message || "Gagal menambahkan artikel");
     } finally {
