@@ -17,6 +17,7 @@ export const DokterChat = () => {
   const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null)
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
+  const [lastChat, setLastChat] = useState(null);
 
     // socktet
     useEffect(() => {
@@ -151,13 +152,13 @@ export const DokterChat = () => {
                         <img
                           src={user.image_profile}
                           alt={`Foto user ${user.username}`}
-                          className=" object-cover"
+                          className=" object-cover h-full w-full"
                         />
                       </div>
                       <div>
                         <div className="font-semibold ">{user.username}</div>
                         <div className="text-xs text-gray-400">
-                          {/* {user.tanggal} */}
+                          {/* {last chat} */}
                         </div>
                       </div>
                     </div>
@@ -188,6 +189,7 @@ export const DokterChat = () => {
                                 new Date(message.sent_at),
                                 "EEEE, dd MMMM yyyy"
                               )}
+                              
                             </div>
                           )}
 

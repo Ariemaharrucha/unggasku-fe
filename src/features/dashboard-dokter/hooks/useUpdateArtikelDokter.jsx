@@ -30,7 +30,6 @@ export const useUpdateArtikelDokter = (id) => {
                     setArtikel(artikelData);
                     setContent(artikelData.konten);
     
-                    // Format the date to "yyyy-MM-dd"
                     const formattedDate = artikelData.tanggal
                         ? new Date(artikelData.tanggal).toISOString().split('T')[0]
                         : "";
@@ -39,7 +38,7 @@ export const useUpdateArtikelDokter = (id) => {
                         judul: artikelData.judul || "",
                         author_name: artikelData.author_name || "",
                         kategori: artikelData.kategori || "",
-                        tanggal: formattedDate,  // Formatted date
+                        tanggal: formattedDate,  
                         konten: artikelData.konten || "",
                         image_artikel: artikelData.image_artikel || null,
                     });
@@ -73,6 +72,8 @@ export const useUpdateArtikelDokter = (id) => {
     };
 
     const onSubmit = async (data) => {
+        // const isConfirmed = window.confirm("Apakah Anda yakin ingin mengubah artikel ini?");
+        // if (!isConfirmed) return;
         setIsLoading(true);
         try {
             const formData = new FormData();
@@ -80,28 +81,30 @@ export const useUpdateArtikelDokter = (id) => {
             formData.append("author_name", data.author_name);
             formData.append("kategori", data.kategori);
             formData.append("tanggal", data.tanggal);
-            formData.append("konten", data.konten);
+            formData.append("konten", content);
             
             if (data.image_artikel && data.image_artikel[0]) {
                 formData.append("image_artikel", data.image_artikel[0]);
             } else {
-                // Keep the old image if no new image is selected
-                if (artikel?.image_artikel) {
-                    formData.append("image_artikel", artikel.image_artikel);
-                }
+             if (artikel?.image_artikel) {
+              formData.append("image_artikel", artikel.image_artikel);
+             }
             }
-               
-            
 
             const response = await updateArtikel(id, formData);
             setSuccessMessage("Artikel berhasil diperbarui.");
             setArtikel(response.data);
             reset();
+            // navigate("/dashboard/dokter/artikel");
         } catch (err) {
             setError(err.message || "Terjadi kesalahan saat memperbarui artikel.");
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const onContentChange = (value) => {
+        setContent(value);
     };
 
     return {
@@ -117,5 +120,6 @@ export const useUpdateArtikelDokter = (id) => {
         handleImageChange,
         onSubmit,
         content,
+        onContentChange
     };
 };

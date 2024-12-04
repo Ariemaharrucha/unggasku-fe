@@ -8,9 +8,19 @@ const useAddArtikelDokter = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);  
     const [successMessage, setSuccessMessage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+
 
     const handleChange = (value) => {
         setContent(value);
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+        }
     };
 
     const onSubmit = async (data) => {
@@ -36,7 +46,9 @@ const useAddArtikelDokter = () => {
                 await createArtikelDokter(formData);
 
                 setSuccessMessage("Artikel berhasil ditambahkan!");
-                setContent("");
+            setContent("");
+            setImagePreview(null);
+            
             } catch (err) {
                 setError(err.message || "Gagal menambahkan artikel");
             } finally {
@@ -52,6 +64,8 @@ const useAddArtikelDokter = () => {
         successMessage,
         handleChange,
         onSubmit,
+        imagePreview,
+        handleImageChange
     };
 };
 
