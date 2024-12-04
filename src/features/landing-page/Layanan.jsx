@@ -8,6 +8,7 @@ import { getDokter } from "./services/api.layanan.js";
 import { CardDokter } from "../../components/shared/CardSliderDokter.jsx";
 import axios from "axios";
 import useUser from "../../stores/useStore.js";
+import { AiOutlineLike } from "react-icons/ai";
 
 export const Layanan = () => {
   const {user} = useUser();
@@ -142,10 +143,10 @@ export const Layanan = () => {
                     <h3 className="text-xl font-semibold">{dokter.nama_dokter}</h3>
                     <p className="text-base font-normal">{dokter.spesialis}</p>
                     <div className="flex flex-row gap-x-4 mt-2">
-                      {/* <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
+                      <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
                         <AiOutlineLike className="text-lg" />
-                        {dokter.like}
-                      </span> */}
+                        
+                      </span>
                       <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
                         <FiBriefcase className="text-lg" />
                         {dokter.pengalaman}
