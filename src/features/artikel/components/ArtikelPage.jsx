@@ -1,37 +1,20 @@
-import { useState } from "react";
 import image from "../../../assets/jumbotronArtikelPage.png";
 import { IoSearch } from "react-icons/io5";
-
-import kategoriArtikel1 from "../../../assets/kategoriArtikel1.jpg";
-import kategoriArtikel2 from "../../../assets/kategoriArtikel2.jpeg";
-import kategoriArtikel3 from "../../../assets/kategoriArtikel3.jpeg";
 import { Layout } from "../../../layouts/Layout.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import { Cardkategori } from "../../../components/shared/Cardkategori.jsx";
-
-const categoriesData = {
-  kesehatan: [
-    { title: "Penyakit Umum", image: kategoriArtikel1 },
-    { title: "Pencegahan dan Vaksinasi", image: kategoriArtikel1 },
-  ],
-  pakan: [{ title: "Pakan", image: kategoriArtikel2 }],
-  nutrisi: [{ title: "Nutrisi Unggas", image: kategoriArtikel3 }],
-  lingkungan: [
-    {
-      title: "Lingkungan",
-      image:
-        "https://i.pinimg.com/736x/c6/ce/db/c6cedb4f2d8a843076246165f2c02e8a.jpg",
-    },
-  ],
-};
+import { useArtikelPage } from "../hooks/useArtikelpage.jsx";
 
 export const ArtikelPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("kesehatan");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredArticles = categoriesData[selectedCategory].filter((item) =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const { 
+    selectedCategory, 
+    setSelectedCategory, 
+    searchTerm, 
+    setSearchTerm, 
+    articles, 
+    loading, 
+    error 
+  } = useArtikelPage("kesehatan-unggas");
 
   return (
     <Layout>
@@ -94,9 +77,9 @@ export const ArtikelPage = () => {
           </p>
         </div>
 
-        {/* Button Kategori */}
-        <div className="grid grid-cols-4 mt-10">
-          {Object.keys(categoriesData).map((category) => (
+         {/* Button Kategori */}
+         <div className="grid grid-cols-4 mt-10">
+          {["kesehatan-unggas", "lingkungan", "nutrisi", "pakan"].map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -111,15 +94,22 @@ export const ArtikelPage = () => {
           ))}
         </div>
 
+          {/* card artikel */}
         <div className="grid grid-cols-4 gap-4 pt-4">
-          {filteredArticles.map((item, index) => (
-            <Cardkategori
-              key={index}
-              image={item.image}
-              title={item.title}
-              to={"/artikel/12"}
-            />
-          ))}
+          {loading && <p className="text-center col-span-4">Loading...</p>}
+          {error && <p className="text-red-500 col-span-4">{error}</p>}
+          {articles.length > 0 ? (
+            articles.map((item, index) => (
+              <Cardkategori
+                key={index}
+                image={item.image_artikel}
+                title={item.judul}
+                to={`/artikel/${item.artikel_id}`}
+              />
+            ))
+          ) : (
+            !loading && <p className="text-center col-span-4">Tidak ada artikel ditemukan.</p>
+          )}
         </div>
       </section>
     </Layout>

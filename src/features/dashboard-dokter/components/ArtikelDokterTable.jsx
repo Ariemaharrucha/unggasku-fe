@@ -28,10 +28,11 @@ export const ArtikelDokterTable = () => {
   };
 
   return (
-    <section className="translate-x-16">
+    <section className=" ">
       <div className="relative overflow-x-auto">
-        <table className="text-left text-sm text-gray-500 w-full">
-          <thead className="bg-gray-50 text-sm uppercase text-gray-700">
+        <div className="h-screen overflow-y-auto">
+        <table className="text-left text-sm  text-gray-500 w-full">
+          <thead className="bg-gray-50 text-sm uppercase sticky top-0 text-gray-700">
             <tr>
               <th scope="col" className="px-6 py-3">
                 No
@@ -96,7 +97,7 @@ export const ArtikelDokterTable = () => {
                     }}
                   ></div>
                 </td>
-                <td className="px-6 py-4">{'lingkungan'}</td>
+                <td className="px-6 py-4">{artikel.kategori}</td>
                 <td className="px-6 py-4">
                   {new Date(artikel.tanggal).toLocaleDateString("id-ID")}
                 </td>
@@ -121,6 +122,7 @@ export const ArtikelDokterTable = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </section>
   );

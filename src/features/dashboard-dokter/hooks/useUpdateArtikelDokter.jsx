@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getArtikelDokterDetail, updateArtikel } from "../services/api.crud.artikeldokter";
 import useUser from "../../../stores/useStore";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const useUpdateArtikelDokter = (id) => {
     const { user } = useUser();
@@ -11,6 +12,7 @@ export const useUpdateArtikelDokter = (id) => {
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -72,8 +74,8 @@ export const useUpdateArtikelDokter = (id) => {
     };
 
     const onSubmit = async (data) => {
-        // const isConfirmed = window.confirm("Apakah Anda yakin ingin mengubah artikel ini?");
-        // if (!isConfirmed) return;
+        const isConfirmed = window.confirm("Apakah Anda yakin ingin mengubah artikel ini?");
+        if (!isConfirmed) return;
         setIsLoading(true);
         try {
             const formData = new FormData();
@@ -95,7 +97,7 @@ export const useUpdateArtikelDokter = (id) => {
             setSuccessMessage("Artikel berhasil diperbarui.");
             setArtikel(response.data);
             reset();
-            // navigate("/dashboard/dokter/artikel");
+            navigate("/dashboard/dokter/artikel");
         } catch (err) {
             setError(err.message || "Terjadi kesalahan saat memperbarui artikel.");
         } finally {
