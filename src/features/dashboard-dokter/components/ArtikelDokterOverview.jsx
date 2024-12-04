@@ -9,7 +9,7 @@ export const ArtikelDokterOverview = () => {
   return (
     <DashboardDokterLayout>
       <main className="max-w-6xl">
-        <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-2 translate-x-16">
+        <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-2 ">
           <div>
             <h3 className="text-xl">Artikel Dokter</h3>
             <p className="text-sm text-gray-600">Kelola dan lihat artikel kesehatan yang relevan untuk pasien dan pengobatan.</p>
