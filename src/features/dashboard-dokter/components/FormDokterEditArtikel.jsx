@@ -5,6 +5,7 @@ import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
 import { useUpdateArtikelDokter } from "../hooks/useUpdateArtikelDokter.jsx";
+import { useEffect } from "react";
 
 export const FormDokterEditArtikel = () => {
   const { id } = useParams();
@@ -20,8 +21,12 @@ export const FormDokterEditArtikel = () => {
     handleImageChange,
     onSubmit,
     content,
+    onContentChange
   } = useUpdateArtikelDokter(id);
 
+  useEffect(() => {
+    console.log(artikel); 
+  }, [artikel]);
 
   if (!artikel) {
     return <p>Loading...</p>;
@@ -80,6 +85,7 @@ export const FormDokterEditArtikel = () => {
                 value={content}
                 placeholder="Tulis konten di sini"
                 className="block w-full mt-2"
+                onChange={onContentChange}
               />
               {errors.konten && <p className="text-red-500">{errors.konten.message}</p>}
             </div>
@@ -90,7 +96,6 @@ export const FormDokterEditArtikel = () => {
               </label>
               <input
                 type="file"
-
                 id="image_artikel"
                 accept="image/png, image/jpeg"
                 className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer
@@ -99,17 +104,15 @@ export const FormDokterEditArtikel = () => {
                 file:py-3 file:px-4"
                 {...register("image_artikel")}
                 onChange={handleImageChange}
-
               />
               {errors.image_artikel && (
                 <p className="text-red-500">{errors.image_artikel.message}</p>
               )}
             </div>
-            <div className="size-40 overflow-hidden">
+            <div className="size-56 overflow-hidden rounded-md mt-4">
               {imagePreview ? (
                 <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
               ) : (
-                // Display the current image if no new image is selected
                 artikel?.image_artikel && (
                   <img src={artikel.image_artikel} alt="Existing Artikel" className="h-full w-full object-cover" />
                 )

@@ -16,6 +16,8 @@ export const FormDokterAddArtikel = () => {
     successMessage,
     handleChange,
     onSubmit,
+    handleImageChange,
+    imagePreview
   } = useAddArtikelDokter();
 
   return (
@@ -118,7 +120,13 @@ export const FormDokterAddArtikel = () => {
                 {...register("image_artikel", {
                   required: "Gambar artikel wajib diunggah",
                 })}
+                onChange={handleImageChange}
               />
+              {imagePreview && (
+              <div className="size-56 overflow-hidden mt-4 rounded-md">
+                  <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
+              </div>
+              )} 
               {errors.image_artikel && (
                 <p className="text-red-500">{errors.image_artikel.message}</p>
               )}

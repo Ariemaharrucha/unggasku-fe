@@ -4,10 +4,12 @@ import { deleteArtikel } from "../services/api.crud.artikeldokter";
 
 export const ArtikelDokterTable = () => {
   const { artikel, isLoading, error } = useGetArtikelDokter();
-  
+
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="flex items-center justify-center">
+      <p>Loading...</p>
+    </div>;
   }
 
   if (error) {
@@ -16,7 +18,7 @@ export const ArtikelDokterTable = () => {
 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus artikel ini?");
-    if (!isConfirmed) return; // If user cancels, do nothing
+    if (!isConfirmed) return; 
     try {
       await deleteArtikel(id);
       window.location.reload();
@@ -36,6 +38,9 @@ export const ArtikelDokterTable = () => {
               </th>
               <th scope="col" className="px-6 py-3">
                 Judul
+              </th>
+              <th scope="col" className="px-6 py-3">
+                author name
               </th>
               <th scope="col" className="px-6 py-3">
                 Images
@@ -66,12 +71,18 @@ export const ArtikelDokterTable = () => {
                     ? `${artikel.judul.substring(0, 25)}...`
                     : artikel.judul || ""}
                 </td>
+                <td className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4">
+                  {artikel.author_name?.length > 20
+                    ? `${artikel.author_name.substring(0, 25)}...`
+                    : artikel.author_name || ""}
+                </td>
                 <td className="px-6 py-4 overflow-hidden">
                   <div className="size-52">
                     <img
                       src={artikel.image_artikel}
                       alt={artikel.judul || "No Image"}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                 </td>
@@ -90,19 +101,21 @@ export const ArtikelDokterTable = () => {
                   {new Date(artikel.tanggal).toLocaleDateString("id-ID")}
                 </td>
                 <td className="px-6 py-4">{artikel.role}</td>
-                <td className="space-x-4 px-6 py-4 flex items-center justify-center">
-                  <Link
-                    to={`/dashboard/dokter/artikel/edit/${artikel.artikel_id}`}
-                    className="text-white p-2 rounded-md bg-primary-400"
-                  >
-                    Update
-                  </Link>
-                  <p
-                    className="inline-block cursor-pointer  text-white p-2 rounded-md bg-red-500"
-                    onClick={() => handleDelete(artikel.artikel_id)}
-                  >
-                    Delete
-                  </p>
+                <td className="space-x-4 px-6 py-4 ">
+                  <div className="h-full w-full flex gap-4">
+                    <Link
+                      to={`/dashboard/dokter/artikel/edit/${artikel.artikel_id}`}
+                      className="text-white p-2 rounded-md bg-primary-400"
+                    >
+                      Update
+                    </Link>
+                    <div
+                      className="block cursor-pointer  text-white p-2 rounded-md bg-red-500"
+                      onClick={() => handleDelete(artikel.artikel_id)}
+                    >
+                      Delete
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}
