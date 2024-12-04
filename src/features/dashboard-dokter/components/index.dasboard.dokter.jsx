@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
 import ProfileDokter from "../../../assets/Images/layanan/dr_card1.jpeg";
 import Button from "../../../components/ui/Button.jsx";
+import useUser from "../../../stores/useStore.js";
 
 export const DashboardDokter = () => {
+  const {user} = useUser();
   const [Id, setId] = useState(1);
   const [fullName, setFullName] = useState("Stefanus Fandi Wibowo");
   const [nomorSTR, setNomorSTR] = useState("712183827489239");
@@ -17,7 +19,7 @@ export const DashboardDokter = () => {
         <div className="flex w-full bg-white shadow-xl rounded-xl">
           <div className="flex mx-auto justify-center items-center">
             <img
-              src={ProfileDokter}
+              src={user.image}
               alt="Doctor"
               className="w-80 h-80 object-cover object-top rounded-full border-4 border-black"
             />

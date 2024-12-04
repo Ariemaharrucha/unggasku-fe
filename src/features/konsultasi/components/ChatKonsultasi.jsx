@@ -1,166 +1,120 @@
-import { useEffect, useState, useRef } from "react";
+import { format } from "date-fns";
 import { VscSend } from "react-icons/vsc";
+import { IoLogoWechat } from "react-icons/io5";
 import { Navbar } from "../../../components/shared/Navbar.jsx";
+import { useLocation, useParams } from "react-router-dom";
+import useUser from "../../../stores/useStore.js";
+import { useChatKonsultasi } from "../hooks/useChatkonsultasi.jsx";
 
 export const Chatkonsultasi = () => {
-  const [messages, setMessages] = useState([
-    {
-      text: "Halo, apakah ada yang bisa saya bantu?",
-      sender: "dokter",
-      time: getCurrentTime(),
-    },
-  ]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [firstUserMessahgeSend, setFirstUserMessageSend] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isUserTyping, setIsUserTyping] = useState(false);
-  const latestMessageRef = useRef(null);
+  const { user } = useUser();
+  const { konsultasiId } = useParams();
+  const location = useLocation();
+  const konsultasi_id = parseInt(konsultasiId);
 
-  function getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
+  const { nama_dokter, spesialis, image_profile, jam_kerja } = location.state || {};
 
-    return `${formattedHours}:${formattedMinutes} ${ampm}`;
-  }
-
-  const handleSendMessage = () => {
-    if (inputMessage.trim() !== "") {
-      const newMessage = {
-        text: inputMessage,
-        sender: "user",
-        time: getCurrentTime(),
-      };
-      setMessages([...messages, newMessage]);
-      setInputMessage("");
-      setIsUserTyping(false);
-
-      if (!firstUserMessahgeSend) {
-        setFirstUserMessageSend(true);
-        setIsTyping(true);
-
-        setTimeout(() => {
-          const dokterResponse = {
-            text: "Saya bisa bantu. Tolong ceritakan detail kronologi kenapa hewan unggas anda? Apakah hewan unggas anda bermasalah dengan kesehatan, pakan, lingkungan, atau yang lainnya?",
-            sender: "dokter",
-            time: getCurrentTime(),
-          };
-          setMessages((prevMessages) => [...prevMessages, dokterResponse]);
-          setIsTyping(false);
-        }, 1000);
-      }
-    }
-  };
-
-  const handleUserTyping = (e) => {
-    setInputMessage(e.target.value);
-    if (e.target.value.trim() !== "") {
-      setIsUserTyping(true);
-    } else {
-      setIsUserTyping(false);
-    }
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  useEffect(() => {
-    if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [messages]);
-
+  // Use the custom hook for chat functionality
+  const {
+    messages,
+    loading,
+    message,
+    isUserTyping,
+    latestMessageRef,
+    handleMessageChange,
+    handleKeyDown,
+    sendMessage,
+  } = useChatKonsultasi(konsultasi_id, user);
   return (
     <>
-      <div>
-        <Navbar />
-      </div>
+      <Navbar />
+
       <section className="min-h-screen w-full flex flex-col bg-gray-200">
         <div className="bg-secondary-300 w-full py-2 px-32">
           <div className="flex items-center">
             <div className="w-14 h-14 overflow-hidden rounded-full border-2 border-black">
-              <img
-                className=" object-cover object-top "
-                src="\src\assets\Images\layanan\dr_card1.jpeg"
-                alt=""
-              />
+              <img className="object-cover object-top" src={image_profile} alt="Dokter" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-md font-bold pl-3">Dr. Stefanus Fandi W</h3>
-              <p className="text-sm pl-3 opacity-50">Nutrisi hewan unggas</p>
-              <p className="text-sm pl-3 opacity-50">08.00 - 20.00</p>
+              <h3 className="text-md font-bold pl-3">{nama_dokter || "Dokter Tidak Diketahui"}</h3>
+              <p className="text-sm pl-3 opacity-50">{spesialis || "spesialis Tidak Diketahui"}</p>
+              <p className="text-sm pl-3 opacity-50">{jam_kerja || "jam kerja tidak diketahui"}</p>
             </div>
           </div>
         </div>
 
         {/* Chat */}
         <div className="flex flex-grow flex-col justify-between py-4 px-32">
-          <div className="flex flex-grow flex-col overflow-y-auto space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex flex-col ${
-                  message.sender === "dokter" ? "items-start" : "items-end"
-                }`}
-                ref={index === messages.length - 1 ? latestMessageRef : null}
-              >
-                <div
-                  className={`${
-                    message.sender === "dokter"
-                      ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
-                      : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
-                  } max-w-md p-3`}
-                >
-                  {message.text}
-                </div>
-                <span className="text-xs text-gray-500 mt-1">
-                  {message.time}
-                </span>
+          <div className="flex flex-grow flex-col h-96 overflow-y-auto space-y-4 pb-1">
+            {loading ? (
+              <p>Loading messages...</p>
+            ) : messages.length === 0 ? (
+              <div className="flex flex-col flex-grow items-center justify-center text-gray-500">
+                <IoLogoWechat size={120} />
+                <p className="text-xl font-medium">Silakan mulai konsultasi Anda</p>
               </div>
-            ))}
+            ) : (
+              messages.map((message, index) => {
+                const isDateChanged =
+                  index === 0 ||
+                  new Date(messages[index].sent_at).toDateString() !==
+                    new Date(messages[index - 1].sent_at).toDateString();
 
-            {isTyping && (
-              <div className="flex items-center space-x-2">
-                <div className="bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl p-3 max-w-md">
-                  <TypingAnimation isUserTyping={false} />
-                </div>
-              </div>
+                return (
+                  <div key={index}>
+                    {isDateChanged && (
+                      <div className="text-center text-gray-500 text-sm my-2">
+                        {format(new Date(message.sent_at), "EEEE, dd MMMM yyyy")}
+                      </div>
+                    )}
+                    <div
+                      className={`flex flex-col ${
+                        message.senderId !== user.id ? "items-start" : "items-end"
+                      }`}
+                      ref={index === messages.length - 1 ? latestMessageRef : null}
+                    >
+                      <div
+                        className={`${
+                          message.senderId !== user.id
+                            ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
+                            : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
+                        } max-w-md p-3`}
+                      >
+                        <p>{message.content}</p>
+                        <span className="text-xs text-gray-500 mt-1">
+                          {format(new Date(message.sent_at), "hh:mm a")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
             )}
 
-            {/* Animasi mengetik untuk user */}
+            {/* Typing animation */}
             {isUserTyping && (
               <div className="flex items-center space-x-2 justify-end">
                 <div className="bg-gray-800 text-white rounded-l-xl rounded-tr-xl p-3 max-w-md">
-                  <TypingAnimation isUserTyping={true} />
+                  <TypingAnimation />
                 </div>
               </div>
             )}
           </div>
 
           <div className="flex mx-auto w-full justify-center">
-            <div className="p-0.5 flex items-center bg-white rounded-full w-full ">
+            <div className="p-0.5 flex items-center bg-white rounded-full w-full">
               <div className="flex w-full">
                 <input
                   type="text"
                   placeholder="Type your message..."
-                  value={inputMessage}
-                  onChange={handleUserTyping}
+                  value={message}
+                  onChange={handleMessageChange}
                   onKeyDown={handleKeyDown}
                   className="flex-grow px-7 text-lg border rounded-full focus:outline-none border-none"
                 />
                 <div className="p-2">
                   <button
-                    onClick={handleSendMessage}
+                    onClick={sendMessage}
                     className="bg-yellow-400 text-primary-950 p-2 rounded-full"
                   >
                     <VscSend />
@@ -175,16 +129,11 @@ export const Chatkonsultasi = () => {
   );
 };
 
-const TypingAnimation = ({ isUserTyping }) => {
-  return (
-    <div
-      className={`flex space-x-1 ${
-        isUserTyping ? "justify-end" : "justify-start"
-      }`}
-    >
-      <span className="text-2xl animate-bounce">.</span>
-      <span className="text-2xl animate-bounce delay-75">.</span>
-      <span className="text-2xl animate-bounce delay-150">.</span>
-    </div>
-  );
-};
+// eslint-disable-next-line react/prop-types
+const TypingAnimation = () => (
+  <div className="flex space-x-1 justify-end">
+    <span className="text-2xl animate-bounce">.</span>
+    <span className="text-2xl animate-bounce delay-75">.</span>
+    <span className="text-2xl animate-bounce delay-150">.</span>
+  </div>
+);

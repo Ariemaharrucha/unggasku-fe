@@ -1,239 +1,65 @@
 import { Layout } from "../../layouts/Layout";
-import { AiOutlineLike } from "react-icons/ai";
 import { FiBriefcase } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button.jsx";
-import Slider from "react-slick";
-
-function scrollToSection() {
-  const section = document.getElementById("detail");
-  section.scrollIntoView({ behavior: "smooth" });
-}
-
-const DokterList = [
-  {
-    nama: "Dr.Stefanus fandi wibowo",
-    spesialis: "Nutrisi hewan unggas",
-    like: "90.0%",
-    pengalaman: "2 tahun",
-    harga: "50000",
-    discont: "100000",
-    status: "Online",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Gadjah Mada, 2020",
-        kampus2: "S2 Universitas Gadjah Mada, 2023",
-      },
-    ],
-    praktik: "Kab. Depok, Yogyakarta",
-    nomorStr: "712183827489239",
-    foto: "src/assets/Images/layanan/dr_card1.jpeg",
-  },
-  {
-    nama: "Dr.Ahmad syariffudin",
-    spesialis: "Nutrisi hewan unggas",
-    like: "95.0%",
-    pengalaman: "4 tahun",
-    harga: "150000",
-    discont: "200000",
-    status: "Offline",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Gadjah Mada, 2020",
-        kampus2: "S2 Universitas Gadjah Mada, 2023",
-      },
-    ],
-    praktik: "Kab. Depok, Yogyakarta",
-    nomorStr: "712183827489239",
-    foto: "src/assets/Images/layanan/dr_card2.jpeg",
-  },
-  {
-    nama: "Dr.Candra dewi",
-    spesialis: "Nutrisi hewan unggas",
-    like: "93.0%",
-    pengalaman: "3 tahun",
-    harga: "250000",
-    discont: "300000",
-    status: "Online",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Gadjah Mada, 2020",
-        kampus2: "S2 Universitas Gadjah Mada, 2023",
-      },
-    ],
-    praktik: "Kab. Depok, Yogyakarta",
-    nomorStr: "712183827489239",
-    foto: "src/assets/Images/layanan/dr_card3.jpeg",
-  },
-  {
-    nama: "Dr.Wulan safitri",
-    spesialis: "Nutrisi hewan kucing",
-    like: "92.0%",
-    pengalaman: "6 tahun",
-    harga: "120000",
-    discont: "170000",
-    status: "Offline",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Airlangga, 2017",
-        kampus2: "S2 Universitas Gadjah Mada, 2021",
-      },
-    ],
-    praktik: "Kab. Bantul, Yogyakarta",
-    nomorStr: "912183827489231",
-    foto: "src/assets/Images/layanan/dr_card4.jpeg",
-  },
-  {
-    nama: "Dr.Lisa maharani",
-    spesialis: "Kesehatan hewan anjing",
-    like: "96.5%",
-    pengalaman: "7 tahun",
-    harga: "250000",
-    discont: "320000",
-    status: "Online",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Gadjah Mada, 2016",
-        kampus2: "S2 Universitas Indonesia, 2020",
-      },
-    ],
-    praktik: "Kab. Kulon Progo, Yogyakarta",
-    nomorStr: "712183827489233",
-    foto: "src/assets/Images/layanan/dr_card5.jpeg",
-  },
-  {
-    nama: "Dr.Andi saputra",
-    spesialis: "Dokter hewan umum",
-    like: "94.0%",
-    pengalaman: "8 tahun",
-    harga: "200000",
-    discont: "270000",
-    status: "Offline",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Padjajaran, 2015",
-        kampus2: "S2 Universitas Airlangga, 2019",
-      },
-    ],
-    praktik: "Kab. Sleman, Yogyakarta",
-    nomorStr: "712183827489232",
-    foto: "src/assets/Images/layanan/dr_card6.jpeg",
-  },
-  {
-    nama: "Dr.Bagus pramudito",
-    spesialis: "Kesehatan hewan ternak",
-    like: "88.0%",
-    pengalaman: "5 tahun",
-    harga: "175000",
-    discont: "225000",
-    status: "Online",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Indonesia, 2018",
-        kampus2: "S2 Universitas Indonesia, 2022",
-      },
-    ],
-    praktik: "Kab. Sleman, Yogyakarta",
-    nomorStr: "812183827489230",
-    foto: "src/assets/Images/layanan/dr_card7.jpeg",
-  },
-  {
-    nama: "Dr. Eka prasetya ",
-    spesialis: "Kesehatan hewan ternak",
-    like: "98.0%",
-    pengalaman: "3 tahun",
-    harga: "105000",
-    discont: "225000",
-    status: "Offline",
-    alumni: [
-      {
-        kampus1: "S1 Universitas Indonesia, 2018",
-        kampus2: "S2 Universitas Indonesia, 2022",
-      },
-    ],
-    praktik: "Kab. Sleman, Yogyakarta",
-    nomorStr: "812183827489230",
-    foto: "src/assets/Images/layanan/dr_card8.jpeg",
-  },
-];
-
-const Dokter = () => {
-  return (
-    <section className="p-10 md:min-h-screen">
-      <div className="container mx-auto">
-        <h2 className="md:text-5xl text-4xl font-bold mb-10 text-center">
-          Daftar Dokter Ahli
-        </h2>
-        <SliderLayanan>
-          {DokterList.map((dokter, index) => (
-            <div key={index} className="p-4">
-              <div className="bg-gray-300 p-5 rounded-lg">
-                <div className="w-full h-80 overflow-hidden">
-                  <img
-                    className="rounded-t-lg"
-                    src={dokter.foto}
-                    alt={dokter.nama}
-                  />
-                </div>
-                <div className="border-black border-x-2 border-b-2 pt-2">
-                  <h3 className="text-xl font-semibold pl-3">{dokter.nama}</h3>
-                  <p className="text-sm font-normal pl-3">{dokter.spesialis}</p>
-                  <div className="flex gap-2 my-2 pl-3">
-                    <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
-                      <AiOutlineLike className="text-lg" />
-                      {dokter.like}
-                    </span>
-                    <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
-                      <FiBriefcase className="text-lg" />
-                      {dokter.pengalaman}
-                    </span>
-                  </div>
-                  <div className="bg-gray-50 w-full pl-3 py-1">
-                    <p>Rp. {parseInt(dokter.harga).toLocaleString("id-ID")}</p>
-                    <s className="opacity-50">
-                      Rp. {parseInt(dokter.discont).toLocaleString("id-ID")}
-                    </s>
-                  </div>
-                </div>
-                <div className="border-black border-x-2 border-b-2 rounded-b-lg">
-                  <div className="pl-8 py-3">
-                    <h3 className="text-base font-semibold">Alumni</h3>
-                    <ul>
-                      {dokter.alumni.map((alumni, index) => (
-                        <li key={index}>
-                          {Object.values(alumni).map((kampus, idx) => (
-                            <p key={idx}>{kampus}</p>
-                          ))}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="pl-8">
-                    <h3 className="text-base font-semibold">Praktik di</h3>
-                    <p className="text-sm font-medium">{dokter.praktik}</p>
-                  </div>
-                  <div className="pl-8 py-3">
-                    <h3 className="text-base font-semibold">Nomor STR</h3>
-                    <p className="text-sm font-medium">{dokter.nomorStr}</p>
-                  </div>
-                </div>
-                <Button
-                  variant="primary"
-                  size="large"
-                  className="w-full flex justify-center mt-4"
-                >
-                  {"Chat"}
-                </Button>
-              </div>
-            </div>
-          ))}
-        </SliderLayanan>
-      </div>
-    </section>
-  );
-};
+import { useState } from "react";
+import { useEffect } from "react";
+import { getDokter } from "./services/api.layanan.js";
+import { CardDokter } from "../../components/shared/CardSliderDokter.jsx";
+import axios from "axios";
+import useUser from "../../stores/useStore.js";
 
 export const Layanan = () => {
+  const {user} = useUser();
+  const [listDokter, setListDokter] = useState([]);
+  const navigate = useNavigate();
+
+  function scrollToSection() {
+    const section = document.getElementById("detail");
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+
+  useEffect(()=>{
+    const fetchDokter = async () => {
+      try {
+        const response = await getDokter();
+        console.log(response);
+        
+        setListDokter(response)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchDokter();
+  },[]);
+
+  async function handleCreateKonsultasi(user_id, dokter_id, nama_dokter, spesialis, image_profile, jam_kerja) {
+    console.log(user_id, dokter_id);
+
+    if(!user) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/konsultasi/findOrCreate`,
+        {
+          user_id,
+          dokter_id,
+        }
+      );
+      const roomId = response.data.data;
+
+      if (roomId) {
+        navigate(`/layanan/konsultasi/chat/${roomId}`, {state: {nama_dokter, spesialis, image_profile, jam_kerja}});
+      }
+    } catch (error) {
+      console.error("Error handling konsultasi:", error);
+      alert("Terjadi kesalahan saat memulai chat.");
+    }
+  }
+
   return (
     <Layout>
       <section className="md:min-h-screen justify-center">
@@ -271,7 +97,7 @@ export const Layanan = () => {
         </div>
       </section>
 
-      <Dokter />
+      <CardDokter data={listDokter} />
 
       <section id="detail" className="h-auto my-32">
         <h2 className="w-6/12 mx-auto text-pretty text-center text-5xl font-bold text-black">
@@ -287,9 +113,9 @@ export const Layanan = () => {
         </div>
         <div className="w-11/12 mx-auto my-auto grid grid-cols-1 p-12">
           <div className="bg-secondary-300 p-20 grid md:grid-cols-[2fr_0.5fr_2fr] gap-5 md:gap-y-10">
-            {DokterList.map((dokter, index) => (
+            {listDokter && listDokter.map((dokter, index) => (
               <div
-                key={index}
+                key={dokter.dokter_id}
                 className={`card bg-white rounded-lg shadow-lg w-full p-5 ${
                   index % 2 === 0 ? "md:col-start-1" : "md:col-start-3"
                 }`}
@@ -299,44 +125,48 @@ export const Layanan = () => {
                     <div className="overflow-hidden w-28 h-28 border-black border-2 rounded-full">
                       <img
                         className="object-cover object-center rounded-full mx-auto border-black"
-                        src={dokter.foto}
-                        alt={`Foto Dokter ${dokter.nama}`}
+                        src={dokter.image_profile}
+                        alt={`Foto Dokter ${dokter.nama_dokter}`}
                       />
                     </div>
-                    <div className="flex items-center justify-center mt-2 gap-2">
+                    {/* <div className="flex items-center justify-center mt-2 gap-2">
                       <span
                         className={`w-3.5 h-3.5 rounded-full bg-green-500 ${
                           index % 2 === 0 ? "bg-green-500" : "bg-red-600"
                         }`}
                       ></span>
                       <p className="text-center">{dokter.status}</p>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex flex-col pl-7">
-                    <h3 className="text-xl font-semibold">{dokter.nama}</h3>
+                    <h3 className="text-xl font-semibold">{dokter.nama_dokter}</h3>
                     <p className="text-base font-normal">{dokter.spesialis}</p>
                     <div className="flex flex-row gap-x-4 mt-2">
-                      <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
+                      {/* <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
                         <AiOutlineLike className="text-lg" />
                         {dokter.like}
-                      </span>
+                      </span> */}
                       <span className="inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black text-center">
                         <FiBriefcase className="text-lg" />
                         {dokter.pengalaman}
                       </span>
                     </div>
-                    <p className="text-lg font-normal mt-1">
+                    {/* <p className="text-lg font-normal mt-1">
                       Rp. {parseInt(dokter.harga).toLocaleString("id-ID")}
                     </p>
                     <s className="text-sm opacity-50">
                       Rp. {parseInt(dokter.discont).toLocaleString("id-ID")}
-                    </s>
+                    </s> */}
+                    <p className="text-sm mt-2 font-semibold">jam kerja: {dokter.jam_kerja}</p>
                     <Button
                       variant="primary"
                       size="medium"
                       className="w-24 py-2 text-center flex text-lg justify-center mt-2"
+                      onClick={() =>
+                        handleCreateKonsultasi(user?.id, dokter.dokter_id, dokter.nama_dokter, dokter.spesialis, dokter.image_profile, dokter.jam_kerja)
+                      }
                     >
-                      <Link to={'/layanan/konsultasi/chat/123'}>Chat</Link>
+                      Chat
                     </Button>
                   </div>
                 </div>
@@ -348,22 +178,3 @@ export const Layanan = () => {
     </Layout>
   );
 };
-
-function SliderLayanan({ children }) {
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
-    cssEase: "linear"
-  };
-
-  return (
-    <div className="slider-container">
-      <Slider {...{... settings}}>{children}</Slider>
-    </div>
-  );
-}

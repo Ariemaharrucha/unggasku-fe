@@ -1,113 +1,28 @@
-import { useState, useRef, useEffect } from "react";
+/* eslint-disable react/prop-types */
 import { VscSend } from "react-icons/vsc";
 import { Navbar } from "../../../components/shared/Navbar.jsx";
-
-
-const DokterList = [
-  {
-    nama: "Dr. Stefanus Fandi W",
-    tanggal: "23 Oktober 2024",
-    foto: "/src/assets/Images/layanan/dr_card1.jpeg",
-  },
-  {
-    nama: "Dr. Ahmad syariffudin",
-    tanggal: "23 Oktober 2024",
-    foto: "/src/assets/Images/layanan/dr_card2.jpeg",
-  },
-  {
-    nama: "Dr. Candra dewi",
-    tanggal: "23 Oktober 2024",
-    foto: "/src/assets/Images/layanan/dr_card3.jpeg",
-  },
-];
+import useUser from "../../../stores/useStore.js";
+import { format } from "date-fns";
+import { IoLogoWechat } from "react-icons/io5";
+import { useKonsultasi } from "../hooks/useKonsultasi.jsx";
 
 export const Konsultasi = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [messages, setMessages] = useState([
-    {
-      text: "Halo, apakah ada yang bisa saya bantu?",
-      sender: "dokter",
-      time: getCurrentTime(),
-    },
-  ]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [firstUserMessageSent, setFirstUserMessageSent] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isUserTyping, setIsUserTyping] = useState(false);
-  const latestMessageRef = useRef(null);
-
-  useEffect(()=>{
-    console.log('tes');
-  },[])
-
-  // Fungsi untuk mendapatkan waktu saat ini
-  function getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-
-    return `${formattedHours}:${formattedMinutes} ${ampm}`;
-  }
-
-  // Fungsi untuk mengirim pesan
-  const handleSendMessage = () => {
-    if (inputMessage.trim() !== "") {
-      const newMessage = {
-        text: inputMessage,
-        sender: "user",
-        time: getCurrentTime(),
-      };
-      setMessages([...messages, newMessage]);
-      setInputMessage("");
-      setIsUserTyping(false);
-
-      if (!firstUserMessageSent) {
-        setFirstUserMessageSent(true);
-        setIsTyping(true);
-
-        setTimeout(() => {
-          const dokterResponse = {
-            text: "Saya bisa bantu. Tolong ceritakan detail kronologi kenapa hewan unggas anda? Apakah hewan unggas anda bermasalah dengan kesehatan, pakan, lingkungan, atau yang lainnya?",
-            sender: "dokter",
-            time: getCurrentTime(),
-          };
-          setMessages((prevMessages) => [...prevMessages, dokterResponse]);
-          setIsTyping(false);
-        }, 1000);
-      }
-    }
-  };
-
-  // Fungsi untuk mendeteksi tombol Enter
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  // Fungsi untuk menangani perubahan input pengguna dan menampilkan animasi mengetik
-  const handleUserTyping = (e) => {
-    setInputMessage(e.target.value);
-    if (e.target.value.trim() !== "") {
-      setIsUserTyping(true);
-    } else {
-      setIsUserTyping(false);
-    }
-  };
-
-  // Fungsi untuk melakukan scroll ke pesan terbaru
-  useEffect(() => {
-    if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [messages]);
+  const { user } = useUser();
+  
+  const {
+    message,
+    setMessage,
+    messages,
+    listDokter,
+    selectedDokter,
+    setSelectedDokter,
+    loading,
+    isUserTyping,
+    handleSendMessage,
+    handleMessage,
+    handleKeyDown,
+    latestMessageRef,
+  } = useKonsultasi(user);
 
   return (
     <div>
@@ -122,90 +37,125 @@ export const Konsultasi = () => {
 
           <div className="flex h-screen">
             <div className="w-1/4 bg-white">
-              {DokterList.map((dokter, index) => (
-                <div key={index}>
-                  <div
-                    onClick={() => setActiveIndex(index)}
-                    className={`px-4 py-2 cursor-pointer ${
-                      activeIndex === index
-                        ? "bg-gray-200 text-gray-900"
-                        : "bg-white text-gray-900"
-                    }`}
-                  >
-                    <div className="relative flex items-center space-x-4">
-                      <div className="size-16 overflow-hidden rounded-full border-2 border-primary-950">
-                        <img
-                          src={dokter.foto}
-                          alt={`Foto dokter ${dokter.nama}`}
-                          className=" object-cover  "
-                        />
-                      </div>
-                      <div>
-                        <div className="font-semibold">{dokter.nama}</div>
-                        <div className="text-xs text-gray-400">
-                          {dokter.tanggal}
+              {listDokter &&
+                listDokter.map((dokter) => (
+                  <div key={dokter.id}>
+                    <div
+                      onClick={() => {
+                        if (selectedDokter?.id !== dokter.id) {
+                          setSelectedDokter(dokter);
+                          setMessage("");
+                          console.log(dokter);
+                        }
+                      }}
+                      className={`cursor-pointer px-4 py-2 ${
+                        selectedDokter?.id === dokter.id
+                          ? "bg-gray-200"
+                          : "bg-white"
+                      }`}
+                    >
+                      <div className=" flex items-center gap-4">
+                        <div className="size-16 overflow-hidden rounded-full">
+                          <img
+                            src={dokter.image_profile}
+                            alt={`Foto dokter ${dokter.username}`}
+                            className=" object-cover  "
+                          />
+                        </div>
+                        <div>
+                          <div className="font-semibold">{dokter.username}</div>
+                          <div className="text-sm text-gray-400">
+                            {dokter.spesialis}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  {index < DokterList.length - 1 && activeIndex !== index && (
-                    <div className="h-[0.1px] bg-primary-950 mx-8 my-1" />
-                  )}
-                </div>
-              ))}
+                ))}
             </div>
 
             <div className="flex-1 flex flex-col justify-between p-4 bg-gray-200">
               <div className="flex-grow space-y-4 overflow-y-auto ">
-                {messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex flex-col ${
-                      message.sender === "dokter" ? "items-start" : "items-end"
-                    }`}
-                    ref={
-                      index === messages.length - 1 ? latestMessageRef : null
-                    }
-                  >
-                    <div
-                      className={`${
-                        message.sender === "dokter"
-                          ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
-                          : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
-                      } p-3 max-w-md`}
-                    >
-                      {message.text}
+                {loading ? (
+                  <p>Loading messages...</p>
+                ) : selectedDokter && messages.length === 0 ? (
+                  <div className="h-full flex justify-center items-center ">
+                    <div className="flex flex-col justify-center items-center text-gray-500">
+                      <IoLogoWechat size={120} />
+                      <p className="text-xl font-medium">
+                        Belum ada Chat dengan dokter
+                      </p>
                     </div>
-                    <span className="text-xs text-gray-500 mt-1">
-                      {message.time}
-                    </span>
                   </div>
-                ))}
+                ): (
+                  <>
+                    {messages &&
+                      messages.map((message, index) => {
+                        const tanggal =
+                          index === 0 ||
+                          new Date(messages[index].sent_at).toDateString() !==
+                            new Date(
+                              messages[index - 1].sent_at
+                            ).toDateString();
 
-                {isTyping && (
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl p-3 max-w-md">
-                      <TypingAnimation isUserTyping={false} />
-                    </div>
-                  </div>
-                )}
+                        return (
+                          <div key={index}>
+                            {tanggal && (
+                              <div className="text-center text-gray-500 text-sm my-2">
+                                {format(
+                                  new Date(message.sent_at),
+                                  "EEEE, dd MMMM yyyy"
+                                )}
+                              </div>
+                            )}
 
-                {isUserTyping && (
-                  <div className="flex items-center space-x-2 justify-end">
-                    <div className="bg-gray-800 text-white rounded-l-xl rounded-tr-xl p-3 max-w-md">
-                      <TypingAnimation isUserTyping={true} />
-                    </div>
-                  </div>
+                            <div
+                              className={`flex flex-col ${
+                                message.senderId !== user.id
+                                  ? "items-start"
+                                  : "items-end"
+                              }`}
+                              ref={
+                                index === messages.length - 1
+                                  ? latestMessageRef
+                                  : null
+                              }
+                            >
+                              <div
+                                className={`${
+                                  message.senderId !== user.id
+                                    ? "bg-yellow-400 text-gray-900 rounded-r-xl rounded-tl-xl"
+                                    : "bg-gray-800 text-white rounded-l-xl rounded-tr-xl"
+                                } max-w-md p-3`}
+                              >
+                                <p>{message.content}</p>
+                                <span className="text-xs text-gray-500 mt-1">
+                                  {format(new Date(message.sent_at), "hh:mm a")}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    {isUserTyping && (
+                      <div className="flex items-center space-x-2 justify-end">
+                        <div className="bg-gray-800 text-white rounded-l-xl rounded-tr-xl p-3 max-w-md">
+                          <TypingAnimation isUserTyping={true} />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
-
-              <div className="p-0.5 flex items-center bg-white rounded-full">
+              
+              {selectedDokter ? (
+              <div className="p-0.5 flex items-center bg-white rounded-full mt-4">
                 <div className="flex w-full">
                   <input
                     type="text"
                     placeholder="Type your message..."
-                    value={inputMessage}
-                    onChange={handleUserTyping}
+                    value={message}
+                    onChange={handleMessage}
                     onKeyDown={handleKeyDown}
                     className="flex-grow px-6 text-lg border rounded-full focus:outline-none border-none"
                   />
@@ -219,6 +169,14 @@ export const Konsultasi = () => {
                   </div>
                 </div>
               </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                <p className="text-xl font-medium">
+                  Pilih user untuk mulai chat
+                </p>
+              </div>
+            )}
+              
             </div>
           </div>
         </section>
