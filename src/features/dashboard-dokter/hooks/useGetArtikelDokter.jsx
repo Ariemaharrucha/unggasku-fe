@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getArtikelDokter } from '../services/api.crud.artikeldokter';
+import { getArtikelDokter, deleteArtikel } from '../services/api.crud.artikeldokter';
 import useUser from '../../../stores/useStore';
+
 
 export const useGetArtikelDokter = () => {
     const { user } = useUser();
@@ -30,5 +31,18 @@ export const useGetArtikelDokter = () => {
         fetchArtikel();
     }, [user]);
 
-    return { artikel, isLoading, error };
+    const handeDeleteArtikel = async (id) => {
+        const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus artikel ini?");
+        if (!isConfirmed) return;
+    
+        try {
+          await deleteArtikel(id); 
+          setArtikel((prevArtikel) => prevArtikel.filter((item) => item.artikel_id !== id)); 
+        } catch (error) {
+          console.error("Error deleting artikel:", error);
+          setError(error.message || "Error deleting artikel");
+        }
+      };
+
+    return { artikel, handeDeleteArtikel, isLoading, error };
 };

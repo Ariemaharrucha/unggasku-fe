@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { useGetArtikelDokter } from "../hooks/useGetArtikelDokter";
-import { deleteArtikel } from "../services/api.crud.artikeldokter";
 
 export const ArtikelDokterTable = () => {
-  const { artikel, isLoading, error } = useGetArtikelDokter();
+  const { artikel, isLoading, error, handeDeleteArtikel } = useGetArtikelDokter();
 
 
   if (isLoading) {
@@ -16,16 +15,6 @@ export const ArtikelDokterTable = () => {
     return <p>Error: {error}</p>;
   }
 
-  const handleDelete = async (id) => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus artikel ini?");
-    if (!isConfirmed) return; 
-    try {
-      await deleteArtikel(id);
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting artikel:", error);
-    }
-  };
 
   return (
     <section className=" ">
@@ -112,7 +101,7 @@ export const ArtikelDokterTable = () => {
                     </Link>
                     <div
                       className="block cursor-pointer  text-white p-2 rounded-md bg-red-500"
-                      onClick={() => handleDelete(artikel.artikel_id)}
+                      onClick={() => handeDeleteArtikel(artikel.artikel_id)}
                     >
                       Delete
                     </div>
