@@ -2,6 +2,7 @@
 import { FiBriefcase } from "react-icons/fi";
 import Button from "../ui/Button.jsx";
 import Slider from "react-slick";
+import { AiOutlineLike } from "react-icons/ai";
 
 export const CardDokter = ({ data = []}) => {
   return (
@@ -30,10 +31,10 @@ export const CardDokter = ({ data = []}) => {
                       {dokter.spesialis}
                     </p>
                     <div className="flex gap-2 my-2 pl-3">
-                      {/* <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
+                      <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
                         <AiOutlineLike className="text-lg" />
-                        {dokter.like}
-                      </span> */}
+                        
+                      </span>
                       <span className="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-md text-sm font-medium bg-secondary-300 text-black">
                         <FiBriefcase className="text-lg" />
                         {dokter.pengalaman}
