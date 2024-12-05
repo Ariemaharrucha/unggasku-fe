@@ -1,28 +1,107 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";  
 import { Link } from "react-router-dom";
 import { DashboardAdminLayout } from "../../../layouts/DashboardAdminLayout.jsx";
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const FormEditArtikel = () => {
-  const id = useParams();
+  const { id } = useParams(); 
   const [content, setContent] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [oldImage, setOldImage] = useState(""); 
+  const [artikelData, setArtikelData] = useState(null);
+
+  const [user, setUser] = useState({
+    id: "admin", 
+    role: "admin",
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm()
+  } = useForm();
 
-  function handleChange (value) {
-    setContent(value)
-  }
+  const handleChange = (value) => {
+    setContent(value);
+  };
+
+  useEffect(() => {
+    const fetchArtikel = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`);
+        if (response.ok) {
+          const artikel = await response.json();
+          setArtikelData(artikel);
+          setContent(artikel.konten);
+          setOldImage(artikel.image_artikel ? `http://localhost:3000/uploads/${artikel.image_artikel}` : "");
+          
+          reset({
+            judul: artikel.judul,
+            author_name: artikel.author_name,
+            kategori: artikel.kategori,
+            tanggal: artikel.tanggal,
+          });
+        } else {
+          console.error("Gagal memuat artikel");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchArtikel();
+  }, [id, reset]);
+
+  const onSubmit = async (data) => {
+    console.log("Data yang diterima dalam onSubmit:", data);
+    setLoading(true);
+    const formData = new FormData();
+  
+    console.log("Data image_artikel yang diterima:", data.image_artikel);
+  
+    formData.append("author_id", user.id);
+    formData.append("judul", data.judul);
+    formData.append("author_name", data.author_name);
+    formData.append("kategori", data.kategori);
+    formData.append("konten", content);
+    formData.append("tanggal", data.tanggal);
+  
+    if (data.image_artikel && data.image_artikel[0]) {
+      console.log("Mengirim gambar baru:", data.image_artikel[0]);
+      formData.append("image_artikel", data.image_artikel[0]);
+    } else if (oldImage) {
+      const fileName = oldImage.split("/").pop();
+      console.log("Mengirim gambar lama:", fileName);
+      formData.append("image_artikel", fileName);
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/admin/artikel/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        setSuccessMessage("Artikel berhasil diperbarui!");
+        reset(); 
+      } else {
+        const error = await response.json();
+        console.error("Error:", error);
+        setSuccessMessage("Gagal memperbarui artikel.");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      setSuccessMessage("Terjadi kesalahan pada server.");
+    } finally {
+      setLoading(false);
+    }
+  };  
 
   return (
     <DashboardAdminLayout>
@@ -31,36 +110,49 @@ export const FormEditArtikel = () => {
           <h3 className="text-lg text-black">Edit Artikel</h3>
         </section>
         <section className="max-w-2xl m-auto mt-1">
-          <form action="" className="space-y-3" onSubmit={handleSubmit()}>
-            {/* jdudul */}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-3"
+            encType="multipart/form-data"
+          >
+            {/* Hidden Field untuk ID Admin */}
+            <div className="hidden">
+              <label htmlFor="author_id"></label>
+              <input
+                type="text"
+                value={user.id}
+                readOnly
+                {...register("author_id")}
+              />
+            </div>
+
+            {/* Judul */}
             <div>
-              <label htmlFor="judul" className="">
-                Judul Artikel
-              </label>
+              <label htmlFor="judul">Judul Artikel</label>
               <Input
                 placeholder="Judul artikel"
                 className={"mt-2 font-normal"}
                 {...register("judul", { required: "Judul wajib diisi" })}
-              ></Input>
+              />
+              {errors.judul && <p className="text-red-500">{errors.judul.message}</p>}
             </div>
-            {/* author name */}
+
+            {/* Author Name */}
             <div>
-              <label htmlFor="author-name" className="">
-                Nama Author
-              </label>
+              <label htmlFor="author-name">Nama Author</label>
               <Input
-                placeholder="nama author"
+                placeholder="Nama author"
                 className={"mt-2 font-normal"}
                 {...register("author_name", {
-                  required: "Author name wajib diisi",
+                  required: "Nama author wajib diisi",
                 })}
-              ></Input>
+              />
+              {errors.author_name && <p className="text-red-500">{errors.author_name.message}</p>}
             </div>
-            {/* kategori */}
+
+            {/* Kategori */}
             <div className="flex flex-col">
-              <label htmlFor="kategori" className="">
-                kategori
-              </label>
+              <label htmlFor="kategori">Kategori</label>
               <select
                 name="kategori"
                 id="kategori"
@@ -69,14 +161,16 @@ export const FormEditArtikel = () => {
                   required: "Kategori wajib dipilih",
                 })}
               >
-                <option value="">pilih kategori</option>
+                <option value="">Pilih kategori</option>
                 <option value="pakan">Pakan</option>
                 <option value="lingkungan">Lingkungan</option>
                 <option value="nutrisi">Nutrisi</option>
                 <option value="kesehatan-unggas">Kesehatan-unggas</option>
               </select>
+              {errors.kategori && <p className="text-red-500">{errors.kategori.message}</p>}
             </div>
-            {/* konten */}
+
+            {/* Konten */}
             <div>
               <label htmlFor="konten">Konten:</label>
               <ReactQuill
@@ -86,25 +180,30 @@ export const FormEditArtikel = () => {
                 className="block w-full mt-2"
               />
             </div>
-            {/* image-artikel */}
-            <div className="w-1/3">
-              <label htmlFor="image_artikel" className="">
-                Add images
-              </label>
+
+            {/* Image Artikel */}
+            <div>
+              <label htmlFor="image_artikel">Tambah Gambar (Opsional)</label>
+              {oldImage && (
+                <div className="mt-2">
+                  <p>Gambar saat ini:</p>
+                  <img src={oldImage} alt="Gambar lama" className="w-32 h-32 object-cover" />
+                </div>
+              )}
               <input
                 type="file"
                 name="image_artikel"
                 id="image_artikel"
-                className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer
-              file:bg-gray-50 file:border-0
-                file:me-4
-                file:py-3 file:px-4"
-                {...register("image_artikel", {
-                  required: "Gambar artikel wajib diunggah",
-                })}
+                className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm"
+                ref={register("image_artikel")}
+                onChange={e => {
+                  // Debugging untuk melihat file yang dipilih
+                  console.log(e.target.files);
+                }}
               />
             </div>
-            {/* tanggal */}
+
+            {/* Tanggal */}
             <div>
               <label htmlFor="tanggal">Tanggal</label>
               <input
@@ -112,25 +211,27 @@ export const FormEditArtikel = () => {
                 className="block mt-2 border p-2 rounded-md"
                 {...register("tanggal", { required: "Tanggal wajib diisi" })}
               />
+              {errors.tanggal && <p className="text-red-500">{errors.tanggal.message}</p>}
             </div>
-            {/* button */}
+
+            {/* Button */}
             <div className="flex gap-4">
               <Link
                 to={"/dashboard/admin/artikel"}
                 className="w-1/3 bg-red-600 hover:bg-red-700 rounded-lg text-white flex items-center justify-center"
               >
-                cancel
+                Cancel
               </Link>
-
               <Button
                 variant="secondary"
                 className={"w-1/3 flex items-center justify-center"}
+                type="submit"
               >
                 {isLoading ? "Loading..." : "Edit"}
               </Button>
             </div>
           </form>
-          {isLoading && <p className="text-blue-500">Edit artikel...</p>}
+          {isLoading && <p className="text-blue-500">Mengedit artikel...</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
         </section>
       </main>
