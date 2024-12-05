@@ -6,12 +6,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import useUser from "../../../stores/useStore.js";
+import { useNavigate } from "react-router-dom";
 
 export const FormAddArtikel = () => {
   const [content, setContent] = useState(""); 
   const [isLoading, setLoading] = useState(false); 
   const [successMessage, setSuccessMessage] = useState(""); 
   const [errorMessage, setErrorMessage] = useState(""); 
+  const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate()
   const { user } = useUser();
 
   const {
@@ -23,6 +26,14 @@ export const FormAddArtikel = () => {
 
   const handleChange = (value) => {
     setContent(value);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    }
   };
 
   const onSubmit = async (data) => {
@@ -58,6 +69,10 @@ export const FormAddArtikel = () => {
       setSuccessMessage("Artikel berhasil ditambahkan!");
       reset(); 
       setContent("");
+      setImagePreview(null)
+      setTimeout(() => {
+        navigate("/dashboard/admin/artikel");
+      }, 2000);
     } catch (error) {
       setErrorMessage("Gagal menambahkan artikel, silakan coba lagi.");
     } finally {
@@ -138,11 +153,16 @@ export const FormAddArtikel = () => {
                 id="image_artikel"
                 className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 accept="image/png, image/jpeg"
-                {...register("image_artikel", { required: "Gambar artikel wajib diunggah" })} 
+                {...register("image_artikel", { required: "Gambar artikel wajib diunggah" })}
+                onChange={handleImageChange}
               />
               {errors.image_artikel && <p className="text-red-500">{errors.image_artikel.message}</p>}
             </div>
-
+            {imagePreview && (
+              <div className="size-56 overflow-hidden mt-4 rounded-md">
+                  <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
+              </div>
+              )} 
             {/* Tanggal */}
             <div>
               <label htmlFor="tanggal">Tanggal</label>
