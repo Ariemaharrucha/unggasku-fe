@@ -130,7 +130,7 @@ export const DokterChat = () => {
         </div>
 
         <div className="flex h-auto">
-          <div className="w-1/4 bg-white">
+          <div className="w-[30%] bg-white">
             {users &&
               users.map((user, index) => (
                 <div key={user.id}>
@@ -147,8 +147,8 @@ export const DokterChat = () => {
                       selectedUser?.id === user.id ? "bg-gray-200" : "bg-white"
                     }`}
                   >
-                    <div className=" flex items-center gap-2">
-                      <div className="size-16 overflow-hidden rounded-full">
+                    <div className=" flex items-center gap-4">
+                      <div className="w-16 h-16 overflow-hidden rounded-full">
                         <img
                           src={user.image_profile}
                           alt={`Foto user ${user.username}`}
@@ -156,9 +156,14 @@ export const DokterChat = () => {
                         />
                       </div>
                       <div>
-                        <div className="font-semibold ">{user.username}</div>
+                        <div className="font-semibold text-sm">{user.username}</div>
                         <div className="text-xs text-gray-400">
-                          {/* {last chat} */}
+                        {user.last_message
+                          ? `${format(
+                              new Date(user.last_message_at),
+                              "dd MMM yyyy, HH:mm"
+                            )} - ${user.last_message}`
+                          : "Belum ada pesan"}
                         </div>
                       </div>
                     </div>
