@@ -3,39 +3,37 @@ import imagejumbotron from "../../assets/Images/beranda/beranda-header.jpg";
 import { Link } from "react-router-dom";
 import { Layout } from "../../layouts/Layout.jsx";
 import { CardRekomendasi } from "../../components/shared/CardRekomendasi.jsx";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { format } from "date-fns";
 
 export const Beranda = () => {
+  const [artikel, setArtikel] = useState([]);
+  const [loading, setloading] = useState(false);
   const listItem = [
     { text: "Sumber Informasi Kesehatan Unggas Terpercaya" },
     { text: "Konsultasi Kesehatan dengan Ahli Unggas" },
     { text: "Panduan Pencegahan Penyakit yang Komprehensif" },
     { text: "Pemantauan Kesehatan yang Efektif" },
   ];
-  
-  const artikelKategori = [
-    {
-      title: "Pakan Ternak Unggas",
-      description: "Inovasi pakan ternak unggas tingkatkan produktivitas",
-      date: "13 Oktober 2024",
-      imgSrc: "src/assets/Images/beranda/artikel_1.jpg",
-      detailLink: ""
-    },
-    {
-      title: "Lingkungan Hewan Ternak",
-      description: "Hanya berbekal insting, induk ayam dapat lindungi anak dari ancaman predator",
-      date: "22 September 2024",
-      imgSrc: "src/assets/Images/beranda/artikel_2.jpg",
-      detailLink: ""
-    },
-    {
-      title: "Lingkungan Hewan Ternak",
-      description: "Perilaku Unik Ayam Jantan dan Betina: Apa Saja Bedanya?",
-      date: "11 Oktober 2024",
-      imgSrc: "src/assets/Images/beranda/artikel_3.jpg",
-      detailLink: ""
-    }
-  ];
+
+  useEffect(() => {
+    const fetchArtikel = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/artikel/new`
+        );
+        // console.log(response.data.data);
+        setArtikel(response.data.data)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setloading(false);
+      }
+    };
+
+    fetchArtikel();
+  }, []);
 
   return (
     <Layout>
@@ -113,11 +111,11 @@ export const Beranda = () => {
           </h2>
           <div className="flex flex-col items-center gap-y-4">
             <div className="space-y-4">
-            {listItem.map((item, index)=>{
-              return (
-                <List key={index} num={index + 1} text={item.text} ></List>
-              )
-            })}
+              {listItem.map((item, index) => {
+                return (
+                  <List key={index} num={index + 1} text={item.text}></List>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -129,14 +127,24 @@ export const Beranda = () => {
           Rekomendasi Artikel
         </h2>
         <div className="flex flex-col mt-10 md:flex-row md:gap-10 gap-10 max-w-full mx-auto">
-          {artikelKategori.map((item, index)=>{
+          {artikel && artikel.map((item, index) => {
             return (
-              <CardRekomendasi key={index} title={item.title} date={item.date} description={item.description} image={item.imgSrc} detailLink={item.detailLink}/>
-            )
+              <CardRekomendasi
+                key={index}
+                title={item.judul}
+                date={format(new Date(item.tanggal), "dd MMMM yyyy")}
+                description={item.konten}
+                image={item.image_artikel}
+                detailLink={item.artikel_id}
+              />
+            );
           })}
         </div>
         <div className="flex justify-end items-center gap-2 mt-5">
-          <Link to={'/artikel'} className="text-secondary-300 text-xl font-semibold">
+          <Link
+            to={"/artikel"}
+            className="text-secondary-300 text-xl font-semibold"
+          >
             Lainnya
           </Link>
           <IoIosArrowForward className="text-secondary-300 text-xl" />
