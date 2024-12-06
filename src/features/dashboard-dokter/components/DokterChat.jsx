@@ -17,7 +17,6 @@ export const DokterChat = () => {
   const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null)
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
-  const [lastChat, setLastChat] = useState(null);
 
     // socktet
     useEffect(() => {
@@ -85,6 +84,27 @@ export const DokterChat = () => {
     }
   }, [previousKonsultasiId, selectedUser?.konsultasi_id]);
 
+  useEffect(()=>{
+    const handleNotification = (data) => {
+      if(data.konsultasiId !== selectedUser?.konsultasi_id) {
+        console.log("Pesan baru:", data.message);
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.konsultasi_id === data.konsultasiId
+              ? { ...user, hasNewMessage: true }
+              : user
+          )
+        );
+      }
+    };
+    socket.on("newMessageNotification", handleNotification);
+    console.log("connect notif");
+    
+    return () => {
+      socket.off("newMessageNotification", handleNotification);
+    }
+  },[selectedUser?.konsultasi_id])
+
   const handleMessage = (e) => {
     setMessage(e.target.value);
     if (e.target.value.trim() !== "") {
@@ -132,7 +152,7 @@ export const DokterChat = () => {
         <div className="flex h-auto">
           <div className="w-[30%] bg-white">
             {users &&
-              users.map((user, index) => (
+              users.map((user) => (
                 <div key={user.id}>
                   <div
                     onClick={() => {
@@ -140,6 +160,13 @@ export const DokterChat = () => {
                         setSelectedUser(user);
                         setMessages([]);
                         setPreviousKonsultasiId(user.konsultasi_id)
+                        setUsers((prevUsers) =>
+                          prevUsers.map((u) =>
+                            u.konsultasi_id === user.konsultasi_id
+                              ? { ...u, hasNewMessage: false }
+                              : u
+                          )
+                        );  
                         console.log(user);
                       }
                     }}
@@ -156,7 +183,10 @@ export const DokterChat = () => {
                         />
                       </div>
                       <div>
-                        <div className="font-semibold text-sm">{user.username}</div>
+                        <div className="font-semibold text-sm flex gap-3">
+                          {user.username}
+                          {user.hasNewMessage && <span className="text-red-500">Pesan baru!</span>}
+                          </div>
                         <div className="text-xs text-gray-400">
                         {user.last_message
                           ? `${format(
