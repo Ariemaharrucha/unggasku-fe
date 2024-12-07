@@ -19,14 +19,13 @@ export const CardRekomendasi = ({
       </div>
       <div className="p-4 md:p-5 flex flex-col h-full">
         <h3 className="text-lg font-bold text-primary-50">{title}</h3>
-        <p className="mt-1 text-primary-50 flex-grow line-clamp-3">
-          {description}
-          <span className="text-secondary-50 italic font-thin mt-2">
+        <p className="mt-1 text-primary-50 flex-grow line-clamp-2" dangerouslySetInnerHTML={{__html: description}}>          
+        </p>
+        <span className="text-secondary-100 italic  mt-1">
             {date}
           </span>
-        </p>
         <div className="flex justify-end items-center gap-2 mt-auto">
-          <Link to={`/artikel/detailsArtikel/${detailLink}`} className="text-secondary-300">
+          <Link to={`/artikel/${detailLink}`} className="text-secondary-300">
             Detail
           </Link>
           <IoIosArrowForward className="text-secondary-50" />

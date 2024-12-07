@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import logo from '../../assets/logo.png';
-import fotoProfil from '../../assets/card profil-tentang-kami1.jpg'
+import defaultProfile from '../../assets/card profil-tentang-kami1.jpg'
+import useUser from "../../stores/useStore.js";
 
 export const Navbar = () => {
+  const {user} = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -53,11 +55,11 @@ export const Navbar = () => {
                   <Navlink to="/">Beranda</Navlink>
                   <Navlink to="/artikel">Artikel</Navlink>
                   <Navlink to="/layanan">Layanan</Navlink>
-                  <Navlink to="/tentang_kami">Tentang kami</Navlink>
-                  <Navlink to="/kontak_kami">kontak kami</Navlink>
-                  <Link to='/profile'>
+                  <Navlink to="/tentang-kami">Tentang kami</Navlink>
+                  <Navlink to="/kontak-kami">kontak kami</Navlink>
+                  <Link to={`/profile/${user?.id}`}>
                     <div className="size-10 overflow-hidden rounded-full">
-                        <img src={fotoProfil} alt="" className="w-full h-full object-cover" />
+                        <img src={user?.image ? user.image : 'https://i.pinimg.com/736x/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg'} alt="profile" className="w-full h-full object-cover" />
                     </div>
                   </Link>
                 </div>
