@@ -15,6 +15,7 @@ export const Konsultasi = () => {
     messages,
     listDokter,
     selectedDokter,
+    setListDokter,
     setSelectedDokter,
     loading,
     isUserTyping,
@@ -22,6 +23,8 @@ export const Konsultasi = () => {
     handleMessage,
     handleKeyDown,
     latestMessageRef,
+    audioRef,
+    notificationSound
   } = useKonsultasi(user);
 
   return (
@@ -30,6 +33,7 @@ export const Konsultasi = () => {
         <div>
           <Navbar />
         </div>
+        <audio ref={audioRef} src={notificationSound} preload="auto" />
         <section className="min-h-screen">
           <div className="w-full bg-secondary-300 py-3 px-6">
             <h1 className="text-xl font-bold text-gray-800">Chat</h1>
@@ -46,6 +50,13 @@ export const Konsultasi = () => {
                           setSelectedDokter(dokter);
                           setMessage("");
                           console.log(dokter);
+                          setListDokter((prevDokter) =>
+                            prevDokter.map((u) =>
+                              u.konsultasi_id === dokter.konsultasi_id
+                                ? { ...u, hasNewMessage: false }
+                                : u
+                            )
+                          );
                         }
                       }}
                       className={`cursor-pointer px-4 py-2 ${
@@ -63,7 +74,12 @@ export const Konsultasi = () => {
                           />
                         </div>
                         <div>
-                          <div className="font-semibold">{dokter.username}</div>
+                          <div className="font-semibold flex gap-3">
+                            {dokter.username}
+                            {dokter.hasNewMessage && (
+                            <span className="text-red-500">Pesan baru!</span>
+                            )}
+                            </div>
                           <div className="text-sm text-gray-400">
                             {dokter.spesialis}
                           </div>

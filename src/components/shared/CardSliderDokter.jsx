@@ -67,6 +67,7 @@ export const CardDokter = ({ data = []}) => {
                     variant="primary"
                     size="large"
                     className="w-full flex justify-center mt-4"
+                    disabled={true}
                   >
                     {"Chat"}
                   </Button>
