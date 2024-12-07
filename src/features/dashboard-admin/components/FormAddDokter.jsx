@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { DashboardAdminLayout } from "../../../layouts/DashboardAdminLayout.jsx";
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
+import { useAddDokterForm } from "../hooks/useAddDokterForm.jsx";
 
 export const FormAddDokter = () => {
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    errors,
     reset,
-  } = useForm();
+    successMessage,
+    errorMessage,
+    isLoading,
+    imagePreview,
+    handleImageChange,
+    onSubmit,
+  } = useAddDokterForm();
 
   return (
     <DashboardAdminLayout>
@@ -22,7 +24,7 @@ export const FormAddDokter = () => {
           <h3 className="text-lg text-black">Tambah Dokter</h3>
         </section>
         <section className=" mt-1">
-          <form className="flex flex-row gap-4" onSubmit={handleSubmit()}>
+          <form className="flex flex-row gap-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex-1 space-y-4">
               {/* Username */}
               <div>
@@ -57,7 +59,7 @@ export const FormAddDokter = () => {
                 <Input
                   className={"mt-2"}
                   placeholder="Password"
-                  type="password"
+                  type="text"
                   {...register("password", {
                     required: "Password wajib diisi",
                   })}
@@ -75,11 +77,17 @@ export const FormAddDokter = () => {
                   {...register("image_profile", {
                     required: "Foto wajib diunggah",
                   })}
+                  onChange={handleImageChange}
                 />
                 {errors.image_profile && (
                   <p className="text-red-500">{errors.image_profile.message}</p>
                 )}
               </div>
+              {imagePreview && (
+                <div className="size-40 mt-3 rounded-md overflow-hidden">
+                  <img src={imagePreview} alt="foto dokter" className="w-full h-full object-cover" />
+                </div>
+              )}
             </div>
 
             <div className="flex-grow space-y-2">
@@ -209,6 +217,7 @@ export const FormAddDokter = () => {
             </div>
           </form>
           {successMessage && <p className="text-green-500">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </section>
       </main>
     </DashboardAdminLayout>
