@@ -24,6 +24,18 @@ export const DokterTable = () => {
     fetchDokter();
   }, []);
 
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus dokter ini?");
+    if (!isConfirmed) return;
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/admin/dokter/${id}`);
+      setDokters((dokter) => dokter.filter((item) => item.dokter_id !== id))
+    } catch (error) {
+      console.error("Error deleting dokter:", error);
+      throw new Error("Failed to delete dokter.");
+    }
+  }
+
   return (
     <section className="">
       <div className="relative overflow-x-auto">
@@ -109,7 +121,7 @@ export const DokterTable = () => {
                       <a
                         href="#"
                         className="text-white p-2 rounded-md bg-red-500"
-                        onClick={() => {}}
+                        onClick={() => handleDelete(dokter.dokter_id)}
                       >
                         Delete
                       </a>
