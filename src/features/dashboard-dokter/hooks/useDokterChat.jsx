@@ -1,55 +1,41 @@
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import socket from "../../../socket/socket.js";
-import { getMessages, getUsers } from "../services/api.dokterChat.js";
 
-export const useDokterChat = (user) => {
+const useDokterChat = (user) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [IsDokterTyping, setIsDokterTyping] = useState(false);
+  const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null);
+  const [isDokterTyping, setIsDokterTyping] = useState(false);
+  const audioRef = useRef(null);
   const latestMessageRef = useRef(null);
 
-  // Fetch users (patients)
   useEffect(() => {
-    const fetchUsers = async () => {
-      if (user?.id) {
+    if (user?.id) {
+      // Fetch users list
+      const fetchUsers = async () => {
         try {
-          const response = await getUsers(user?.id)
-          setUsers(response);
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/dokter/${user.id}/users`
+          );
+          setUsers(response.data.data);
         } catch (error) {
           console.error("Failed to fetch users:", error);
         }
-      }
-    };
-    fetchUsers();
+      };
+      fetchUsers();
+    }
   }, [user?.id]);
 
-  // Fetch messages when a user is selected
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (selectedUser?.konsultasi_id) {
-        try {
-          setLoading(true);
-          const response = await getMessages(selectedUser.konsultasi_id);
-          setMessages(response);
-        } catch (error) {
-          console.error("Failed to fetch messages:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchMessages();
-  }, [selectedUser?.konsultasi_id]);
-
-  // Socket logic for receiving messages
   useEffect(() => {
     if (selectedUser?.konsultasi_id) {
+      // Join socket room
       socket.emit("joinRoom", selectedUser.konsultasi_id);
 
+      // Listen for incoming messages
       const handleReceiveMessage = (msg) => {
         setMessages((prev) => [...prev, msg]);
       };
@@ -61,13 +47,66 @@ export const useDokterChat = (user) => {
     }
   }, [selectedUser?.konsultasi_id]);
 
+  useEffect(() => {
+    // Fetch messages when user is selected
+    const fetchMessages = async () => {
+      if (selectedUser?.konsultasi_id) {
+        try {
+          setLoading(true);
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/messages/${
+              selectedUser.konsultasi_id
+            }`
+          );
+          setMessages(response.data.data);
+        } catch (error) {
+          console.error("Failed to fetch messages:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMessages();
+  }, [selectedUser?.konsultasi_id]);
+
+  useEffect(() => {
+    // Notify user about new messages
+    const handleNotification = (data) => {
+      if (data.konsultasiId !== selectedUser?.konsultasi_id) {
+        if (audioRef.current) {
+          audioRef.current.play().catch((error) => {
+            console.error("Failed to play notification sound:", error);
+          });
+        }
+
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.konsultasi_id === data.konsultasiId
+              ? { ...user, hasNewMessage: true }
+              : user
+          )
+        );
+      }
+    };
+
+    socket.on("newMessageNotification", handleNotification);
+    return () => {
+      socket.off("newMessageNotification", handleNotification);
+    };
+  }, [selectedUser?.konsultasi_id]);
+
+  // leave room
+  useEffect(() => {
+    if (selectedUser?.konsultasi_id) {
+      socket.emit("leaveRoom", previousKonsultasiId);
+      socket.emit("joinRoom", selectedUser.konsultasi_id);
+    }
+  }, [previousKonsultasiId, selectedUser?.konsultasi_id]);
+
   const handleMessage = (e) => {
     setMessage(e.target.value);
-    if (e.target.value.trim() !== "") {
-      setIsDokterTyping(true);
-    } else {
-      setIsDokterTyping(false);
-    }
+    setIsDokterTyping(e.target.value.trim() !== "");
   };
 
   const handleSendMessage = () => {
@@ -89,7 +128,6 @@ export const useDokterChat = (user) => {
     }
   };
 
-  // Scroll to the latest message
   useEffect(() => {
     if (latestMessageRef.current) {
       latestMessageRef.current.scrollIntoView({
@@ -99,18 +137,33 @@ export const useDokterChat = (user) => {
     }
   }, [messages]);
 
+  const selectUser = (user) => {
+    setSelectedUser(user);
+    setMessages([]);
+    setPreviousKonsultasiId(user.konsultasi_id);
+    setUsers((prevUsers) =>
+      prevUsers.map((u) =>
+        u.konsultasi_id === user.konsultasi_id
+          ? { ...u, hasNewMessage: false }
+          : u
+      )
+    );
+  };
+
   return {
     message,
-    setMessage,
     messages,
     users,
     selectedUser,
-    setSelectedUser,
     loading,
-    IsDokterTyping,
-    handleSendMessage,
-    handleMessage,
-    handleKeyDown,
+    isDokterTyping,
+    audioRef,
     latestMessageRef,
+    handleMessage,
+    handleSendMessage,
+    handleKeyDown,
+    selectUser,
   };
 };
+
+export default useDokterChat;

@@ -1,157 +1,27 @@
 /* eslint-disable react/prop-types */
-import { useState, useRef, useEffect } from "react";
 import { VscSend } from "react-icons/vsc";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout";
 import useUser from "../../../stores/useStore.js";
-import axios from "axios";
-import socket from "../../../socket/socket.js";
 import { format } from "date-fns";
 import notificationSound from "../../../assets/sound/notificationSound.mp3";
+import useDokterChat from "../hooks/useDokterChat.jsx";
 
 export const DokterChat = () => {
   const { user } = useUser();
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null);
-  const [IsDokterTyping, setIsDokterTyping] = useState(false);
-  const latestMessageRef = useRef(null);
-  const audioRef = useRef(null);
-
-  // socktet
-  useEffect(() => {
-    if (selectedUser?.konsultasi_id) {
-      socket.emit("joinRoom", selectedUser.konsultasi_id);
-
-      const handleReceiveMessage = (msg) => {
-        console.log("Message received in frontend:", msg);
-        setMessages((prev) => [...prev, msg]);
-      };
-
-      socket.on("receiveMessage", handleReceiveMessage);
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-      };
-    }
-  }, [selectedUser?.konsultasi_id]);
-
-  // fetch pasien
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (user?.id) {
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/dokter/${user.id}/users`
-          );
-          console.log(response.data.data);
-          setUsers(response.data.data);
-        } catch (error) {
-          console.error("Failed to fetch users:", error);
-        }
-      }
-    };
-    fetchUsers();
-  }, [user?.id]);
-
-  // fetch message
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (selectedUser?.konsultasi_id) {
-        try {
-          setLoading(true);
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/messages/${
-              selectedUser.konsultasi_id
-            }`
-          );
-          setMessages(response.data.data);
-          console.log(response.data.data);
-        } catch (error) {
-          console.error("Failed to fetch messages:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchMessages();
-  }, [selectedUser?.konsultasi_id]);
-
-  // leave room
-  useEffect(() => {
-    if (selectedUser?.konsultasi_id) {
-      socket.emit("leaveRoom", previousKonsultasiId);
-      socket.emit("joinRoom", selectedUser.konsultasi_id);
-    }
-  }, [previousKonsultasiId, selectedUser?.konsultasi_id]);
-
-  // notifitcation
-  useEffect(() => {
-    const handleNotification = (data) => {
-      if (data.konsultasiId !== selectedUser?.konsultasi_id) {
-        console.log("Pesan baru:", data.message);
-
-        if (audioRef.current) {
-          audioRef.current.play().catch((error) => {
-            console.error("Failed to play notification sound:", error);
-          });
-        }
-
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.konsultasi_id === data.konsultasiId
-              ? { ...user, hasNewMessage: true }
-              : user
-          )
-        );
-      }
-    };
-    socket.on("newMessageNotification", handleNotification);
-    console.log("connect notif");
-
-    return () => {
-      socket.off("newMessageNotification", handleNotification);
-    };
-  }, [selectedUser?.konsultasi_id]);
-
-  const handleMessage = (e) => {
-    setMessage(e.target.value);
-    if (e.target.value.trim() !== "") {
-      setIsDokterTyping(true);
-    } else {
-      setIsDokterTyping(false);
-    }
-  };
-
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      socket.emit("sendMessage", {
-        konsultasiId: selectedUser.konsultasi_id,
-        senderId: user.id,
-        content: message,
-      });
-      setMessage("");
-      setIsDokterTyping(false);
-    }
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  useEffect(() => {
-    if (latestMessageRef.current) {
-      latestMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }
-  }, [messages]);
+  const {
+    message,
+    messages,
+    users,
+    selectedUser,
+    loading,
+    isDokterTyping,
+    audioRef,
+    latestMessageRef,
+    handleMessage,
+    handleSendMessage,
+    handleKeyDown,
+    selectUser,
+  } = useDokterChat(user);
 
   return (
     <DashboardDokterLayout>
@@ -167,21 +37,7 @@ export const DokterChat = () => {
               users.map((user) => (
                 <div key={user.id}>
                   <div
-                    onClick={() => {
-                      if (selectedUser?.id !== user.id) {
-                        setSelectedUser(user);
-                        setMessages([]);
-                        setPreviousKonsultasiId(user.konsultasi_id);
-                        setUsers((prevUsers) =>
-                          prevUsers.map((u) =>
-                            u.konsultasi_id === user.konsultasi_id
-                              ? { ...u, hasNewMessage: false }
-                              : u
-                          )
-                        );
-                        console.log(user);
-                      }
-                    }}
+                    onClick={() => selectUser(user)}
                     className={`cursor-pointer px-4 py-2 ${
                       selectedUser?.id === user.id ? "bg-gray-200" : "bg-white"
                     }`}
@@ -269,10 +125,10 @@ export const DokterChat = () => {
                         </div>
                       );
                     })}
-                  {IsDokterTyping && (
+                  {isDokterTyping && (
                     <div className="flex items-center space-x-2 justify-end">
                       <div className="bg-gray-800 text-white rounded-l-xl rounded-tr-xl p-3 max-w-md">
-                        <TypingAnimation IsDokterTyping={true} />
+                        <TypingAnimation isDokterTyping={true} />
                       </div>
                     </div>
                   )}
