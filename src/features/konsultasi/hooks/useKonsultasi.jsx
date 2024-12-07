@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import socket from "../../../socket/socket.js";
 import { getDokter, getMessages } from "../services/api.konsultasi.js";
+import notificationSound from "../../../assets/sound/notificationSound.mp3"
+
 
 export const useKonsultasi = (user) => {
   const [message, setMessage] = useState("");
@@ -10,6 +12,7 @@ export const useKonsultasi = (user) => {
   const [loading, setLoading] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const latestMessageRef = useRef(null);
+  const audioRef = useRef(null);
 
   // Fetch doctors
   useEffect(() => {
@@ -60,6 +63,35 @@ export const useKonsultasi = (user) => {
     fetchMessages();
   }, [selectedDokter?.konsultasi_id]);
 
+  // notif
+  useEffect(() => {
+    const handleNotification = (data) => {
+      if (data.konsultasiId !== selectedDokter?.konsultasi_id) {
+        console.log("Pesan baru:", data.message);
+
+        if (audioRef.current) {
+          audioRef.current.play().catch((error) => {
+            console.error("Failed to play notification sound:", error);
+          });
+        }
+
+        setListDokter((prevDokter) =>
+          prevDokter.map((dokter) =>
+            dokter.konsultasi_id === data.konsultasiId
+              ? { ...dokter, hasNewMessage: true }
+              : dokter
+          )
+        );
+      }
+    };
+    socket.on("newMessageNotification", handleNotification);
+    console.log("connect notif");
+
+    return () => {
+      socket.off("newMessageNotification", handleNotification);
+    };
+  }, [selectedDokter?.konsultasi_id]);
+
   const handleSendMessage = () => {
     if (message.trim()) {
       socket.emit("sendMessage", {
@@ -102,6 +134,7 @@ export const useKonsultasi = (user) => {
     setMessage,
     messages,
     listDokter,
+    setListDokter,
     selectedDokter,
     setSelectedDokter,
     loading,
@@ -110,5 +143,7 @@ export const useKonsultasi = (user) => {
     handleMessage,
     handleKeyDown,
     latestMessageRef,
+    audioRef,
+    notificationSound
   };
 };

@@ -6,6 +6,7 @@ import useUser from "../../../stores/useStore.js";
 import axios from "axios";
 import socket from "../../../socket/socket.js";
 import { format } from "date-fns";
+import notificationSound from "../../../assets/sound/notificationSound.mp3";
 
 export const DokterChat = () => {
   const { user } = useUser();
@@ -14,27 +15,27 @@ export const DokterChat = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null)
+  const [previousKonsultasiId, setPreviousKonsultasiId] = useState(null);
   const [IsDokterTyping, setIsDokterTyping] = useState(false);
   const latestMessageRef = useRef(null);
-  const [lastChat, setLastChat] = useState(null);
+  const audioRef = useRef(null);
 
-    // socktet
-    useEffect(() => {
-      if (selectedUser?.konsultasi_id) {
-        socket.emit("joinRoom", selectedUser.konsultasi_id);
-  
-        const handleReceiveMessage = (msg) => {
-          console.log("Message received in frontend:", msg);
-          setMessages((prev) => [...prev, msg]);
-        };
-  
-        socket.on("receiveMessage", handleReceiveMessage);
-        return () => {
-          socket.off("receiveMessage", handleReceiveMessage);
-        };
-      }
-    }, [selectedUser?.konsultasi_id]);
+  // socktet
+  useEffect(() => {
+    if (selectedUser?.konsultasi_id) {
+      socket.emit("joinRoom", selectedUser.konsultasi_id);
+
+      const handleReceiveMessage = (msg) => {
+        console.log("Message received in frontend:", msg);
+        setMessages((prev) => [...prev, msg]);
+      };
+
+      socket.on("receiveMessage", handleReceiveMessage);
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+      };
+    }
+  }, [selectedUser?.konsultasi_id]);
 
   // fetch pasien
   useEffect(() => {
@@ -78,12 +79,42 @@ export const DokterChat = () => {
     fetchMessages();
   }, [selectedUser?.konsultasi_id]);
 
+  // leave room
   useEffect(() => {
     if (selectedUser?.konsultasi_id) {
-      socket.emit("leaveRoom", previousKonsultasiId);  // Make sure the doctor leaves the previous room
-      socket.emit("joinRoom", selectedUser.konsultasi_id);  // Join the new room
+      socket.emit("leaveRoom", previousKonsultasiId);
+      socket.emit("joinRoom", selectedUser.konsultasi_id);
     }
   }, [previousKonsultasiId, selectedUser?.konsultasi_id]);
+
+  // notifitcation
+  useEffect(() => {
+    const handleNotification = (data) => {
+      if (data.konsultasiId !== selectedUser?.konsultasi_id) {
+        console.log("Pesan baru:", data.message);
+
+        if (audioRef.current) {
+          audioRef.current.play().catch((error) => {
+            console.error("Failed to play notification sound:", error);
+          });
+        }
+
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.konsultasi_id === data.konsultasiId
+              ? { ...user, hasNewMessage: true }
+              : user
+          )
+        );
+      }
+    };
+    socket.on("newMessageNotification", handleNotification);
+    console.log("connect notif");
+
+    return () => {
+      socket.off("newMessageNotification", handleNotification);
+    };
+  }, [selectedUser?.konsultasi_id]);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -124,22 +155,30 @@ export const DokterChat = () => {
 
   return (
     <DashboardDokterLayout>
+      <audio ref={audioRef} src={notificationSound} preload="auto" />
       <section className="min-h-screen">
         <div className="w-full bg-secondary-300 py-3 px-6">
           <h1 className="text-xl font-bold text-gray-800">Chat</h1>
         </div>
 
         <div className="flex h-auto">
-          <div className="w-1/4 bg-white">
+          <div className="w-[30%] bg-white">
             {users &&
-              users.map((user, index) => (
+              users.map((user) => (
                 <div key={user.id}>
                   <div
                     onClick={() => {
                       if (selectedUser?.id !== user.id) {
                         setSelectedUser(user);
                         setMessages([]);
-                        setPreviousKonsultasiId(user.konsultasi_id)
+                        setPreviousKonsultasiId(user.konsultasi_id);
+                        setUsers((prevUsers) =>
+                          prevUsers.map((u) =>
+                            u.konsultasi_id === user.konsultasi_id
+                              ? { ...u, hasNewMessage: false }
+                              : u
+                          )
+                        );
                         console.log(user);
                       }
                     }}
@@ -147,8 +186,8 @@ export const DokterChat = () => {
                       selectedUser?.id === user.id ? "bg-gray-200" : "bg-white"
                     }`}
                   >
-                    <div className=" flex items-center gap-2">
-                      <div className="size-16 overflow-hidden rounded-full">
+                    <div className=" flex items-center gap-4">
+                      <div className="w-16 h-16 overflow-hidden rounded-full">
                         <img
                           src={user.image_profile}
                           alt={`Foto user ${user.username}`}
@@ -156,9 +195,19 @@ export const DokterChat = () => {
                         />
                       </div>
                       <div>
-                        <div className="font-semibold ">{user.username}</div>
+                        <div className="font-semibold text-sm flex gap-3">
+                          {user.username}
+                          {user.hasNewMessage && (
+                            <span className="text-red-500">Pesan baru!</span>
+                          )}
+                        </div>
                         <div className="text-xs text-gray-400">
-                          {/* {last chat} */}
+                          {user.last_message
+                            ? `${format(
+                                new Date(user.last_message_at),
+                                "dd MMM yyyy, HH:mm"
+                              )} - ${user.last_message}`
+                            : "Belum ada pesan"}
                         </div>
                       </div>
                     </div>
@@ -189,7 +238,6 @@ export const DokterChat = () => {
                                 new Date(message.sent_at),
                                 "EEEE, dd MMMM yyyy"
                               )}
-                              
                             </div>
                           )}
 

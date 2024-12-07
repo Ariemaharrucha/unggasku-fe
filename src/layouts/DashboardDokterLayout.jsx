@@ -22,8 +22,8 @@ export const DashboardDokterLayout = ({children}) => {
           </Button>
         </div>
       </aside>
-      <main className="w-[calc(100vw-240px)] px-6">
-        <div className="m-auto p-6">
+      <main className="w-[calc(100vw-240px)] ">
+        <div className="m-auto">
             {children}
         </div>
       </main>
