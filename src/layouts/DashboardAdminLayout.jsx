@@ -5,8 +5,11 @@ import { IoMdHome } from "react-icons/io";
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import logo from '../assets/logo.png'
+import { useLogout } from "../utils/logOut.jsx";
 
+// eslint-disable-next-line react/prop-types
 export const DashboardAdminLayout = ({children}) => {
+  const {handleLogOut} = useLogout();
   return (
     <div className="flex h-screen">
       <aside className="flex w-[240px] flex-col justify-between bg-gradient-to-b from-primary-50/50 to-violet-50/50 p-6">
@@ -21,7 +24,7 @@ export const DashboardAdminLayout = ({children}) => {
         <Menu label={'Users'} to={'/dashboard/admin/users'} icon={<FaUser size={24}/>} />
         </section>
         <div>
-          <Button variant="secondary" className={"flex justify-center w-full"}>
+          <Button variant="secondary" className={"flex justify-center w-full"} onClick={handleLogOut}>
             Logout
           </Button>
         </div>
@@ -35,6 +38,7 @@ export const DashboardAdminLayout = ({children}) => {
   );
 };
 
+// eslint-disable-next-line react/prop-types
 const Menu = ({to, label, icon}) => {
     return (
         <Link

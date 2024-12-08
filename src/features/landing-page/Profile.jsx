@@ -105,7 +105,7 @@ export const UserProfile = () => {
     localStorage.removeItem('token');
     Cookies.remove('accessToeken');
     clearUser();
-    window.location.href = '/'
+    navigate('/')
   }
 
   if (!userData) {

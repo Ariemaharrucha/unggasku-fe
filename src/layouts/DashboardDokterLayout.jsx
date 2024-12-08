@@ -3,8 +3,11 @@ import Button from "../components/ui/Button.jsx";
 import { IoNewspaper } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { FaUserDoctor } from "react-icons/fa6";
+import { useLogout } from "../utils/logOut.jsx";
 
 export const DashboardDokterLayout = ({children}) => {
+  const {handleLogOut} = useLogout();
+
   return (
     <div className="flex min-h-screen">
       <aside className="flex w-[240px] flex-col justify-between bg-gradient-to-b from-primary-50/50 to-violet-50/50 p-6">
@@ -17,7 +20,7 @@ export const DashboardDokterLayout = ({children}) => {
         <Menu label={'Chat'} to={'/dashboard/dokter/chat'} icon={<FaUserDoctor size={24}/>} />
         </section>
         <div>
-          <Button variant="secondary" className={"flex justify-center w-full"}>
+          <Button variant="secondary" className={"flex justify-center w-full"} onClick={handleLogOut}>
             Logout
           </Button>
         </div>
