@@ -1,11 +1,10 @@
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { DashboardDokterLayout } from "../../../layouts/DashboardDokterLayout.jsx";
 import Input from "../../../components/ui/Input.jsx";
 import Button from "../../../components/ui/Button.jsx";
 import ReactQuill from "react-quill";
 import { useUpdateArtikelDokter } from "../hooks/useUpdateArtikelDokter.jsx";
-import { useEffect } from "react";
+
 
 export const FormDokterEditArtikel = () => {
   const { id } = useParams();
@@ -15,18 +14,12 @@ export const FormDokterEditArtikel = () => {
     successMessage,
     error,
     imagePreview,
-    register,
-    handleSubmit,
-    errors,
+    formData,
+    handleInputChange,
     handleImageChange,
-    onSubmit,
-    content,
-    onContentChange
+    handleContentChange,
+    handleSubmit,
   } = useUpdateArtikelDokter(id);
-
-  useEffect(() => {
-    console.log(artikel); 
-  }, [artikel]);
 
   if (!artikel) {
     return <p>Loading...</p>;
@@ -39,36 +32,40 @@ export const FormDokterEditArtikel = () => {
           <h3 className="text-lg text-black">Edit Artikel</h3>
         </section>
         <section className="max-w-2xl m-auto mt-1">
-          <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-3" onSubmit={handleSubmit}>
             {/* judul */}
             <div>
               <label htmlFor="judul">Judul Artikel</label>
               <Input
+                id="judul"
+                name="judul"
                 placeholder="Judul artikel"
-                className={"mt-2 font-normal"}
-                {...register("judul", { required: "Judul wajib diisi" })}
-                defaultValue={artikel?.judul || ""}
+                className="mt-2 font-normal"
+                value={formData.judul}
+                onChange={handleInputChange}
               />
-              {errors.judul && <p className="text-red-500">{errors.judul.message}</p>}
             </div>
             {/* author name */}
             <div>
-              <label htmlFor="author-name">Nama Author</label>
+              <label htmlFor="author_name">Nama Author</label>
               <Input
+                id="author_name"
+                name="author_name"
                 placeholder="Nama author"
-                className={"mt-2 font-normal"}
-                {...register("author_name", { required: "Author name wajib diisi" })}
+                className="mt-2 font-normal"
+                value={formData.author_name}
+                onChange={handleInputChange}
               />
-              {errors.author_name && <p className="text-red-500">{errors.author_name.message}</p>}
             </div>
             {/* kategori */}
-            <div className="flex flex-col">
+            <div>
               <label htmlFor="kategori">Kategori</label>
               <select
-                name="kategori"
                 id="kategori"
-                className="w-fit border mt-2 p-2 rounded-md bg-white"
-                {...register("kategori", { required: "Kategori wajib dipilih" })}
+                name="kategori"
+                className="w-full border mt-2 p-2 rounded-md bg-white"
+                value={formData.kategori}
+                onChange={handleInputChange}
               >
                 <option value="">Pilih kategori</option>
                 <option value="pakan">Pakan</option>
@@ -76,46 +73,32 @@ export const FormDokterEditArtikel = () => {
                 <option value="nutrisi">Nutrisi</option>
                 <option value="kesehatan-unggas">Kesehatan Unggas</option>
               </select>
-              {errors.kategori && <p className="text-red-500">{errors.kategori.message}</p>}
             </div>
             {/* konten */}
             <div>
               <label htmlFor="konten">Konten</label>
               <ReactQuill
-                value={content}
+                value={formData.konten}
                 placeholder="Tulis konten di sini"
                 className="block w-full mt-2"
-                onChange={onContentChange}
+                onChange={handleContentChange}
               />
-              {errors.konten && <p className="text-red-500">{errors.konten.message}</p>}
             </div>
             {/* image-artikel */}
-            <div className="w-1/3">
-              <label htmlFor="image_artikel" className="">
-                Add images
-              </label>
+            <div>
+              <label htmlFor="image_artikel">Add Images</label>
               <input
                 type="file"
                 id="image_artikel"
-                accept="image/png, image/jpeg"
-                className="block w-full mt-2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 cursor-pointer
-              file:bg-gray-50 file:border-0
-                file:me-4
-                file:py-3 file:px-4"
-                {...register("image_artikel")}
+                name="image_artikel"
+                accept=".png, .jpeg, .jpg"
+                className="block w-full mt-2"
                 onChange={handleImageChange}
               />
-              {errors.image_artikel && (
-                <p className="text-red-500">{errors.image_artikel.message}</p>
-              )}
-            </div>
-            <div className="size-56 overflow-hidden rounded-md mt-4">
-              {imagePreview ? (
-                <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
-              ) : (
-                artikel?.image_artikel && (
-                  <img src={artikel.image_artikel} alt="Existing Artikel" className="h-full w-full object-cover" />
-                )
+              {imagePreview && (
+                <div className="mt-2">
+                  <img src={imagePreview} alt="Preview" className="w-full rounded-md" />
+                </div>
               )}
             </div>
             {/* tanggal */}
@@ -123,10 +106,12 @@ export const FormDokterEditArtikel = () => {
               <label htmlFor="tanggal">Tanggal</label>
               <input
                 type="date"
-                className="block mt-2 border p-2 rounded-md"
-                {...register("tanggal", { required: "Tanggal wajib diisi" })}
+                id="tanggal"
+                name="tanggal"
+                className="block w-full mt-2 border p-2 rounded-md"
+                value={formData.tanggal}
+                onChange={handleInputChange}
               />
-              {errors.tanggal && <p className="text-red-500">{errors.tanggal.message}</p>}
             </div>
             {/* button */}
             <div className="flex gap-4">
@@ -138,14 +123,13 @@ export const FormDokterEditArtikel = () => {
               </Link>
               <Button
                 variant="secondary"
-                className={"w-1/3 flex items-center justify-center"}
+                className="w-1/3 flex items-center justify-center"
                 type="submit"
               >
                 {isLoading ? "Loading..." : "Edit"}
               </Button>
             </div>
           </form>
-          {isLoading && <p className="text-blue-500">Edit artikel...</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
           {error && <p className="text-red-500">{error}</p>}
         </section>

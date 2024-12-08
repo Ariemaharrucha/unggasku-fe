@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { getArtikelDokterDetail, updateArtikel } from "../services/api.crud.artikeldokter";
 import { useNavigate } from "react-router-dom";
+import { getArtikelDetail, updateArtikel } from "../services/api.crud.artikel.js";
 
-export const useUpdateArtikelDokter = (id) => {
+export const useUpdateArtikel = (id) => {
   const [artikel, setArtikel] = useState(null);
   const [formData, setFormData] = useState({
     judul: "",
@@ -22,12 +22,12 @@ export const useUpdateArtikelDokter = (id) => {
   useEffect(() => {
     const fetchArtikel = async () => {
       try {
-        const response = await getArtikelDokterDetail(id);
+        const response = await getArtikelDetail(id);
         if (response.data && response.data.length > 0) {
           const artikelData = response.data[0];
           const formattedDate = artikelData.tanggal
           ? new Date(artikelData.tanggal).toLocaleDateString("en-CA")
-          : ""; 
+          : "";
           setArtikel(artikelData);
           setFormData({
             judul: artikelData.judul || "",
@@ -72,9 +72,9 @@ export const useUpdateArtikelDokter = (id) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isConfirmed = window.confirm(
-      "Apakah Anda yakin ingin mengubah artikel ini?"
-    );
-    if (!isConfirmed) return;
+        "Apakah Anda yakin ingin mengubah artikel ini?"
+      );
+      if (!isConfirmed) return;
     setIsLoading(true);
     try {
       const formDataToSend = new FormData();
@@ -87,7 +87,7 @@ export const useUpdateArtikelDokter = (id) => {
       }
       await updateArtikel(id, formDataToSend);
       setSuccessMessage("Artikel berhasil diperbarui.");
-      navigate("/dashboard/dokter/artikel");
+      navigate("/dashboard/admin/artikel");
     } catch (err) {
       setError(err.message || "Terjadi kesalahan saat memperbarui artikel.");
     } finally {
