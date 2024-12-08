@@ -95,8 +95,8 @@ export const FormEditArtikel = () => {
                 onChange={handleImageChange}
               />
               {imagePreview && (
-                <div className="mt-2">
-                  <img src={imagePreview} alt="Preview" className="w-full rounded-md" />
+                <div className="mt-2 size-52 overflow-hidden rounded-md">
+                  <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                 </div>
               )}
             </div>
