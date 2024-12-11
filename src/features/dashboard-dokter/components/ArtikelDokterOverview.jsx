@@ -8,7 +8,7 @@ import { ArtikelDokterTable } from "./ArtikelDokterTable.jsx";
 export const ArtikelDokterOverview = () => {
   return (
     <DashboardDokterLayout>
-      <main className="max-w-6xl">
+      <main className="max-w-6xl mx-auto">
         <section className="sticky top-0 z-[2] flex items-center justify-between bg-white py-2 ">
           <div>
             <h3 className="text-xl">Artikel Dokter</h3>

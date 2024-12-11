@@ -1,4 +1,5 @@
 import { DashboardAdminLayout } from "../../../layouts/DashboardAdminLayout.jsx";
+import { UserTable } from "./UserTable.jsx";
 
 
 export const UserOverview = () => {
@@ -10,7 +11,9 @@ export const UserOverview = () => {
             <h3 className="text-xl">Daftar User</h3>
           </div>
         </section>
-        <section className="mt-4">{/* list user */}</section>
+        <section className="mt-4">
+          <UserTable/>
+        </section>
       </main>
     </DashboardAdminLayout>
   );
