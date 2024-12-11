@@ -27,7 +27,7 @@ export const DashboardAdmin = () => {
           axios.get(`${import.meta.env.VITE_API_URL}/admin/artikel/total`),
           axios.get(`${import.meta.env.VITE_API_URL}/admin/dokter/total`),
           axios.get(`${import.meta.env.VITE_API_URL}/admin/user/total`),
-          axios.get(`${import.meta.env.VITE_API_URL}/admin/user?limit=10`),
+          axios.get(`${import.meta.env.VITE_API_URL}/admin/new-user`),
         ]);
 
         setTotalArtikel(artikelResponse.data.data[0].total_artikel);
